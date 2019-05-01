@@ -17,3 +17,13 @@ Route::get('/', function()
 {
     return "Hello!! This is liverepo's api";
 });
+
+Route::post("/auth/admin", "AuthAdminController@login");
+
+Route::group(['prefix' => 'admin','middleware' => ['assign.guard:admins','jwt.auth']],function ()
+{
+    Route::get('/demo', function()
+    {
+        return "Hello!! Admin";
+    });	
+});
