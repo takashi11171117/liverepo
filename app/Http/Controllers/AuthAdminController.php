@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
+use App\Admin;
 
 class AuthAdminController extends Controller
 {
@@ -14,15 +13,17 @@ class AuthAdminController extends Controller
             return response()->json(['error' => 'メールアドレスかパスワードが一致しません'], 401);
         }
 
-        return $this->respondWithToken($token);
+        return $this->respondWithToken($token, $credentials);
     }
 
-    protected function respondWithToken($token)
+    protected function respondWithToken($token, $credentials)
     {
+        $admin = Admin::where('email', $credentials['email'])->first();
         return response()->json([
-            'access_token' => $token,
+            'token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth("admins")->factory()->getTTL() * 60
+            'expires_in' => auth("admins")->factory()->getTTL() * 60,
+            'admin' => $admin
         ]);
     }
 }

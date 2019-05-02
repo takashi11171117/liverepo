@@ -1,0 +1,447 @@
+---
+swagger: "2.0"
+info:
+  description: "liverepo_server"
+  version: "1.0.0"
+  title: "Swagger LiveRepo"
+basePath: "/"
+tags:
+- name: "admin"
+  description: "Operations about admin"
+schemes:
+- "https"
+- "http"
+paths:
+  /auth/admin:
+    post:
+      tags:
+      - "admin"
+      description: "get list of admin with pagination"
+      operationId: "authAdminPOST"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/body"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: "object"
+            properties:
+              token:
+                type: "string"
+              admin:
+                $ref: "#/definitions/Admin"
+        401:
+          description: "Unauthorized"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+      x-swagger-router-controller: "Admin"
+  /admin/admin:
+    get:
+      tags:
+      - "admin"
+      summary: "List Admin with pagination"
+      description: "get list of admin with pagination"
+      operationId: "adminAdminGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "page"
+        in: "query"
+        description: "page number"
+        required: false
+        type: "integer"
+      - name: "per_page"
+        in: "query"
+        description: "per page"
+        required: false
+        type: "integer"
+      - name: "s"
+        in: "query"
+        description: "search"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: "object"
+            properties:
+              current_page:
+                type: "integer"
+              data:
+                type: "array"
+                items:
+                  $ref: "#/definitions/Admin"
+              first_page_url:
+                type: "string"
+              last_page:
+                type: "integer"
+              last_page_url:
+                type: "string"
+              next_page_url:
+                type: "string"
+              path:
+                type: "string"
+              per_page:
+                type: "integer"
+              prev_page_url:
+                type: "string"
+              to:
+                type: "string"
+              total:
+                type: "integer"
+        401:
+          description: "Unauthorized"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+      x-swagger-router-controller: "Admin"
+  /admin/admin/add:
+    post:
+      tags:
+      - "admin"
+      summary: "Add Admin"
+      description: "Add Admin"
+      operationId: "adminAdminAddPOST"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/body_1"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Admin"
+        401:
+          description: "Unauthorized"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+        422:
+          description: "Unprocessable Entity"
+          schema:
+            type: "object"
+            properties:
+              name:
+                type: "array"
+                items:
+                  type: "string"
+              email:
+                type: "array"
+                items:
+                  type: "string"
+              password:
+                type: "array"
+                items:
+                  type: "string"
+      x-swagger-router-controller: "Admin"
+  /admin/admin/{id}:
+    get:
+      tags:
+      - "admin"
+      summary: "show an admin"
+      description: "show an admin"
+      operationId: "adminAdminIdGET"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Admin"
+        401:
+          description: "Unauthorized"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+      x-swagger-router-controller: "Admin"
+  /admin/admin/{id}/update:
+    post:
+      tags:
+      - "admin"
+      summary: "Update Admin"
+      description: "Update Admin"
+      operationId: "adminAdminIdUpdatePOST"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/body_2"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            $ref: "#/definitions/Admin"
+        401:
+          description: "Unauthorized"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+        422:
+          description: "Unprocessable Entity"
+          schema:
+            type: "object"
+            properties:
+              name:
+                type: "array"
+                items:
+                  type: "string"
+              email:
+                type: "array"
+                items:
+                  type: "string"
+              password:
+                type: "array"
+                items:
+                  type: "string"
+      x-swagger-router-controller: "Admin"
+  /admin/admin/{id}/delete:
+    post:
+      tags:
+      - "admin"
+      summary: "Delete Admin"
+      description: "Delete Admin"
+      operationId: "adminAdminIdDeletePOST"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        required: true
+        type: "integer"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/body_3"
+      - name: "page"
+        in: "query"
+        description: "page number"
+        required: false
+        type: "integer"
+      - name: "per_page"
+        in: "query"
+        description: "per page"
+        required: false
+        type: "integer"
+      - name: "s"
+        in: "query"
+        description: "search"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "Success"
+          schema:
+            type: "object"
+            properties:
+              current_page:
+                type: "integer"
+              data:
+                type: "array"
+                items:
+                  $ref: "#/definitions/Admin"
+              first_page_url:
+                type: "string"
+              last_page:
+                type: "integer"
+              last_page_url:
+                type: "string"
+              next_page_url:
+                type: "string"
+              path:
+                type: "string"
+              per_page:
+                type: "integer"
+              prev_page_url:
+                type: "string"
+              to:
+                type: "string"
+              total:
+                type: "integer"
+        401:
+          description: "Unauthorized"
+          schema:
+            type: "object"
+            properties:
+              error:
+                type: "string"
+      x-swagger-router-controller: "Admin"
+definitions:
+  Admin:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+      name:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      created_at:
+        type: "string"
+      updated_at:
+        type: "string"
+    example:
+      password: "password"
+      updated_at: "updated_at"
+      name: "name"
+      created_at: "created_at"
+      id: 0
+      email: "email"
+  body:
+    type: "object"
+    required:
+    - "email"
+    - "password"
+    properties:
+      email:
+        type: "string"
+      password:
+        type: "string"
+  inline_response_200:
+    properties:
+      token:
+        type: "string"
+      admin:
+        $ref: "#/definitions/Admin"
+    example:
+      admin:
+        password: "password"
+        updated_at: "updated_at"
+        name: "name"
+        created_at: "created_at"
+        id: 0
+        email: "email"
+      token: "token"
+  inline_response_401:
+    properties:
+      error:
+        type: "string"
+  inline_response_200_1:
+    properties:
+      current_page:
+        type: "integer"
+      data:
+        type: "array"
+        items:
+          $ref: "#/definitions/Admin"
+      first_page_url:
+        type: "string"
+      last_page:
+        type: "integer"
+      last_page_url:
+        type: "string"
+      next_page_url:
+        type: "string"
+      path:
+        type: "string"
+      per_page:
+        type: "integer"
+      prev_page_url:
+        type: "string"
+      to:
+        type: "string"
+      total:
+        type: "integer"
+    example:
+      first_page_url: "first_page_url"
+      path: "path"
+      per_page: 1
+      total: 5
+      data:
+      - password: "password"
+        updated_at: "updated_at"
+        name: "name"
+        created_at: "created_at"
+        id: 0
+        email: "email"
+      - password: "password"
+        updated_at: "updated_at"
+        name: "name"
+        created_at: "created_at"
+        id: 0
+        email: "email"
+      last_page: 6
+      last_page_url: "last_page_url"
+      next_page_url: "next_page_url"
+      to: "to"
+      prev_page_url: "prev_page_url"
+      current_page: 0
+  body_1:
+    type: "object"
+    required:
+    - "email"
+    - "name"
+    - "password"
+    properties:
+      name:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+  inline_response_422:
+    properties:
+      name:
+        type: "array"
+        items:
+          type: "string"
+      email:
+        type: "array"
+        items:
+          type: "string"
+      password:
+        type: "array"
+        items:
+          type: "string"
+  body_2:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      _method:
+        type: "string"
+  body_3:
+    type: "object"
+    properties:
+      _method:
+        type: "string"

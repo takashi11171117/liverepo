@@ -28,6 +28,7 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'api' => [
+            \App\Http\Middleware\CorsMiddleware::class,
             'throttle:60,1',
             'bindings',
         ],

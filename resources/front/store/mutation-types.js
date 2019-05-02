@@ -1,0 +1,13 @@
+export const TOGGLE_DEVICE = 'TOGGLE_DEVICE';
+
+export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
+
+export const SET_TOKEN = 'SET_TOKEN';
+
+export const FETCH_ADMIN_SUCCESS = 'FETCH_ADMIN_SUCCESS';
+
+export const FETCH_ADMIN_FAILURE = 'FETCH_ADMIN_FAILURE';
+
+export const LOGOUT = 'LOGOUT';
+
+export const UPDATE_ADMIN = 'UPDATE_ADMIN';

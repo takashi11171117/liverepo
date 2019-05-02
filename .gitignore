@@ -10,3 +10,14 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 !gitkeep
+.idea
+/database/*.sqlite
+/.nuxt
+/resources/.nuxt
+yarn-error.log
+/nodejs-server-server/node_modules
+/resources/front/test/logs
+/resources/front/test/snapshots
+/resources/front/test/e2e/screenshots
+/resources/front/test/e2e/reports
+/test/screenshots
