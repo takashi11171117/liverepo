@@ -51,7 +51,7 @@
 
     methods: {
       onSearch(event) {
-        this.$store.commit('updateInput', {'search': event.target.value});
+        this.updateInput({'search': event.target.value});
         this.$router.push({
           path: '/admin',
           query: {
@@ -62,7 +62,7 @@
         });
       },
       changePerPage(event) {
-        this.$store.commit('updateInput', {'perPage': event.target.value});
+        this.updateInput({'perPage': event.target.value});
         this.$router.push({
           path: '/admin',
           query: {

@@ -82,10 +82,9 @@
               message: '会員情報を追加しました。',
               type: 'is-success',
             });
-            this.$router.push({
-              path: '/admin'
-            });
+            this.$router.push('/admin');
           }).catch((error) => {
+            console.log(error);
             this.$set(this, 'error', error.response.data.errors);
           })
         }

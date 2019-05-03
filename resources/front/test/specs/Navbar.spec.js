@@ -1,9 +1,9 @@
 import Vuex from 'vuex'
 import { shallowMount, createLocalVue } from '@vue/test-utils'
 import test from 'ava'
+import sinon from 'sinon'
 import * as indexStore from '../../store'
 import NavBar from '../../components/admin/NavBar'
-import sinon from 'sinon'
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

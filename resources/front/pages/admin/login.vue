@@ -48,6 +48,8 @@
 </template>
 
 <script>
+  import { mapActions } from 'vuex';
+
   export default {
     layout: 'admin_login',
     data() {
@@ -64,26 +66,28 @@
         this.loader = true;
         this.infoError = [];
 
-        await this.$axios.$post(`/auth/admin`, {
+        await this.$axios.$post('/auth/admin', {
           email: this.email,
           password: this.password
         })
           .then((data) => {
-            this.$store.dispatch('saveToken', {
+            this.saveToken({
               token: data.token,
-              remember: this.expires_in
+              remember: data.expires_in
             });
 
-            this.$store.dispatch('fetchAdmin', { admin: data.admin });
+            this.fetchAdmin({ admin: data.admin });
 
             this.$router.push('/admin');
           })
           .catch(error => {
+            console.log(error);
             this.loader = false;
             this.password = '';
             this.infoError = error.response.data.error;
           });
-      }
+      },
+      ...mapActions(['saveToken', 'fetchAdmin'])
     }
   }
 </script>

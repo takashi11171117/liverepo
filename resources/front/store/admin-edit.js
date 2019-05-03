@@ -36,7 +36,7 @@ export const mutations = {
 };
 
 export const actions = {
-  async fetchAdmin({commit, redirect}, id) {
+  async fetchAdmin({commit}, id) {
     await this.$axios.$get(`/admin/admin/${id}`)
       .then((res) => {
         commit('updateAdminForm', {
@@ -46,9 +46,7 @@ export const actions = {
         });
       }).catch((error) => {
         console.log(error);
-        redirect({
-          path: '/admin/login'
-        });
+        this.$router.push({ path: '/admin/login' })
       })
   },
 

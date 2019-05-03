@@ -28,7 +28,7 @@ export const mutations = {
 };
 
 export const actions = {
-  async fetchAdminPagination({ commit, redirect }, query) {
+  async fetchAdminPagination({ commit }, query) {
     await this.$axios.$get(`/admin/admin`, {
       params: {
         page: query.page,
@@ -60,9 +60,7 @@ export const actions = {
         });
     }).catch((error) => {
       console.log(error);
-      redirect({
-        path: '/admin/login'
-      });
+      this.$router.push({ path: '/admin/login' })
     })
   },
 
