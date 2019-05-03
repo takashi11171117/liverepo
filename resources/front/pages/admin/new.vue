@@ -69,28 +69,25 @@
     methods: {
       async onSubmit() {
         if (confirm('追加してもよろしいですか？')) {
-          try {
-            await this.addAdmin(
-              {
-                name: this.name,
-                email: this.email,
-                password: this.password,
-                password_confirmation: this.passwordConfirm,
-              }
-            );
+          await this.addAdmin(
+            {
+              name: this.name,
+              email: this.email,
+              password: this.password,
+              password_confirmation: this.passwordConfirm,
+            }
+          ).then(() => {
             this.$snackbar.open({
               duration: 5000,
               message: '会員情報を追加しました。',
               type: 'is-success',
             });
-
             this.$router.push({
               path: '/admin'
             });
-          } catch (error) {
-            console.log(error.response);
+          }).catch((error) => {
             this.$set(this, 'error', error.response.data.errors);
-          }
+          })
         }
       },
       ...mapActions('admin-index', ['addAdmin'])

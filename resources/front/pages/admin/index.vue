@@ -22,13 +22,7 @@
     },
 
     async asyncData({store, query, redirect}) {
-      try {
-        await store.dispatch('admin-index/fetchAdminPagination', query);
-      } catch (error) {
-        redirect({
-          path: '/admin/login'
-        });
-      }
+      await store.dispatch('admin-index/fetchAdminPagination', query);
     },
   }
 </script>

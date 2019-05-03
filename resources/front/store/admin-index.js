@@ -22,16 +22,13 @@ export const mutations = {
     state.perPage = payload.perPage;
     state.search = payload.search;
   },
-  updateSearch(state, payload) {
-    state.search = payload;
-  },
-  updatePerPage(state, payload) {
-    state.perPage = payload;
+  updateInput(state, payload) {
+    state = Object.assign(state, payload)
   },
 };
 
 export const actions = {
-  async fetchAdminPagination({ commit }, query) {
+  async fetchAdminPagination({ commit, redirect }, query) {
     await this.$axios.$get(`/admin/admin`, {
       params: {
         page: query.page,
@@ -61,6 +58,11 @@ export const actions = {
           perPage: per_page,
           search: query.s
         });
+    }).catch((error) => {
+      console.log(error);
+      redirect({
+        path: '/admin/login'
+      });
     })
   },
 

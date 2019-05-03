@@ -51,7 +51,7 @@
 
     methods: {
       onSearch(event) {
-        this.$store.commit('admin-index/updateSearch', event.target.value);
+        this.$store.commit('updateInput', {'search': event.target.value});
         this.$router.push({
           path: '/admin',
           query: {
@@ -62,7 +62,7 @@
         });
       },
       changePerPage(event) {
-        this.$store.commit('admin-index/updatePerPage', event.target.value);
+        this.$store.commit('updateInput', {'perPage': event.target.value});
         this.$router.push({
           path: '/admin',
           query: {
@@ -72,9 +72,8 @@
           }
         });
       },
-      ...mapMutations([
-        'admin-index/updateSearch',
-        'admin-index/updatePerPage'
+      ...mapMutations('admin-index', [
+        'updateInput',
       ]),
     }
   }
