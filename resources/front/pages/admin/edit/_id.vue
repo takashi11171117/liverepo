@@ -15,7 +15,7 @@
     },
 
     async asyncData({store, params}) {
-      await store.dispatch('admin-edit/fetchAdmin', params.id);
+      await store.dispatch('admin-edit/fetchAdmin', {id: params.id});
     },
   }
 </script>

@@ -1,4 +1,4 @@
-export function cookieFromRequest (req, key) {
+export var cookieFromRequest = (req, key) => {
   if (req === undefined || !req.headers.cookie) {
     return
   }
@@ -10,4 +10,4 @@ export function cookieFromRequest (req, key) {
   if (cookie) {
     return cookie.split('=')[1]
   }
-}
+};

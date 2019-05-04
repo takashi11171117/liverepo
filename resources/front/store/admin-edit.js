@@ -19,7 +19,7 @@ export const getters = {
 };
 
 export const mutations = {
-  updateAdminForm(state, payload) {
+  UPDATE_ADMIN_FORM(state, payload) {
     state.admin = payload.admin;
     state.name = payload.name;
     state.email = payload.email;
@@ -27,19 +27,19 @@ export const mutations = {
     state.passwordConfirm = '';
     state.error = {};
   },
-  updateAdminFormError(state, payload) {
+  UPDATE_ADMIN_FORM_ERROR(state, payload) {
     state.error = payload;
   },
-  updateInput(state, payload) {
+  UPDATE_INPUT(state, payload) {
     state = Object.assign(state, payload)
   },
 };
 
 export const actions = {
-  async fetchAdmin({commit}, id) {
+  async fetchAdmin({commit}, {id}) {
     await this.$axios.$get(`/admin/admin/${id}`)
       .then((res) => {
-        commit('updateAdminForm', {
+        commit('UPDATE_ADMIN_FORM', {
           admin: res,
           name: res.name,
           email: res.email,
@@ -62,18 +62,18 @@ export const actions = {
           password_confirmation: state.passwordConfirm,
         }
       ).then((data) => {
-        commit('updateAdminForm', {
+        commit('UPDATE_ADMIN_FORM', {
           admin: data,
           name: data.name,
           email: data.email,
         });
         Snackbar.open({
           duration: 5000,
-          message: '会員情報を更新しました。',
+          message: '管理者情報を更新しました。',
           type: 'is-success',
         });
       }).catch((err) => {
-        commit('updateAdminFormError', err.response.data.errors);
+        commit('UPDATE_ADMIN_FORM_ERROR', err.response.data.errors);
       })
     }
   }

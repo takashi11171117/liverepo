@@ -15,14 +15,14 @@ export const getters = {
 };
 
 export const mutations = {
-  updatePagination(state, payload) {
+  UPDATE_PAGINATION(state, payload) {
     state.pagination = payload.pagination;
     state.isLoading = payload.isLoading;
     state.page = payload.page;
     state.perPage = payload.perPage;
     state.search = payload.search;
   },
-  updateInput(state, payload) {
+  UPDATE_INPUT(state, payload) {
     state = Object.assign(state, payload)
   },
 };
@@ -38,7 +38,7 @@ export const actions = {
     }).then(res => {
       // 2ページ目以降データがなければ1ページ目にリダイレクト
       if (res.current_page > 1 && Object.keys(res.data).length === 0) {
-        redirect({
+        this.$router.push({
           path: '/admin',
           query: {
             page: 1,
@@ -50,7 +50,7 @@ export const actions = {
 
       let per_page = query.per_page ? query.per_page : 20;
 
-      commit('updatePagination',
+      commit('UPDATE_PAGINATION',
         {
           pagination: res,
           isLoading: false,
@@ -84,7 +84,7 @@ export const actions = {
         `/admin/admin/${admin.id}/delete${query_string}`,
         {_method: 'DELETE'}
       ).then((res) => {
-        commit('updatePagination',
+        commit('UPDATE_PAGINATION',
           {
             pagination: res,
             isLoading: false,

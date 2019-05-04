@@ -7,7 +7,7 @@
                 :message="error.hasOwnProperty('name') ? error.name[0] : ''"
         >
             <b-input :value="name"
-                     @input="updateInput({'name': $event})"
+                     @input="UPDATE_INPUT({'name': $event})"
                      id="name">
             </b-input>
         </b-field>
@@ -19,7 +19,7 @@
         >
             <b-input type="email"
                      id="email"
-                     @input="updateInput({'email': $event})"
+                     @input="UPDATE_INPUT({'email': $event})"
                      :value="email"
                      maxlength="50">
             </b-input>
@@ -32,7 +32,7 @@
         >
             <b-input type="password"
                      id="password"
-                     @input="updateInput({'password': $event})"
+                     @input="UPDATE_INPUT({'password': $event})"
                      :value="password">
             </b-input>
         </b-field>
@@ -40,7 +40,7 @@
         <b-field label="パスワード確認">
             <b-input type="password"
                      id="password-confirm"
-                     @input="updateInput({'passwordConfirm': $event})"
+                     @input="UPDATE_INPUT({'passwordConfirm': $event})"
                      :value="passwordConfirm">
             </b-input>
         </b-field>
@@ -74,7 +74,7 @@
 
     methods: {
       ...mapActions('admin-edit', ['updateAdmin']),
-      ...mapMutations('admin-edit', ['updateInput']),
+      ...mapMutations('admin-edit', ['UPDATE_INPUT']),
     }
   }
 </script>

@@ -51,7 +51,7 @@
 
     methods: {
       onSearch(event) {
-        this.updateInput({'search': event.target.value});
+        this.UPDATE_INPUT({'search': event.target.value});
         this.$router.push({
           path: '/admin',
           query: {
@@ -62,7 +62,7 @@
         });
       },
       changePerPage(event) {
-        this.updateInput({'perPage': event.target.value});
+        this.UPDATE_INPUT({'perPage': event.target.value});
         this.$router.push({
           path: '/admin',
           query: {
@@ -73,7 +73,7 @@
         });
       },
       ...mapMutations('admin-index', [
-        'updateInput',
+        'UPDATE_INPUT',
       ]),
     }
   }

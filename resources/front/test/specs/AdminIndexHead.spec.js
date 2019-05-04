@@ -88,7 +88,7 @@ test('script test', async t => {
   };
 
   const updateInputMock = sinon.spy();
-  wrapper.setMethods({ updateInput: updateInputMock });
+  wrapper.setMethods({ UPDATE_INPUT: updateInputMock });
 
   const event = {
     target: {
