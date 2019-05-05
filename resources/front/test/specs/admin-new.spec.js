@@ -2,7 +2,7 @@ import { shallowMount, createLocalVue } from '@vue/test-utils'
 import test from 'ava'
 import Buefy from 'buefy';
 import sinon from "sinon";
-import AdminNew from '../../pages/admin/new'
+import AdminNew from '../../pages/admin/admin/new'
 
 const localVue = createLocalVue();
 localVue.use(Buefy);

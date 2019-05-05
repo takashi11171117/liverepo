@@ -3,7 +3,7 @@
 </template>
 
 <script>
-  import AdminEdit from '../../../components/admin/AdminEdit'
+  import AdminEdit from '../../../../components/admin/AdminEdit'
 
   export default {
     middleware: 'auth',

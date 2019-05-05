@@ -20,6 +20,8 @@ Route::get('/', function()
 
 Route::post("/auth/admin", "AuthAdminController@login");
 
+Route::get("/report", "ReportController@index");
+
 Route::group(['prefix' => 'admin','middleware' => ['assign.guard:admins','jwt.auth']],function ()
 {
     Route::get('/admin', [

@@ -35,7 +35,7 @@
                 </b-table-column>
 
                 <b-table-column custom-key="actions">
-                    <n-link :to="{ path: `/admin/edit/${props.row.id}` }" class="button is-small is-light">
+                    <n-link :to="{ path: `/admin/admin/edit/${props.row.id}` }" class="button is-small is-light">
                         <b-icon icon="lead-pencil" size="is-small"></b-icon>
                     </n-link>
                     <button :id="`delete${ props.row.id }`" class="button is-small is-danger"

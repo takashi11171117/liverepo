@@ -131,7 +131,7 @@ module.exports = {
       })
       .url(`${url}/admin`)
       .waitForElementVisible('body', 1000)
-      .click('a[href="/admin/edit/0"]')
+      .click('a[href="/admin/admin/edit/0"]')
       .pause(50)
       .assert.containsText('h1.title', 'メンバー編集')
       .assert.visible('#name')

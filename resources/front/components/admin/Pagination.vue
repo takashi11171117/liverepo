@@ -51,12 +51,12 @@
     },
 
     watch: {
-      pagination: function (newPagination) {
+      $route: function () {
         let query =  this.$route.query;
-        this.isPrevious = newPagination.current_page !== 1;
-        this.isNext = newPagination.current_page !== newPagination.last_page;
-        this.isFirst = newPagination.current_page > 2;
-        this.isLast = newPagination.current_page < newPagination.last_page - 1;
+        this.isPrevious = this.pagination.current_page !== 1;
+        this.isNext = this.pagination.current_page !== this.pagination.last_page;
+        this.isFirst = this.pagination.current_page > 2;
+        this.isLast = this.pagination.current_page < this.pagination.last_page - 1;
         this.firstLinkQuery = {  page: 1, per_page: this.pagination.per_page, s: query.s };
         this.previousLinkQuery = {  page: this.pagination.current_page - 1, per_page: this.pagination.per_page, s: query.s };
         this.nextLinkQuery = {  page: this.pagination.current_page + 1, per_page: this.pagination.per_page, s: query.s };

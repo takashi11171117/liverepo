@@ -58,6 +58,6 @@ class AuthAdminControllerTest extends TestCase
             $params,
             $headers
         )->assertStatus(200)
-         ->assertJsonStructure(['access_token', 'token_type', 'expires_in']);
+         ->assertJsonStructure(['token', 'token_type', 'expires_in', 'admin']);
     }
 }

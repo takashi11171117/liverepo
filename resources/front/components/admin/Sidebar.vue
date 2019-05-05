@@ -4,9 +4,13 @@
             メニュー
         </p>
         <ul class="menu-list">
-            <li><a id="nav-dashboard">ダッシュボード</a></li>
             <li>
-                <n-link id="nav-user" :to="{ path: `/admin` }">
+                <n-link id="nav-dashboard" :to="{ path: `/admin` }">
+                    ダッシュボード
+                </n-link>
+            </li>
+            <li>
+                <n-link id="nav-user" :to="{ path: `/admin/admin` }">
                     ユーザー
                 </n-link>
             </li>
