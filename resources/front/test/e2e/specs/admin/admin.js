@@ -62,9 +62,9 @@ module.exports = {
       .waitForElementVisible('body', 1000)
       .setValue('#search', 's')
       .click('#search-button')
-      .assert.urlContains('?s=s')
-      .setValue('#per-page', '20')
-      .assert.urlContains('?per_page=20')
+      .assert.urlContains('s=s')
+      .click("#per-page option[value='30']")
+      .assert.urlContains('?per_page=30')
       .click('#previous-page')
       .assert.urlContains('?page=-1')
       .click('#next-page')
@@ -89,7 +89,7 @@ module.exports = {
         name: 'token',
         value: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiIsImp0aSI6IjVjYTk1NDVjZDg4OGQifQ.eyJpc3MiOiJodHRwOlwvXC8xOTIuMTY4LjEuMzU6ODAwMCIsImF1ZCI6Imh0dHA6XC9cLzE5Mi4xNjguMS4zNTo4MDAwIiwianRpIjoiNWNhOTU0NWNkODg4ZCIsImlhdCI6MTU1NDYwMTA1MiwibmJmIjoxNTU0NjAxMTEyLCJleHAiOjE1NTQ2MDQ2NTIsInVpZCI6MX0.d4sccBtKV0WjPUT_oRSyDYpQ7c75CJCowT-UZZLiOm0'
       })
-      .url(`${url}/admin`)
+      .url(`${url}/admin/admin`)
       .waitForElementVisible('body', 1000)
       .click('#new')
       .pause(50)

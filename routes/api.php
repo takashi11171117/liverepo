@@ -20,9 +20,7 @@ Route::get('/', function()
 
 Route::post("/auth/admin", "AuthAdminController@login");
 
-Route::get("/report", "ReportController@index");
-
-Route::group(['prefix' => 'admin','middleware' => ['assign.guard:admins','jwt.auth']],function ()
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['assign.guard:admins','jwt.auth']],function ()
 {
     Route::get('/admin', [
         'as'   => 'admin.index',
@@ -44,4 +42,6 @@ Route::group(['prefix' => 'admin','middleware' => ['assign.guard:admins','jwt.au
         'as' => 'admin.destroy',
         'uses' => 'AdminController@destroy'
     ]);
+
+    Route::get("/report", "ReportController@index");
 });

@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Admin;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use App\Report;
 
-class AdminControllerTest extends TestCase
+class ReportControllerTest extends TestCase
 {
     use RefreshDatabase;
     use WithoutMiddleware;
@@ -29,7 +29,7 @@ class AdminControllerTest extends TestCase
 
         $data = $this->json(
             'GET',
-            '/report',
+            '/admin/report',
             [],
             $headers
         )->assertStatus(200)
@@ -58,7 +58,7 @@ class AdminControllerTest extends TestCase
 
         $data = $this->json(
             'GET',
-            '/report',
+            '/admin/report',
             [],
             $headers
         )->assertStatus(200)
@@ -66,7 +66,7 @@ class AdminControllerTest extends TestCase
 
         $this->assertEquals($data['per_page'], 20);
         $this->assertEquals($data['current_page'], 1);
-        $this->assertEquals($data['last_page_url'], 'http://localhost/report?page=2');
+        $this->assertEquals($data['last_page_url'], 'http://localhost/admin/report?page=2');
     }
 
     /**
@@ -98,7 +98,7 @@ class AdminControllerTest extends TestCase
         // pagingとpage数のテスト
         $data = $this->json(
             'GET',
-            '/report?per_page=5&page=2',
+            '/admin/report?per_page=5&page=2',
             [],
             $headers
         )->assertStatus(200)
@@ -106,12 +106,12 @@ class AdminControllerTest extends TestCase
 
         $this->assertEquals($data['per_page'], 5);
         $this->assertEquals($data['current_page'], 2);
-        $this->assertEquals($data['last_page_url'], 'http://localhost/report?page=7');
+        $this->assertEquals($data['last_page_url'], 'http://localhost/admin/report?page=7');
 
         // searchのテスト
         $data = $this->json(
             'GET',
-            '/report?s=dummy',
+            '/admin/report?s=dummy',
             [],
             $headers
         )->assertStatus(200)
@@ -119,7 +119,7 @@ class AdminControllerTest extends TestCase
 
         $this->assertEquals($data['per_page'], 20);
         $this->assertEquals($data['current_page'], 1);
-        $this->assertEquals($data['last_page_url'], 'http://localhost/report?page=1');
+        $this->assertEquals($data['last_page_url'], 'http://localhost/admin/report?page=1');
         $this->assertEquals($data['total'], 1);
     }
 }

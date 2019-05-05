@@ -25,7 +25,7 @@
         "enabled" : true,
         "on_failure" : true,
         "on_error" : false,
-        "path" : "test/screenshots"
+        "path" : "resources/front/test/screenshots"
       },
       "desiredCapabilities": {
         "browserName": "chrome",
