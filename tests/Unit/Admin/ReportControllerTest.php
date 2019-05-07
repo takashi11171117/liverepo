@@ -168,4 +168,32 @@ class ReportControllerTest extends TestCase
 
         $this->assertEquals($data['total'], 2);
     }
+
+    public function testDestroyRouting()
+    {
+        factory('App\Report')->create();
+
+        $headers = [
+            'Content-Type'  => 'application/json',
+            'Accept'        => 'application/json',
+            "Authorization" => "Bearer",
+        ];
+
+        $this->json(
+            'DELETE',
+            '/admin/report/1/delete?page=1',
+            [],
+            $headers
+        )->assertStatus(301);
+
+        $data = $this->json(
+            'GET',
+            '/admin/report',
+            [],
+            $headers
+        )->assertStatus(200)
+                     ->decodeResponseJson();
+
+        $this->assertEquals($data['total'], 0);
+    }
 }

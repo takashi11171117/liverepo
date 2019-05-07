@@ -87,8 +87,26 @@ class ReportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        Report::destroy($id);
+
+        $args = [];
+
+        $query = $request->query();
+
+        if (array_key_exists('page', $query)) {
+            $args['page'] = $request->page;
+        }
+
+        if (array_key_exists('per_page', $query)) {
+            $args['per_page'] = $request->per_page;
+        }
+
+        if (array_key_exists('s', $query)) {
+            $args['s'] = $request->s;
+        }
+
+        return redirect()->route('admin.report.index', $args, 301);
     }
 }
