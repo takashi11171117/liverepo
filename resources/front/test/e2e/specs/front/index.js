@@ -5,7 +5,7 @@ module.exports = {
     EventEmitter.defaultMaxListeners = 100;
   },
 
-  tag: 'demo',
+  tags: 'front_index',
   'I can show element': (client) => {
     const url = client.globals.baseUrl;
 

@@ -2,7 +2,7 @@ import { shallowMount } from '@vue/test-utils'
 import axios from 'axios'
 import test from 'ava'
 import sinon from "sinon";
-import AdminLogin from '../../pages/admin/login'
+import AdminLogin from '../../../../../pages/admin/login'
 
 test('template test', t => {
   const wrapper = shallowMount(AdminLogin);

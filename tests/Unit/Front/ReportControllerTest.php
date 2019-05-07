@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Admin;
+namespace Tests\Unit\Front;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -10,7 +10,6 @@ use App\Report;
 class ReportControllerTest extends TestCase
 {
     use RefreshDatabase;
-    use WithoutMiddleware;
 
     /**
      * A basic test example.
@@ -24,12 +23,11 @@ class ReportControllerTest extends TestCase
         $headers = [
             'Content-Type'  => 'application/json',
             'Accept'        => 'application/json',
-            "Authorization" => "Bearer",
         ];
 
         $data = $this->json(
             'GET',
-            '/admin/report',
+            '/',
             [],
             $headers
         )->assertStatus(200)
@@ -58,7 +56,7 @@ class ReportControllerTest extends TestCase
 
         $data = $this->json(
             'GET',
-            '/admin/report',
+            '/',
             [],
             $headers
         )->assertStatus(200)
@@ -66,7 +64,7 @@ class ReportControllerTest extends TestCase
 
         $this->assertEquals($data['per_page'], 20);
         $this->assertEquals($data['current_page'], 1);
-        $this->assertEquals($data['last_page_url'], 'http://localhost/admin/report?page=2');
+        $this->assertEquals($data['last_page_url'], 'http://localhost?page=2');
     }
 
     /**
@@ -98,7 +96,7 @@ class ReportControllerTest extends TestCase
         // pagingとpage数のテスト
         $data = $this->json(
             'GET',
-            '/admin/report?per_page=5&page=2',
+            '?per_page=5&page=2',
             [],
             $headers
         )->assertStatus(200)
@@ -106,12 +104,12 @@ class ReportControllerTest extends TestCase
 
         $this->assertEquals($data['per_page'], 5);
         $this->assertEquals($data['current_page'], 2);
-        $this->assertEquals($data['last_page_url'], 'http://localhost/admin/report?page=7');
+        $this->assertEquals($data['last_page_url'], 'http://localhost?page=7');
 
         // searchのテスト
         $data = $this->json(
             'GET',
-            '/admin/report?s=dummy',
+            '?s=dummy',
             [],
             $headers
         )->assertStatus(200)
@@ -119,53 +117,7 @@ class ReportControllerTest extends TestCase
 
         $this->assertEquals($data['per_page'], 20);
         $this->assertEquals($data['current_page'], 1);
-        $this->assertEquals($data['last_page_url'], 'http://localhost/admin/report?page=1');
+        $this->assertEquals($data['last_page_url'], 'http://localhost?page=1');
         $this->assertEquals($data['total'], 1);
-    }
-
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function testStore()
-    {
-        factory('App\Report')->create();
-
-        $headers = [
-            'Content-Type'  => 'application/json',
-            'Accept'        => 'application/json',
-            "Authorization" => "Bearer",
-        ];
-        $data = $this->json(
-            'GET',
-            '/admin/report',
-            [],
-            $headers
-        )->assertStatus(200)
-                     ->decodeResponseJson();
-
-        $this->assertEquals($data['total'], 1);
-
-        $this->json(
-            'POST',
-            '/admin/report/add',
-            [
-                'title'                  => 'dummy',
-                'content'                 => 'dummy content',
-                'status'              => 2,
-            ],
-            $headers
-        )->assertStatus(200);
-
-        $data = $this->json(
-            'GET',
-            '/admin/report',
-            [],
-            $headers
-        )->assertStatus(200)
-                     ->decodeResponseJson();
-
-        $this->assertEquals($data['total'], 2);
     }
 }

@@ -3,9 +3,25 @@ import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
 import test from 'ava'
 import Buefy from 'buefy';
 import sinon from "sinon";
-import AdminReportIndexTable from '../../components/admin/AdminReportIndexTable'
+import AdminReportIndexTable from '../../../../components/admin/AdminReportIndexTable'
 
 const localVue = createLocalVue();
+localVue.mixin({
+  data: () => {
+    return {
+      reportStatus: {
+        0: '下書き',
+        1: '公開',
+        2: 'ゴミ箱'
+      }
+    }
+  },
+  methods: {
+    $truncate: (str, len) => {
+      return str.length <= len ? str : (str.substr(0, len)+"...");
+    },
+  },
+});
 localVue.use(Vuex);
 localVue.use(Buefy);
 

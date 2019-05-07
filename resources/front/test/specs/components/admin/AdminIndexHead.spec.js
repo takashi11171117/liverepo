@@ -3,7 +3,7 @@ import { shallowMount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
 import test from 'ava'
 import Buefy from 'buefy';
 import sinon from "sinon";
-import AdminReportIndexHead from '../../components/admin/AdminReportIndexHead'
+import AdminIndexHead from '../../../../components/admin/AdminIndexHead'
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -11,9 +11,9 @@ localVue.use(Buefy);
 
 const $store = {
   getters: {
-    'admin-report-index/page': 1,
-    'admin-report-index/perPage': 20,
-    'admin-report-index/search': '',
+    'admin-index/page': 1,
+    'admin-index/perPage': 20,
+    'admin-index/search': '',
   }
 };
 
@@ -22,7 +22,7 @@ test('template test', t => {
     query: {}
   };
 
-  const wrapper = shallowMount(AdminReportIndexHead, {
+  const wrapper = shallowMount(AdminIndexHead, {
     localVue,
     mocks: {
       $route,
@@ -38,7 +38,7 @@ test('template test', t => {
 
   const links = wrapper.findAll(RouterLinkStub);
   t.deepEqual(links.at(0).props().to, {
-    path: '/admin/report/new',
+    path: '/admin/admin/new',
   });
 
   const spy = sinon.spy();
@@ -61,7 +61,7 @@ test('script test', async t => {
     }
   };
 
-  const wrapper = shallowMount(AdminReportIndexHead, {
+  const wrapper = shallowMount(AdminIndexHead, {
     localVue,
     mocks: {
       $route,
@@ -102,7 +102,7 @@ test('script test', async t => {
 
 
   t.deepEqual(router.args[0][0], {
-    path: '/admin/report',
+    path: '/admin',
     query: {
       page: 1,
       per_page: 20,
@@ -128,7 +128,7 @@ test('script test', async t => {
 
 
   t.deepEqual(router.args[0][0], {
-    path: '/admin/report',
+    path: '/admin',
     query: {
       page: 1,
       per_page: event2.target.value,

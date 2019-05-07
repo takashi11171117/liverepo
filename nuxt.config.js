@@ -50,7 +50,8 @@ export default {
   plugins: [
     '~plugins/axios',
     '~plugins/nuxt-client-init',
-    '~plugins/buefy'
+    '~plugins/buefy',
+    '~plugins/util'
   ],
 
   /*

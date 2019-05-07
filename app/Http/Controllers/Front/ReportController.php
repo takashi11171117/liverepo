@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Front;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -33,6 +33,16 @@ class ReportController extends Controller
     }
 
     /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -40,11 +50,7 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-        $report = new Report;
-
-        $report->fill($request->all())->save();
-
-        return response()->json($report, 200);
+        //
     }
 
     /**

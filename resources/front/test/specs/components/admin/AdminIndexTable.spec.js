@@ -3,7 +3,7 @@ import { mount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
 import test from 'ava'
 import Buefy from 'buefy';
 import sinon from "sinon";
-import AdminIndexTable from '../../components/admin/AdminIndexTable'
+import AdminIndexTable from '../../../../components/admin/AdminIndexTable'
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

@@ -1,5 +1,5 @@
 module.exports = {
-  tag: 'demo',
+  tags: 'admin_login',
   'I can get error messages' : (client) => {
     const url = client.globals.baseUrl;
 

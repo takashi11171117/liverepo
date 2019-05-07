@@ -15,11 +15,11 @@
                 </b-table-column>
 
                 <b-table-column field="title" label="タイトル">
-                    {{ props.row.title }}
+                    {{ $truncate(props.row.title, 25) }}
                 </b-table-column>
 
                 <b-table-column field="status" label="ステータス">
-                    {{ props.row.status }}
+                    {{ $data.reportStatus[props.row.status] }}
                 </b-table-column>
 
                 <b-table-column field="created_at" label="作成日" centered>

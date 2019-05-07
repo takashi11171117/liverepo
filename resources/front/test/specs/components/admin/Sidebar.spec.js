@@ -1,6 +1,6 @@
 import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import test from 'ava'
-import Sidebar from '../../components/admin/Sidebar'
+import Sidebar from '../../../../components/admin/Sidebar'
 
 test('The title is correct', t => {
   const wrapper = shallowMount(Sidebar, {

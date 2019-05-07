@@ -3,7 +3,7 @@ import { mount, createLocalVue } from '@vue/test-utils'
 import test from 'ava'
 import Buefy from 'buefy';
 import sinon from "sinon";
-import AdminEdit from '../../components/admin/AdminEdit'
+import AdminEdit from '../../../../components/admin/AdminEdit'
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

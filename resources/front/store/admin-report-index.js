@@ -97,10 +97,10 @@ export const actions = {
     }
   },
 
-  async addReport({ commit }, {name, email, password, password_confirmation}) {
+  async addReport({ commit }, {title, content, status}) {
     await this.$axios.$post(
       '/admin/report/add',
-      {name, email, password, password_confirmation}
+      {title, status, content}
     );
   }
 };

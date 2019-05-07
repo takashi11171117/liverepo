@@ -1,6 +1,6 @@
 import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import test from 'ava'
-import Pagination from '../../components/admin/Pagination'
+import Pagination from '../../../../components/admin/Pagination'
 
 test('template test', t => {
   const $route = {
