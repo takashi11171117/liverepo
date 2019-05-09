@@ -31,7 +31,7 @@ test('script test', async t => {
 
   t.is(wrapper.vm.$data.title, '');
   t.is(wrapper.vm.$data.content, '');
-  t.is(wrapper.vm.$data.status, '');
+  t.is(wrapper.vm.$data.status, '0');
   t.deepEqual(wrapper.vm.$data.error, {});
 
   wrapper.vm.$router = {

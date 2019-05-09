@@ -55,18 +55,8 @@ class ReportController extends Controller
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $admin = Report::find($id);
+        return response()->json($admin, 200);
     }
 
     /**
@@ -78,7 +68,11 @@ class ReportController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $report = Report::find($id);
+
+        $report->fill($request->all())->save();
+
+        return response()->json($report, 200);
     }
 
     /**

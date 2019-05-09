@@ -55,6 +55,14 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['ass
         'as' => 'admin.report.store',
         'uses' => 'ReportController@store'
     ]);
+    Route::get('report/{id}', [
+        'as' => 'admin.report.show',
+        'uses' => 'ReportController@show'
+    ]);
+    Route::put('report/{id}/update', [
+        'as' => 'admin.report.update',
+        'uses' => 'ReportController@update'
+    ]);
     Route::delete('report/{id}/delete', [
         'as' => 'admin.report.destroy',
         'uses' => 'ReportController@destroy'

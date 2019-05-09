@@ -33,7 +33,7 @@ class ReportControllerTest extends TestCase
             [],
             $headers
         )->assertStatus(200)
-         ->decodeResponseJson();
+                     ->decodeResponseJson();
 
         $this->assertEquals($data['data'][0]['title'], $report->getAttribute('title'));
         $this->assertEquals($data['data'][0]['content'], $report->getAttribute('content'));
@@ -83,9 +83,9 @@ class ReportControllerTest extends TestCase
         // searchように作成
         $report = new Report;
 
-        $report->title     = 'dummy';
-        $report->content    = 'dummy_content';
-        $report->status    = 0;
+        $report->title   = 'dummy';
+        $report->content = 'dummy_content';
+        $report->status  = 0;
 
         $report->save();
 
@@ -137,13 +137,13 @@ class ReportControllerTest extends TestCase
             'Accept'        => 'application/json',
             "Authorization" => "Bearer",
         ];
-        $data = $this->json(
+        $data    = $this->json(
             'GET',
             '/admin/report',
             [],
             $headers
         )->assertStatus(200)
-                     ->decodeResponseJson();
+                        ->decodeResponseJson();
 
         $this->assertEquals($data['total'], 1);
 
@@ -151,9 +151,9 @@ class ReportControllerTest extends TestCase
             'POST',
             '/admin/report/add',
             [
-                'title'                  => 'dummy',
-                'content'                 => 'dummy content',
-                'status'              => 2,
+                'title'   => 'dummy',
+                'content' => 'dummy content',
+                'status'  => 2,
             ],
             $headers
         )->assertStatus(200);
@@ -167,6 +167,54 @@ class ReportControllerTest extends TestCase
                      ->decodeResponseJson();
 
         $this->assertEquals($data['total'], 2);
+    }
+
+    public function testShowRouting()
+    {
+        $admin = factory('App\Report')->create();
+
+        $headers = [
+            'Content-Type'  => 'application/json',
+            'Accept'        => 'application/json',
+            "Authorization" => "Bearer",
+        ];
+
+        $data = $this->json(
+            'GET',
+            '/admin/report/1',
+            [],
+            $headers
+        )->assertStatus(200)
+                     ->decodeResponseJson();
+
+        $this->assertEquals($data['title'], $admin->getAttribute('title'));
+        $this->assertEquals($data['content'], $admin->getAttribute('content'));
+    }
+
+    public function testUpdate()
+    {
+        factory('App\Report')->create();
+
+        $headers = [
+            'Content-Type'  => 'application/json',
+            'Accept'        => 'application/json',
+            "Authorization" => "Bearer",
+        ];
+
+        $data = $this->json(
+            'PUT',
+            '/admin/report/1/update',
+            [
+                'title'   => 'test',
+                'content' => 'test content',
+                'status'  => '1',
+            ],
+            $headers
+        )->assertStatus(200)
+                     ->decodeResponseJson();
+
+        $this->assertEquals($data['title'], 'test');
+        $this->assertEquals($data['content'], 'test content');
     }
 
     public function testDestroyRouting()

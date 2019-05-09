@@ -276,7 +276,7 @@ class AdminControllerTest extends TestCase
             [],
             $headers
         )->assertStatus(200)
-         ->decodeResponseJson();
+                     ->decodeResponseJson();
 
         $this->assertEquals($data['name'], $admin->getAttribute('name'));
         $this->assertEquals($data['email'], $admin->getAttribute('email'));
