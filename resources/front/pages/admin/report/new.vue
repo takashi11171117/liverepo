@@ -4,7 +4,7 @@
         <b-field
                 label="タイトル"
                 :type="error.hasOwnProperty('title') ? 'is-danger': ''"
-                :message="error.hasOwnProperty('title') ? error.name[0] : ''"
+                :message="error.hasOwnProperty('title') ? error.title[0] : ''"
         >
             <b-input id="title"
                      v-model="title">
@@ -14,7 +14,7 @@
         <b-field
                 label="本文"
                 :type="error.hasOwnProperty('content') ? 'is-danger': ''"
-                :message="error.hasOwnProperty('content') ? error.email[0] : ''"
+                :message="error.hasOwnProperty('content') ? error.content[0] : ''"
         >
             <b-input id="content"
                      type="textarea"
@@ -25,7 +25,7 @@
         <b-field
                 label="ステータス"
                 :type="error.hasOwnProperty('status') ? 'is-danger': ''"
-                :message="error.hasOwnProperty('status') ? error.email[0] : ''"
+                :message="error.hasOwnProperty('status') ? error.status[0] : ''"
         >
             <b-select v-model="status" id="status">
                 <option
@@ -35,6 +35,33 @@
                     {{ status }}
                 </option>
             </b-select>
+        </b-field>
+
+        <b-field
+                label="評価"
+                :type="error.hasOwnProperty('rating') ? 'is-danger': ''"
+                :message="error.hasOwnProperty('rating') ? error.rating[0] : ''"
+        >
+            <b-select v-model="rating" id="rating">
+                <option
+                        v-for="(rating, key) in $data.reportRating"
+                        v-bind:value="key"
+                        :key="key">
+                    {{ rating }}
+                </option>
+            </b-select>
+        </b-field>
+
+        <b-field label="画像1">
+            <b-upload v-model="file">
+                <a class="button is-primary">
+                    <b-icon icon="upload"></b-icon>
+                    <span>Click to upload</span>
+                </a>
+            </b-upload>
+            <span class="file-name" v-if="file">
+                {{ file.name }}
+            </span>
         </b-field>
 
         <div class="buttons">
@@ -56,6 +83,8 @@
         title: '',
         content: '',
         status: '0',
+        rating: '1',
+        file: null,
         error: {},
       }
     },
@@ -66,7 +95,9 @@
             {
               title: this.title,
               content: this.content,
-              status: this.status
+              status: this.status,
+              rating: this.rating,
+              file: this.file
             }
           ).then(() => {
             this.$snackbar.open({

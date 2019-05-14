@@ -12,6 +12,11 @@ class Report extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'content', 'status',
+        'title', 'content', 'status', 'rating',
     ];
+
+    public function report_images()
+    {
+        return $this->hasMany('App\ReportImage', 'report_id', 'id');
+    }
 }

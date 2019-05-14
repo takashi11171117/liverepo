@@ -15,19 +15,13 @@ class ReportController extends Controller
      */
     public function index(Request $request)
     {
-        $perPage = 20;
-        if ($request->input('per_page') !== null) {
-            $perPage = (int) $request->input('per_page');
-        }
+        $query = Report::with([
+            'report_images',
+        ]);
 
-        $query = Report::query();
-        if (!empty($request->input('s'))) {
-            $s = $request->input('s');
-            $query->where('title','like','%' . $s . '%', 'or');
-            $query->where('content','like','%' . $s . '%', 'or');
-        }
+        $query->where('status', 1);
 
-        $reports = $query->paginate($perPage);
+        $reports = $query->paginate(20);
 
         return response()->json($reports, 200);
     }

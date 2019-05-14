@@ -97,10 +97,21 @@ export const actions = {
     }
   },
 
-  async addReport({ commit }, {title, content, status}) {
+  async addReport({ commit }, {title, content, status, rating, file}) {
+    let formData = new FormData
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('status', status);
+    formData.append('rating', rating);
+    formData.append('images[]', file);
     await this.$axios.$post(
       '/admin/report/add',
-      {title, status, content}
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
     );
   }
 };

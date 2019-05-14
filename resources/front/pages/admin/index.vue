@@ -21,7 +21,7 @@
       AdminIndexHead
     },
 
-    async asyncData({store, query, redirect}) {
+    async asyncData({store, query}) {
       await store.dispatch('admin-index/fetchAdminPagination', query);
     },
   }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Report;
+use Storage;
+use DB;
 
 class ReportController extends Controller
 {
@@ -33,18 +35,39 @@ class ReportController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return mixed
+     * @throws \Throwable
      */
     public function store(Request $request)
     {
+        $params = $request->all();
         $report = new Report;
+        $images = $request->file('images');
 
-        $report->fill($request->all())->save();
+        return DB::transaction(function () use ($report, $params, $images) {
+            $report->fill($params)->save();
 
-        return response()->json($report, 200);
+            $disk = Storage::disk('s3');
+
+            $file = $images[0];
+            $extension = $images[0]->getClientOriginalExtension();
+            $filename = $report->id . '_01' . ".$extension";
+
+            $image = \Image::make($file)
+                           ->resize(1024, null, function ($constraint) {
+                               $constraint->aspectRatio();
+                           });
+            $disk->put('report_images/' . $filename, (string) $image->encode());
+
+            $image = \Image::make($file)
+                           ->fit(300, 300);
+            $disk->put('report_images/thumb-' . $filename, (string) $image->encode());
+
+            $report->report_images()->create(['path'=> $filename]);
+
+            return response()->json($report, 200);
+        });
     }
 
     /**
