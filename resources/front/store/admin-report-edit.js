@@ -4,6 +4,8 @@ export const state = () => ({
   title: '',
   content: '',
   status: '0',
+  rating: '1',
+  file: null,
   error: {},
 });
 
@@ -11,6 +13,8 @@ export const getters = {
   title: state => state.title,
   content: state => state.content,
   status: state => state.status,
+  rating: state => state.rating,
+  file: state => state.file,
   error: state => state.error,
 };
 
@@ -19,6 +23,8 @@ export const mutations = {
     state.title = payload.title;
     state.content = payload.content;
     state.status = payload.status;
+    state.rating = payload.rating;
+    state.file = payload.file;
     state.error = {};
   },
   UPDATE_FORM_ERROR(state, payload) {
@@ -37,6 +43,7 @@ export const actions = {
           title: res.title,
           content: res.content,
           status: res.status,
+          rating: res.rating,
         });
       }).catch((error) => {
         console.log(error);
@@ -46,19 +53,28 @@ export const actions = {
 
   async updateEachData({commit, state}, {id}) {
     if (confirm('更新してもよろしいですか？')) {
+      let formData = new FormData;
+      formData.append('title', state.title);
+      formData.append('content', state.content);
+      formData.append('status', state.status);
+      formData.append('rating', state.rating);
+      formData.append('images[]', state.file);
+      formData.append('_method', 'PUT');
       await this.$axios.$post(
         `/admin/report/${id}/update`,
+        formData,
         {
-          _method: 'PUT',
-          title: state.title,
-          content: state.content,
-          status: state.status,
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
         }
       ).then((data) => {
         commit('UPDATE_FORM', {
           title: data.title,
           content: data.content,
           status: data.status,
+          rating: data.rating,
+          file: data.file,
         });
         Snackbar.open({
           duration: 5000,

@@ -19,4 +19,9 @@ class Report extends Model
     {
         return $this->hasMany('App\ReportImage', 'report_id', 'id');
     }
+
+    public function report_tags()
+    {
+        return $this->belongsToMany('App\ReportTag');
+    }
 }

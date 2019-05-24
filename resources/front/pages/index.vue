@@ -27,18 +27,34 @@
           </div>
         </section>
       </div>
+      <Pagination
+              current_path="/"
+              v-bind:pagination="reports"
+              v-if="Object.keys(reports).length > 0"
+      />
     </div>
   </main>
 </template>
 <script>
+  import Pagination from '../components/admin/Pagination'
+
   export default{
+    watchQuery: ['page', 'per_page'],
+    components: {
+      Pagination,
+    },
     data() {
       return {
         reports: {},
       }
     },
-    async asyncData({$axios}){
-      const reports = await $axios.$get('http://localhost:8000');
+    async asyncData({$axios, query}){
+      const reports = await $axios.$get('http://localhost:8000', {
+        params: {
+          page: query.page,
+          per_page: query.per_page,
+        }
+      });
       return {reports};
     }
   }

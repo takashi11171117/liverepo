@@ -45,7 +45,8 @@ class ReportController extends Controller
         $report = new Report;
         $images = $request->file('images');
 
-        return DB::transaction(function () use ($report, $params, $images) {
+        DB::beginTransaction();
+        try {
             $report->fill($params)->save();
 
             $disk = Storage::disk('s3');
@@ -65,9 +66,14 @@ class ReportController extends Controller
             $disk->put('report_images/thumb-' . $filename, (string) $image->encode());
 
             $report->report_images()->create(['path'=> $filename]);
+            DB::commit();
 
             return response()->json($report, 200);
-        });
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response()->json(null, 200);
+        }
     }
 
     /**
@@ -83,19 +89,46 @@ class ReportController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $id
+     * @return mixed
+     * @throws \Throwable
      */
     public function update(Request $request, $id)
     {
+        $params = $request->all();
         $report = Report::find($id);
+        $images = $request->file('images');
 
-        $report->fill($request->all())->save();
+        DB::beginTransaction();
+        try {
+            $report->fill($params)->save();
 
-        return response()->json($report, 200);
+            $disk = Storage::disk('s3');
+
+            $file = $images[0];
+            $extension = $images[0]->getClientOriginalExtension();
+            $filename = $report->id . '_01' . ".$extension";
+
+            $image = \Image::make($file)
+                           ->resize(1024, null, function ($constraint) {
+                               $constraint->aspectRatio();
+                           });
+            $disk->put('report_images/' . $filename, (string) $image->encode());
+
+            $image = \Image::make($file)
+                           ->fit(300, 300);
+            $disk->put('report_images/thumb-' . $filename, (string) $image->encode());
+
+            $report->report_images()->create(['path'=> $filename]);
+            DB::commit();
+
+            return response()->json($report, 200);
+        } catch (\Exception $e) {
+            DB::rollback();
+
+            return response()->json(null, 200);
+        }
     }
 
     /**

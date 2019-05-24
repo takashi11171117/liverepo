@@ -3,9 +3,11 @@
 namespace Tests\Unit\Admin;
 
 use Tests\TestCase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use App\Report;
+use Storage;
 
 class ReportControllerTest extends TestCase
 {
@@ -130,6 +132,9 @@ class ReportControllerTest extends TestCase
      */
     public function testStore()
     {
+        Storage::fake('s3');
+        $file = UploadedFile::fake()->image('dummy.jpg');
+
         factory('App\Report')->create();
 
         $headers = [
@@ -153,7 +158,9 @@ class ReportControllerTest extends TestCase
             [
                 'title'   => 'dummy',
                 'content' => 'dummy content',
-                'status'  => 2,
+                'status'  => '2',
+                'rating'  => '1',
+                'images'  => [$file],
             ],
             $headers
         )->assertStatus(200);
@@ -193,6 +200,9 @@ class ReportControllerTest extends TestCase
 
     public function testUpdate()
     {
+        Storage::fake('s3');
+        $file = UploadedFile::fake()->image('dummy.jpg');
+
         factory('App\Report')->create();
 
         $headers = [
@@ -208,6 +218,8 @@ class ReportControllerTest extends TestCase
                 'title'   => 'test',
                 'content' => 'test content',
                 'status'  => '1',
+                'rating'  => '1',
+                'images'  => [$file],
             ],
             $headers
         )->assertStatus(200)
