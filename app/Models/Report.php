@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,11 +17,11 @@ class Report extends Model
 
     public function report_images()
     {
-        return $this->hasMany('App\ReportImage', 'report_id', 'id');
+        return $this->hasMany('App\Models\ReportImage', 'report_id', 'id');
     }
 
     public function report_tags()
     {
-        return $this->belongsToMany('App\ReportTag');
+        return $this->belongsToMany('App\Models\ReportTag');
     }
 }

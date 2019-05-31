@@ -2,7 +2,7 @@
 
 /* @var $factory \Illuminate\Database\Eloquent\Factory */
 
-use App\ReportImage;
+use App\Models\ReportImage;
 use Faker\Generator as Faker;
 use Illuminate\Http\UploadedFile;
 

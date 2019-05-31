@@ -14,6 +14,8 @@ const $store = {
     'admin-report-edit/title': '',
     'admin-report-edit/content': '',
     'admin-report-edit/status': '0',
+    'admin-report-edit/rating': '1',
+    'admin-report-edit/file': null,
     'admin-report-edit/error': {},
   }
 };
@@ -25,7 +27,7 @@ test('template test', t => {
       $store,
     },
     propsData: {
-      reportId: 1
+      reportId: '1'
     }
   });
 
@@ -33,6 +35,8 @@ test('template test', t => {
   t.true(wrapper.find('#title').exists());
   t.true(wrapper.find('#content').exists());
   t.true(wrapper.find('#status').exists());
+  t.true(wrapper.find('#rating').exists());
+  t.true(wrapper.find('#image1').exists());
   t.is(wrapper.find('button').text(), '保存する');
 
   const spy = sinon.spy();

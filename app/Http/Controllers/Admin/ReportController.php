@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Report;
+use App\Models\Report;
 use Storage;
 use DB;
 
@@ -84,8 +84,8 @@ class ReportController extends Controller
      */
     public function show($id)
     {
-        $admin = Report::find($id);
-        return response()->json($admin, 200);
+        $report = Report::with(['report_images', 'report_tags'])->find($id);
+        return response()->json($report, 200);
     }
 
     /**

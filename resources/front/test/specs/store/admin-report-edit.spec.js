@@ -24,7 +24,9 @@ const error = {
 const report = {
   title: 'test2',
   content: 'test content2',
-  status: '2'
+  status: '2',
+  rating: '1',
+  file: null,
 };
 
 let action;
@@ -57,12 +59,14 @@ test('getters', t => {
     title: 'test',
     content: 'test content',
     status: '0',
+    rating: '1',
     error: error,
   });
 
   t.is(store.getters['title'], 'test');
   t.is(store.getters['content'], 'test content');
   t.is(store.getters['status'], '0');
+  t.is(store.getters['rating'], '1');
   t.deepEqual(store.getters['error'], error);
 });
 

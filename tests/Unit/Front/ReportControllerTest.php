@@ -16,11 +16,11 @@ class ReportControllerTest extends TestCase
      */
     public function testIndexRouting()
     {
-        $report = factory('App\Report')->create();
+        $report = factory('App\Models\Report')->create();
         $report->status = 1;
         $report->save();
 
-        $report2 = factory('App\Report')->create();
+        $report2 = factory('App\Models\Report')->create();
         $report2->status = 0;
         $report2->save();
 
@@ -50,7 +50,7 @@ class ReportControllerTest extends TestCase
     public function testIndexPaging()
     {
         for ($i = 0; $i < 30; $i++) {
-            $report = factory('App\Report')->create();
+            $report = factory('App\Models\Report')->create();
             $report->status = 1;
             $report->save();
         }

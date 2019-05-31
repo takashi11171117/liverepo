@@ -15,6 +15,8 @@ test('template test', t => {
   t.true(wrapper.find('#title').exists());
   t.true(wrapper.find('#content').exists());
   t.true(wrapper.find('#status').exists());
+  t.true(wrapper.find('#rating').exists());
+  t.true(wrapper.find('#image1').exists());
   t.is(wrapper.find('button').text(), '保存する');
 
   // pushing login button

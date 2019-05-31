@@ -53,7 +53,7 @@
         </b-field>
 
         <b-field label="画像1">
-            <b-upload v-model="file">
+            <b-upload v-model="file" id="image1">
                 <a class="button is-primary">
                     <b-icon icon="upload"></b-icon>
                     <span>Click to upload</span>

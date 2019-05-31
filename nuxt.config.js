@@ -10,6 +10,7 @@ export default {
   env: {
     apiUrl: process.env.APP_URL || 'http://localhost:8000',
     appName: process.env.APP_NAME || 'Lumen-Nuxt',
+    imageUrl: process.env.IMAGE_URL || 'https://liverepotest.s3.ap-northeast-1.amazonaws.com/',
   },
 
   mode: 'universal',
@@ -28,7 +29,7 @@ export default {
       {rel: 'icon', type: 'image/x-icon', href: '/favicon.ico'},
       {rel: 'stylesheet', href: '//cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css'},
       {rel: 'stylesheet', href: 'https://use.fontawesome.com/releases/v5.2.0/css/all.css'}
-    ]
+    ],
   },
 
   /*
@@ -51,7 +52,17 @@ export default {
     '~plugins/axios',
     '~plugins/nuxt-client-init',
     '~plugins/buefy',
-    '~plugins/util'
+    '~plugins/util',
+    '~plugins/preview-input',
+    {
+      src: '~/plugins/vue-lightbox-pluign.js',
+      ssr: false
+    },
+
+    {
+      src: '~/plugins/vue-tags-input.js',
+      ssr: false
+    },
   ],
 
   /*

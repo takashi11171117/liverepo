@@ -13,7 +13,7 @@ class AuthAdminControllerTest extends TestCase
 
     public function testError()
     {
-        factory('App\Admin')->create();
+        factory('App\Models\Admin')->create();
 
         $params = [
             'email' => 'a',
@@ -39,7 +39,7 @@ class AuthAdminControllerTest extends TestCase
 
     public function testSuccess()
     {
-        $admin = factory('App\Admin')->create();
+        $admin = factory('App\Models\Admin')->create();
 
         $params = [
             'email'    => $admin->email,

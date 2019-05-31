@@ -6,7 +6,7 @@ use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use App\Report;
+use App\Models\Report;
 use Storage;
 
 class ReportControllerTest extends TestCase
@@ -21,7 +21,7 @@ class ReportControllerTest extends TestCase
      */
     public function testIndexRouting()
     {
-        $report = factory('App\Report')->create();
+        $report = factory('App\Models\Report')->create();
 
         $headers = [
             'Content-Type'  => 'application/json',
@@ -49,7 +49,7 @@ class ReportControllerTest extends TestCase
     public function testIndexPaging()
     {
         for ($i = 0; $i < 30; $i++) {
-            factory('App\Report')->create();
+            factory('App\Models\Report')->create();
         }
 
         $headers = [
@@ -79,7 +79,7 @@ class ReportControllerTest extends TestCase
     public function testIndexQuery()
     {
         for ($i = 0; $i < 30; $i++) {
-            factory('App\Report')->create();
+            factory('App\Models\Report')->create();
         }
 
         // searchように作成
@@ -135,7 +135,7 @@ class ReportControllerTest extends TestCase
         Storage::fake('s3');
         $file = UploadedFile::fake()->image('dummy.jpg');
 
-        factory('App\Report')->create();
+        factory('App\Models\Report')->create();
 
         $headers = [
             'Content-Type'  => 'application/json',
@@ -178,7 +178,7 @@ class ReportControllerTest extends TestCase
 
     public function testShowRouting()
     {
-        $admin = factory('App\Report')->create();
+        $admin = factory('App\Models\Report')->create();
 
         $headers = [
             'Content-Type'  => 'application/json',
@@ -203,7 +203,7 @@ class ReportControllerTest extends TestCase
         Storage::fake('s3');
         $file = UploadedFile::fake()->image('dummy.jpg');
 
-        factory('App\Report')->create();
+        factory('App\Models\Report')->create();
 
         $headers = [
             'Content-Type'  => 'application/json',
@@ -231,7 +231,7 @@ class ReportControllerTest extends TestCase
 
     public function testDestroyRouting()
     {
-        factory('App\Report')->create();
+        factory('App\Models\Report')->create();
 
         $headers = [
             'Content-Type'  => 'application/json',

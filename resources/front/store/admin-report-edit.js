@@ -5,6 +5,7 @@ export const state = () => ({
   content: '',
   status: '0',
   rating: '1',
+  report_images: [],
   file: null,
   error: {},
 });
@@ -14,6 +15,7 @@ export const getters = {
   content: state => state.content,
   status: state => state.status,
   rating: state => state.rating,
+  report_images: state => state.report_images,
   file: state => state.file,
   error: state => state.error,
 };
@@ -24,6 +26,7 @@ export const mutations = {
     state.content = payload.content;
     state.status = payload.status;
     state.rating = payload.rating;
+    state.report_images = payload.report_images;
     state.file = payload.file;
     state.error = {};
   },
@@ -39,11 +42,21 @@ export const actions = {
   async fetchEachData({commit}, {id}) {
     await this.$axios.$get(`/admin/report/${id}`)
       .then((res) => {
+        let report_images = res.report_images.map(
+          x => {
+            return {
+              thumb: process.env.imageUrl + 'report_images/thumb-' + x.path,
+              src: process.env.imageUrl + 'report_images/' + x.path,
+            }
+          }
+        );
+        console.log(report_images);
         commit('UPDATE_FORM', {
           title: res.title,
           content: res.content,
           status: res.status,
           rating: res.rating,
+          report_images: report_images,
         });
       }).catch((error) => {
         console.log(error);

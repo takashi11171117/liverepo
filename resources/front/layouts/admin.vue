@@ -1,11 +1,11 @@
 <template>
     <div class="site">
         <nav-bar :show="true"/>
-        <sidebar :show="$store.getters.sidebar.opened && !$store.getters.sidebar.hidden"></sidebar>
+        <sidebar :show="sidebar.opened && !sidebar.hidden"></sidebar>
         <section class="app-main">
             <nuxt class="has-text-left is-fluid is-marginless app-content"/>
         </section>
-     </div>
+    </div>
 </template>
 <script>
   import NavBar from '~/components/admin/NavBar.vue'
@@ -35,9 +35,14 @@
       window.addEventListener('DOMContentLoaded', handler);
       window.addEventListener('resize', handler)
     },
-    computed: mapGetters({
-      sidebar: 'sidebar'
-    }),
+    computed: {
+      ...mapGetters(
+        {
+          sidebar: 'sidebar',
+          images: 'images'
+        }
+      )
+    },
     methods: mapActions([
       'toggleDevice',
       'toggleSidebar'
@@ -58,7 +63,6 @@
     .app-main {
         padding-top: 52px;
         margin-left: 230px;
-        transform: translate3d(0, 0, 0);
         @include mobile() {
             margin-left: 0;
         }

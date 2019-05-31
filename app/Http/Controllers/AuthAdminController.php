@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Admin;
+use App\Models\Admin;
 
 class AuthAdminController extends Controller
 {

@@ -5,7 +5,7 @@ namespace Tests\Unit\Admin;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
-use App\Admin;
+use App\Models\Admin;
 
 class AdminControllerTest extends TestCase
 {
@@ -19,7 +19,7 @@ class AdminControllerTest extends TestCase
      */
     public function testIndexRouting()
     {
-        $admin = factory('App\Admin')->create();
+        $admin = factory('App\Models\Admin')->create();
 
         $headers = [
             'Content-Type'  => 'application/json',
@@ -47,7 +47,7 @@ class AdminControllerTest extends TestCase
     public function testIndexPaging()
     {
         for ($i = 0; $i < 30; $i++) {
-            factory('App\Admin')->create();
+            factory('App\Models\Admin')->create();
         }
 
         $headers = [
@@ -77,7 +77,7 @@ class AdminControllerTest extends TestCase
     public function testIndexQuery()
     {
         for ($i = 0; $i < 30; $i++) {
-            factory('App\Admin')->create();
+            factory('App\Models\Admin')->create();
         }
 
         // searchように作成
@@ -131,7 +131,7 @@ class AdminControllerTest extends TestCase
      */
     public function testStore()
     {
-        factory('App\Admin')->create();
+        factory('App\Models\Admin')->create();
 
         $headers = [
             'Content-Type'  => 'application/json',
@@ -262,7 +262,7 @@ class AdminControllerTest extends TestCase
 
     public function testShowRouting()
     {
-        $admin = factory('App\Admin')->create();
+        $admin = factory('App\Models\Admin')->create();
 
         $headers = [
             'Content-Type'  => 'application/json',
@@ -284,7 +284,7 @@ class AdminControllerTest extends TestCase
 
     public function testUpdate()
     {
-        factory('App\Admin')->create();
+        factory('App\Models\Admin')->create();
 
         $headers = [
             'Content-Type'  => 'application/json',
@@ -399,7 +399,7 @@ class AdminControllerTest extends TestCase
 
     public function testDestroyRouting()
     {
-        factory('App\Admin')->create();
+        factory('App\Models\Admin')->create();
 
         $headers = [
             'Content-Type'  => 'application/json',

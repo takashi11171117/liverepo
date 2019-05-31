@@ -18,6 +18,7 @@
     "test:build": "concurrently \"babel-node server-test.js\" \"node ./nodejs-server-server/index.js\""
   },
   "dependencies": {
+    "@johmun/vue-tags-input": "^2.0.1",
     "@nuxtjs/axios": "^5.3.3",
     "@nuxtjs/bulma": "^1.2.1",
     "@nuxtjs/font-awesome": "^1.0.3",
@@ -32,6 +33,9 @@
     "require-extension-hooks-babel": "^1.0.0-beta.1",
     "style-loader": "^0.23.1",
     "sweetalert2": "^7.28.11",
+    "vue-image-lightbox": "^6.2.0",
+    "vue-lazyload": "^1.2.6",
+    "vue-touch": "^2.0.0-beta.4",
     "vuex-persistedstate": "^2.5.4"
   },
   "devDependencies": {
