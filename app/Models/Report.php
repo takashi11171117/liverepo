@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Report extends Model
@@ -14,6 +15,21 @@ class Report extends Model
     protected $fillable = [
         'title', 'content', 'status', 'rating',
     ];
+
+    public function scopePublish(Builder $builder)
+    {
+        $builder->where('status', 1);
+    }
+
+    public function scopeDraft(Builder $builder)
+    {
+        $builder->where('status', 0);
+    }
+
+    public function scopeTrash(Builder $builder)
+    {
+        $builder->where('status', 2);
+    }
 
     public function report_images()
     {

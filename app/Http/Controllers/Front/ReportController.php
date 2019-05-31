@@ -15,36 +15,11 @@ class ReportController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Report::with([
+        $reports = Report::with([
             'report_images',
-        ]);
-
-        $query->where('status', 1);
-
-        $reports = $query->paginate(20);
+        ])->publish()->paginate(20);
 
         return ReportIndexResource::collection($reports);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 
     /**
