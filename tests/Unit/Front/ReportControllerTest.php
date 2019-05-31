@@ -69,8 +69,8 @@ class ReportControllerTest extends TestCase
         )->assertStatus(200)
                      ->decodeResponseJson();
 
-        $this->assertEquals($data['per_page'], 20);
-        $this->assertEquals($data['current_page'], 1);
-        $this->assertEquals($data['last_page_url'], 'http://localhost?page=2');
+        $this->assertEquals($data['meta']['per_page'], 20);
+        $this->assertEquals($data['meta']['current_page'], 1);
+        $this->assertEquals($data['links']['last'], 'http://localhost?page=2');
     }
 }

@@ -15,7 +15,6 @@ Vue.mixin({
         4: '★★★★',
         5: '★★★★★'
       },
-      image_url: 'https://liverepotest.s3.ap-northeast-1.amazonaws.com/',
     }
   },
   methods: {

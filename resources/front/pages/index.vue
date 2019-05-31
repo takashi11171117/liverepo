@@ -12,7 +12,7 @@
           </div>
           <h1>{{ $truncate(report.title, 30) }}</h1>
           <div class="is-clearfix">
-            <img v-if="report.report_images.length > 0" :src="`${$data.image_url}report_images/thumb-${report.report_images[0].path}`" alt="thumbnail" class="thumbnail">
+            <img v-if="report.report_images.length > 0" :src="report.report_images[0].path" alt="thumbnail" class="thumbnail">
             <img v-if="report.report_images.length === 0" src="http://placehold.jp/120x120.png" alt="thumbnail" class="thumbnail">
             <div class="clearfix review-content">
               <div class="review-star">
@@ -31,7 +31,7 @@
     <Pagination
             current_path="/"
             v-bind:pagination="reports"
-            v-if="Object.keys(reports).length > 0"
+            v-if="Object.keys(reports.data).length > 0"
     />
   </main>
 </template>

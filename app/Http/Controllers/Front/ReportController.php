@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Http\Resources\Front\ReportIndexResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Report;
@@ -9,9 +10,8 @@ use App\Models\Report;
 class ReportController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
@@ -23,7 +23,7 @@ class ReportController extends Controller
 
         $reports = $query->paginate(20);
 
-        return response()->json($reports, 200);
+        return ReportIndexResource::collection($reports);
     }
 
     /**
