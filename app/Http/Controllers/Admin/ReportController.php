@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Resources\Admin\ReportIndexResourse;
+use App\Http\Resources\Admin\ReportResourse;
+use App\Scoping\Scopes\ReportSearchScope;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Report;
@@ -11,9 +14,8 @@ use DB;
 class ReportController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
@@ -22,16 +24,10 @@ class ReportController extends Controller
             $perPage = (int) $request->input('per_page');
         }
 
-        $query = Report::query();
-        if (!empty($request->input('s'))) {
-            $s = $request->input('s');
-            $query->where('title','like','%' . $s . '%', 'or');
-            $query->where('content','like','%' . $s . '%', 'or');
-        }
+        $reports = Report::withScopes($this->scopes())
+                       ->paginate($perPage);
 
-        $reports = $query->paginate($perPage);
-
-        return response()->json($reports, 200);
+        return ReportIndexResourse::collection($reports);
     }
 
     /**
@@ -53,7 +49,7 @@ class ReportController extends Controller
 
             $file = $images[0];
             $extension = $images[0]->getClientOriginalExtension();
-            $filename = $report->id . '_01' . ".$extension";
+            $filename = "{$report->id}_01.$extension";
 
             $image = \Image::make($file)
                            ->resize(1024, null, function ($constraint) {
@@ -67,25 +63,24 @@ class ReportController extends Controller
 
             $report->report_images()->create(['path'=> $filename]);
             DB::commit();
-
-            return response()->json($report, 200);
         } catch (\Exception $e) {
             DB::rollback();
 
-            return response()->json(null, 200);
+            return response()->json([], 200);
         }
+
+        return new ReportResourse($report);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return ReportResourse
      */
     public function show($id)
     {
         $report = Report::with(['report_images', 'report_tags'])->find($id);
-        return response()->json($report, 200);
+
+        return new ReportResourse($report);
     }
 
     /**
@@ -122,13 +117,13 @@ class ReportController extends Controller
 
             $report->report_images()->create(['path'=> $filename]);
             DB::commit();
-
-            return response()->json($report, 200);
         } catch (\Exception $e) {
             DB::rollback();
 
             return response()->json(null, 200);
         }
+
+        return new ReportResourse($report);
     }
 
     /**
@@ -158,5 +153,12 @@ class ReportController extends Controller
         }
 
         return redirect()->route('admin.report.index', $args, 301);
+    }
+
+    protected function scopes()
+    {
+        return [
+            's' => new ReportSearchScope()
+        ];
     }
 }

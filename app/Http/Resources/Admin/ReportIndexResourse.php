@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\Front;
+namespace App\Http\Resources\Admin;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ReportIndexResource extends JsonResource
+class ReportIndexResourse extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,17 +14,14 @@ class ReportIndexResource extends JsonResource
      */
     public function toArray($request)
     {
-        $result = [
+        return [
+            'id' => $this->id,
             'title' => $this->title,
             'rating' => $this->rating,
+            'status' => $this->status,
             'content' => $this->content,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
-
-        $report_images = ReportImageIndexResource::collection($this->report_images);
-        if (!$report_images->isEmpty()) {
-            $result['report_images'] = $report_images;
-        }
-
-        return $result;
     }
 }

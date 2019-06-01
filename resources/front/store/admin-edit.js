@@ -38,11 +38,11 @@ export const mutations = {
 export const actions = {
   async fetchAdmin({commit}, {id}) {
     await this.$axios.$get(`/admin/admin/${id}`)
-      .then((res) => {
+      .then(({data}) => {
         commit('UPDATE_ADMIN_FORM', {
-          admin: res,
-          name: res.name,
-          email: res.email,
+          admin: data,
+          name: data.name,
+          email: data.email,
         });
       }).catch((error) => {
         console.log(error);
@@ -61,7 +61,7 @@ export const actions = {
           password: state.password,
           password_confirmation: state.passwordConfirm,
         }
-      ).then((data) => {
+      ).then(({data}) => {
         commit('UPDATE_ADMIN_FORM', {
           admin: data,
           name: data.name,

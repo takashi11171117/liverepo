@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Resources\Admin\AdminIndexResource;
+use App\Http\Resources\Admin\AdminResource;
+use App\Scoping\Scopes\AdminSearchScope;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
@@ -9,9 +12,8 @@ use App\Models\Admin;
 class AdminController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(Request $request)
     {
@@ -20,23 +22,15 @@ class AdminController extends Controller
             $perPage = (int) $request->input('per_page');
         }
 
-        $query = Admin::query();
-        if (!empty($request->input('s'))) {
-            $s = $request->input('s');
-            $query->where('name','like','%' . $s . '%', 'or');
-            $query->where('email','like','%' . $s . '%', 'or');
-        }
+        $admins = Admin::withScopes($this->scopes())
+                         ->paginate($perPage);
 
-        $admins = $query->paginate($perPage);
-
-        return response()->json($admins, 200);
+        return AdminIndexResource::collection($admins);
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \App\Http\Requests\Admin\Post $request
+     * @return AdminResource
      */
     public function store(\App\Http\Requests\Admin\Post $request)
     {
@@ -48,27 +42,24 @@ class AdminController extends Controller
 
         $admin->save();
 
-        return response()->json($admin, 200);
+        return new AdminResource($admin);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return AdminResource
      */
     public function show($id)
     {
         $admin = Admin::find($id);
-        return response()->json($admin, 200);
+
+        return new AdminResource($admin);
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param \App\Http\Requests\Admin\Put $request
+     * @param $id
+     * @return AdminResource
      */
     public function update(\App\Http\Requests\Admin\Put $request, $id)
     {
@@ -89,7 +80,7 @@ class AdminController extends Controller
 
         $admin->save();
 
-        return response()->json($admin, 200);
+        return new AdminResource($admin);
     }
 
     /**
@@ -119,5 +110,12 @@ class AdminController extends Controller
         }
 
         return redirect()->route('admin.admin.index', $args, 301);
+    }
+
+    protected function scopes()
+    {
+        return [
+            's' => new AdminSearchScope()
+        ];
     }
 }

@@ -66,9 +66,9 @@ class ReportControllerTest extends TestCase
         )->assertStatus(200)
                      ->decodeResponseJson();
 
-        $this->assertEquals($data['per_page'], 20);
-        $this->assertEquals($data['current_page'], 1);
-        $this->assertEquals($data['last_page_url'], 'http://localhost/admin/report?page=2');
+        $this->assertEquals($data['meta']['per_page'], 20);
+        $this->assertEquals($data['meta']['current_page'], 1);
+        $this->assertEquals($data['links']['last'], 'http://localhost/admin/report?page=2');
     }
 
     /**
@@ -106,9 +106,9 @@ class ReportControllerTest extends TestCase
         )->assertStatus(200)
                      ->decodeResponseJson();
 
-        $this->assertEquals($data['per_page'], 5);
-        $this->assertEquals($data['current_page'], 2);
-        $this->assertEquals($data['last_page_url'], 'http://localhost/admin/report?page=7');
+        $this->assertEquals($data['meta']['per_page'], 5);
+        $this->assertEquals($data['meta']['current_page'], 2);
+        $this->assertEquals($data['links']['last'], 'http://localhost/admin/report?page=7');
 
         // searchのテスト
         $data = $this->json(
@@ -119,10 +119,10 @@ class ReportControllerTest extends TestCase
         )->assertStatus(200)
                      ->decodeResponseJson();
 
-        $this->assertEquals($data['per_page'], 20);
-        $this->assertEquals($data['current_page'], 1);
-        $this->assertEquals($data['last_page_url'], 'http://localhost/admin/report?page=1');
-        $this->assertEquals($data['total'], 1);
+        $this->assertEquals($data['meta']['per_page'], 20);
+        $this->assertEquals($data['meta']['current_page'], 1);
+        $this->assertEquals($data['links']['last'], 'http://localhost/admin/report?page=1');
+        $this->assertEquals($data['meta']['total'], 1);
     }
 
     /**
@@ -150,7 +150,7 @@ class ReportControllerTest extends TestCase
         )->assertStatus(200)
                         ->decodeResponseJson();
 
-        $this->assertEquals($data['total'], 1);
+        $this->assertEquals($data['meta']['total'], 1);
 
         $this->json(
             'POST',
@@ -163,7 +163,7 @@ class ReportControllerTest extends TestCase
                 'images'  => [$file],
             ],
             $headers
-        )->assertStatus(200);
+        )->assertStatus(201);
 
         $data = $this->json(
             'GET',
@@ -173,7 +173,7 @@ class ReportControllerTest extends TestCase
         )->assertStatus(200)
                      ->decodeResponseJson();
 
-        $this->assertEquals($data['total'], 2);
+        $this->assertEquals($data['meta']['total'], 2);
     }
 
     public function testShowRouting()
@@ -194,8 +194,8 @@ class ReportControllerTest extends TestCase
         )->assertStatus(200)
                      ->decodeResponseJson();
 
-        $this->assertEquals($data['title'], $admin->getAttribute('title'));
-        $this->assertEquals($data['content'], $admin->getAttribute('content'));
+        $this->assertEquals($data['data']['title'], $admin->getAttribute('title'));
+        $this->assertEquals($data['data']['content'], $admin->getAttribute('content'));
     }
 
     public function testUpdate()
@@ -225,8 +225,8 @@ class ReportControllerTest extends TestCase
         )->assertStatus(200)
                      ->decodeResponseJson();
 
-        $this->assertEquals($data['title'], 'test');
-        $this->assertEquals($data['content'], 'test content');
+        $this->assertEquals($data['data']['title'], 'test');
+        $this->assertEquals($data['data']['content'], 'test content');
     }
 
     public function testDestroyRouting()
@@ -254,6 +254,6 @@ class ReportControllerTest extends TestCase
         )->assertStatus(200)
                      ->decodeResponseJson();
 
-        $this->assertEquals($data['total'], 0);
+        $this->assertEquals($data['meta']['total'], 0);
     }
 }

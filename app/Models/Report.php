@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Models\Traits\CanBeScoped;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Report extends Model
 {
+    use CanBeScoped;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -33,11 +36,11 @@ class Report extends Model
 
     public function report_images()
     {
-        return $this->hasMany('App\Models\ReportImage', 'report_id', 'id');
+        return $this->hasMany(ReportImage::class, 'report_id', 'id');
     }
 
     public function report_tags()
     {
-        return $this->belongsToMany('App\Models\ReportTag');
+        return $this->belongsToMany(ReportTag::class);
     }
 }

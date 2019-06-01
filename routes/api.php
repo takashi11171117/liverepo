@@ -24,7 +24,7 @@ Route::group(['namespace' => 'Front'], function () {
     Route::get("/", "ReportController@index");
 });
 
-//Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['assign.guard:admins','jwt.auth']],function ()
+// TODO Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['assign.guard:admins','jwt.auth']],function ()
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => []],function ()
 {
     Route::get('admin', [

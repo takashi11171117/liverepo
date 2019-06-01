@@ -42,21 +42,12 @@ export const actions = {
   async fetchEachData({commit}, {id}) {
     await this.$axios.$get(`/admin/report/${id}`)
       .then((res) => {
-        let report_images = res.report_images.map(
-          x => {
-            return {
-              thumb: process.env.imageUrl + 'report_images/thumb-' + x.path,
-              src: process.env.imageUrl + 'report_images/' + x.path,
-            }
-          }
-        );
-        console.log(report_images);
         commit('UPDATE_FORM', {
           title: res.title,
           content: res.content,
           status: res.status,
           rating: res.rating,
-          report_images: report_images,
+          report_images: res.report_images,
         });
       }).catch((error) => {
         console.log(error);

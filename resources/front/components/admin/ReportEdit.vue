@@ -82,6 +82,7 @@
                 </li>
             </ul>
         </div>
+
         <light-box
                 v-if="report_images.length > 0"
                 :images="report_images"

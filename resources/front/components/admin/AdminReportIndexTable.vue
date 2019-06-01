@@ -51,7 +51,7 @@
         <Pagination
                 current_path="/admin/report"
                 v-bind:pagination="pagination"
-                v-if="Object.keys(pagination).length > 0"
+                v-if="Object.keys(pagination.data).length > 0"
         />
         <b-loading :active.sync="isLoading"></b-loading>
     </div>

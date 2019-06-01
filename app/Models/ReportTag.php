@@ -9,4 +9,9 @@ class ReportTag extends Model
     protected $fillable = [
         'name', 'taxonomy',
     ];
+
+    public function reports()
+    {
+        return $this->belongsToMany(Report::class);
+    }
 }
