@@ -22,7 +22,7 @@ test('script test', async t => {
   const wrapper = shallowMount(AdminLogin);
 
   t.is(wrapper.vm.$data.loader, false);
-  t.deepEqual(wrapper.vm.$data.infoError, []);
+  t.deepEqual(wrapper.vm.$data.error, {});
   t.is(wrapper.vm.$data.email, '');
   t.is(wrapper.vm.$data.password, '');
   t.is(wrapper.vm.$data.remember, false);

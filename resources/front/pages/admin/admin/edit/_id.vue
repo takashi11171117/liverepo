@@ -6,7 +6,9 @@
   import AdminEdit from '../../../../components/admin/AdminEdit'
 
   export default {
-    middleware: 'auth',
+    middleware: [
+      'redirectIfAdminGuest'
+    ],
 
     layout: 'admin',
 

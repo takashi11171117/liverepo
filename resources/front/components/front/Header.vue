@@ -7,13 +7,47 @@
                 <div>メニュー</div>
             </div>
             <div class="nav-logo">
-                <img id="logo" src="~assets/logo.svg" width="112" height="28">
+                <n-link :to="{ name: 'index' }">
+                    <img id="logo" src="~assets/logo.svg" width="112" height="28">
+                </n-link>
             </div>
-            <div class="nav-login">
-                <button id="login">ログイン</button>
-            </div>
-            <div class="nav-search">
-                <i class="fas fa-search fa-2x"></i>
+            <div id="nav-right">
+                <div class="nav-search">
+                    <i class="fas fa-search fa-2x"></i>
+                </div>
+                <template v-if="!$auth.loggedIn">
+                    <div class="nav-login">
+                        <n-link :to="{ name: 'auth-login' }" id="login" class="button">
+                            ログイン
+                        </n-link>
+                    </div>
+                </template>
+                <template v-if="$auth.loggedIn">
+                    <div class="nav-post-report">
+                        <n-link :to="{ name: 'user-post' }" id="post-report" class="button">
+                            投稿する
+                        </n-link>
+                    </div>
+                    <div class="user-menu">
+                        <b-dropdown position="is-bottom-left" aria-role="menu">
+                            <a
+                                    class="navbar-item"
+                                    slot="trigger"
+                                    role="button">
+                                <b-icon icon="menu-down"></b-icon>
+                            </a>
+
+                            <b-dropdown-item aria-role="menu-item" has-link>
+                                <n-link :to="{ name: 'user' }" id="mypage">
+                                    マイページ
+                                </n-link>
+                            </b-dropdown-item>
+                            <b-dropdown-item aria-role="menu-item">アカウント設定</b-dropdown-item>
+                            <hr class="dropdown-divider">
+                            <b-dropdown-item @click="$auth.logout()" aria-role="menu-item">ログアウト</b-dropdown-item>
+                        </b-dropdown>
+                    </div>
+                </template>
             </div>
         </div>
         <div class="main_image">
@@ -41,9 +75,12 @@
         padding: 15px 0px 15px 0px;
     }
 
-    .nav-search,
-    .nav-login {
+    #nav-right {
         float: right;
+    }
+
+    #nav-right > div {
+        float: left;
     }
 
     .nav-menu {
@@ -72,20 +109,19 @@
         padding-right: 10px;
     }
 
-    .nav-login {
+    .nav-login,
+    .nav-post-report{
         padding-top: 5px;
         padding-right: 15px;
     }
 
-    button{
-        padding: 8px;
-        font-size: 14px;
-        border-radius: 10px;
-        border: none;
-        background-color: #fff;
-        width: 100px;
-        height:40px;
+    .button {
         font-weight: bold;
+        font-size: 14px;
+        padding-top: 18px;
+        padding-bottom: 18px;
+        padding-left: 15px;
+        padding-right: 15px;
     }
 
     nav {

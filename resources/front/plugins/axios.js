@@ -37,20 +37,20 @@ export default ({ $axios, store, redirect }) => {
       })
     }
 
-    if (status === 401 && store.getters['check']) {
-      swal({
-        type: 'warning',
-        title: 'エラー',
-        text: '401: 認証エラー',
-        reverseButtons: true,
-        confirmButtonText: 'ログインページ',
-        cancelButtonText: 'キャンセル'
-      }).then(() => {
-        store.dispatch('logout');
-        redirect({
-          path: '/admin/login'
-        });
-      });
-    }
+    // if (status === 401 && store.getters['check']) {
+    //   swal({
+    //     type: 'warning',
+    //     title: 'エラー',
+    //     text: '401: 認証エラー',
+    //     reverseButtons: true,
+    //     confirmButtonText: 'ログインページ',
+    //     cancelButtonText: 'キャンセル'
+    //   }).then(() => {
+    //     store.dispatch('logout');
+    //     redirect({
+    //       path: '/admin/login'
+    //     });
+    //   });
+    // }
   })
 }

@@ -19,10 +19,6 @@ test('template test', t => {
     propsData: {
       current_path: '/admin',
       pagination: {
-        "first_page_url": "/admin?page=1",
-        "path": "path",
-        "per_page": 20,
-        "total": 78,
         "data": [
           {
             "password": "password",
@@ -41,12 +37,21 @@ test('template test', t => {
             "email": "email"
           }
         ],
-        "last_page": 6,
-        "last_page_url": "/admin?page=4",
-        "next_page_url": "/admin?page=2",
-        "to": 20,
-        "prev_page_url": null,
-        "current_page": 1
+        "links": {
+          "first": "admin?page=1",
+          "last": "admin?page=2",
+          "prev": null,
+          "next": "admin?page=2"
+        },
+        "meta": {
+          "current_page": 1,
+          "from": 1,
+          "last_page": 6,
+          "path": "admin",
+          "per_page": 20,
+          "to": 20,
+          "total": 78
+        }
       },
     }
   });
@@ -76,10 +81,6 @@ test('script test', t => {
     propsData: {
       current_path: '/admin',
       pagination: {
-        "first_page_url": "/admin?page=1",
-        "path": "path",
-        "per_page": 20,
-        "total": 78,
         "data": [
           {
             "password": "password",
@@ -98,12 +99,21 @@ test('script test', t => {
             "email": "email"
           }
         ],
-        "last_page": 6,
-        "last_page_url": "/admin?page=4",
-        "next_page_url": "/admin?page=2",
-        "to": 20,
-        "prev_page_url": null,
-        "current_page": 1
+        "links": {
+          "first": "admin?page=1",
+          "last": "admin?page=2",
+          "prev": null,
+          "next": "admin?page=2"
+        },
+        "meta": {
+          "current_page": 1,
+          "from": 1,
+          "last_page": 6,
+          "path": "admin",
+          "per_page": 20,
+          "to": 20,
+          "total": 78
+        }
       },
     }
   });

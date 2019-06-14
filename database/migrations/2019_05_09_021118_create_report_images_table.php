@@ -15,10 +15,11 @@ class CreateReportImagesTable extends Migration
     {
         Schema::create('report_images', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('report_id')->unsigned();
-            $table->foreign('report_id')->references('id')->on('reports');
+            $table->integer('report_id')->unsigned()->index();
             $table->string('path');
             $table->timestamps();
+
+            $table->foreign('report_id')->references('id')->on('reports')->onDelete('cascade');
         });
     }
 

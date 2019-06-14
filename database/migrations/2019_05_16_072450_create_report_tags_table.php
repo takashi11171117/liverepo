@@ -15,7 +15,7 @@ class CreateReportTagsTable extends Migration
     {
         Schema::create('report_tags', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('taxonomy');
             $table->timestamps();
         });

@@ -10,7 +10,7 @@ $factory->define(Admin::class, function (Faker $faker) {
         'name' => $faker->name,
         'email' => $faker->email,
         'email_verified_at' => now(),
-        'password' => password_hash('pass', PASSWORD_DEFAULT),
+        'password' => 'pass',
         'remember_token' => Str::random(10),
     ];
 });

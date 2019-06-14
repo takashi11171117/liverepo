@@ -66,15 +66,14 @@
         <div id="tagify">
             <p class="label">タグ</p>
             <Tagify
-                    :tag="tag"
-                    :tags="tags"
-                    @tags-changed="newTags => tags = newTags"
+                    :prop_tags="report_tags"
+                    :onUpdate="(newTags) => {UPDATE_INPUT({'report_tags': newTags})}"
             />
         </div>
 
-        <div id="image-list">
+        <div id="image-list" v-if="report_images !== null && report_images.length > 0">
             <p class="label">画像一覧</p>
-            <ul v-if="report_images.length > 0">
+            <ul>
                 <li v-for="(report_image, index) in report_images">
                     <div class="thumb-image">
                         <img @click="openGallery(index)" :src="report_image.src" alt="thumbnail" class="thumbnail">
@@ -84,13 +83,17 @@
         </div>
 
         <light-box
-                v-if="report_images.length > 0"
+                v-if="report_images !== null && report_images.length > 0"
                 :images="report_images"
                 :show-light-box="false"
                 ref="lightbox"
         />
 
-        <b-field label="画像1">
+        <b-field
+                label="画像1"
+                :type="error.hasOwnProperty('images.0') ? 'is-danger': ''"
+                :message="error.hasOwnProperty('images.0') ? error['images.0'][0] : ''"
+        >
             <div class="file-button">
                 <b-upload
                         id="image1"
@@ -135,8 +138,6 @@
     data() {
       return {
         image1: null,
-        tag: '',
-        tags: [],
       }
     },
 
@@ -154,6 +155,7 @@
           status: 'admin-report-edit/status',
           rating: 'admin-report-edit/rating',
           report_images: 'admin-report-edit/report_images',
+          report_tags: 'admin-report-edit/report_tags',
           file: 'admin-report-edit/file',
           error: 'admin-report-edit/error',
         }

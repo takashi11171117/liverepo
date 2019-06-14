@@ -2,12 +2,57 @@ import Vuex from 'vuex'
 import { mount, createLocalVue } from '@vue/test-utils'
 import test from 'ava'
 import Buefy from 'buefy';
+import VueTagsInput from '@johmun/vue-tags-input'
 import sinon from "sinon";
 import ReportEdit from '../../../../components/admin/ReportEdit'
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 localVue.use(Buefy);
+localVue.component('vue-tags-input', VueTagsInput);
+
+localVue.directive('preview-input', {
+  bind(el, binding, vnode) {
+
+    const isMultiple = (el.getAttribute('multiple') === 'multiple');
+    const expression = binding.expression;
+
+    el.addEventListener('change', (e) => {
+      vnode.context[expression] = (isMultiple) ? [] : null;
+      const files = e.target.files;
+      const fileCount = files.length;
+      let loadedCount = 0;
+
+      if(fileCount > 0) {
+
+        for(let i = 0 ; i < fileCount ; i++) {
+
+          let file = files[i];
+          let reader = new FileReader();
+          reader.onload = (e) => {
+
+            let dataURL = e.target.result;
+
+            if(isMultiple) {
+              vnode.context[expression].push(dataURL)
+            } else {
+              vnode.context[expression] = dataURL;
+            }
+
+            loadedCount++;
+
+            if(loadedCount === fileCount) {
+              el.dispatchEvent(
+                new Event('ready')
+              );
+            }
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+    });
+  }
+});
 
 const $store = {
   getters: {
@@ -15,6 +60,8 @@ const $store = {
     'admin-report-edit/content': '',
     'admin-report-edit/status': '0',
     'admin-report-edit/rating': '1',
+    'admin-report-edit/report_images': [],
+    'admin-report-edit/report_tags': [],
     'admin-report-edit/file': null,
     'admin-report-edit/error': {},
   }

@@ -1,16 +1,14 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Feature\Auth\Admin;
 
+use App\Models\Admin;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 
-class AuthAdminControllerTest extends TestCase
+class AdminControllerTest extends TestCase
 {
-    use RefreshDatabase;
-    use WithoutMiddleware;
-
     public function testError()
     {
         factory('App\Models\Admin')->create();
@@ -31,15 +29,19 @@ class AuthAdminControllerTest extends TestCase
             '/auth/admin',
             $params,
             $headers
-        )->assertStatus(401)
+        )->assertStatus(422)
         ->assertJson(
-            ['error' => 'メールアドレスかパスワードが一致しません']
+            ['errors' =>
+                 [
+                     'email' => ['メールアドレスかパスワードが一致しません']
+                 ]
+            ]
         );
     }
 
     public function testSuccess()
     {
-        $admin = factory('App\Models\Admin')->create();
+        $admin = factory(Admin::class)->create();
 
         $params = [
             'email'    => $admin->email,

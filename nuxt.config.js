@@ -65,11 +65,31 @@ export default {
     },
   ],
 
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: '/auth/login',
+            method: 'post',
+            propertyName: 'meta.token'
+          },
+          user: {
+            url: '/auth/me',
+            method: 'get',
+            propertyName: 'data'
+          }
+        }
+      }
+    }
+  },
+
   /*
   ** Nuxt.js modules
   */
   modules: [
     '@nuxtjs/axios',
+    '@nuxtjs/auth',
     '@nuxtjs/bulma',
     '@nuxtjs/font-awesome',
   ],

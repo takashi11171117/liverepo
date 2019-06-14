@@ -19,19 +19,9 @@ class Report extends Model
         'title', 'content', 'status', 'rating',
     ];
 
-    public function scopePublish(Builder $builder)
+    public function scopeStatus(Builder $builder, $value)
     {
-        $builder->where('status', 1);
-    }
-
-    public function scopeDraft(Builder $builder)
-    {
-        $builder->where('status', 0);
-    }
-
-    public function scopeTrash(Builder $builder)
-    {
-        $builder->where('status', 2);
+        $builder->where('status', $value);
     }
 
     public function report_images()

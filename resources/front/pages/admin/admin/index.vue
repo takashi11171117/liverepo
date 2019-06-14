@@ -10,7 +10,9 @@
   import AdminIndexTable from '../../../components/admin/AdminIndexTable'
 
   export default {
-    middleware: 'auth',
+    middleware: [
+      'redirectIfAdminGuest'
+    ],
 
     layout: 'admin',
 

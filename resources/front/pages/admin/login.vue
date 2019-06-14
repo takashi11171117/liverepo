@@ -17,18 +17,25 @@
                                             <i class="fa fa-envelope"></i>
                                         </span>
                                     </div>
+                                    <template v-if="error.hasOwnProperty('email') && error.email.length > 0">
+                                        <p class="info info--error" v-for="value in error.email">
+                                            {{ value }}
+                                        </p>
+                                    </template>
                                 </div>
                                 <div class="field">
-                                    <p class="control has-icons-left">
+                                    <div class="control has-icons-left">
                                         <input v-model.trim="password" class="input" type="password"
                                                placeholder="パスワード" required>
                                         <span class="icon is-small is-left">
                                             <i class="fa fa-lock"></i>
                                         </span>
-                                    </p>
-                                </div>
-                                <div class="info info--error" v-if="infoError.length > 0">
-                                    <p>{{ infoError }}</p>
+                                    </div>
+                                    <template v-if="error.hasOwnProperty('password') && error.password.length > 0">
+                                        <p class="info info--error" v-for="value in error.password">
+                                            {{ value }}
+                                        </p>
+                                    </template>
                                 </div>
                                 <p class="control">
                                     <button
@@ -55,16 +62,21 @@
     data() {
       return {
         loader: false,
-        infoError: [],
+        error: {},
         email: '',
         password: '',
         remember: false
       }
     },
+
+    middleware: [
+      'redirectIfAdminAuthenticated'
+    ],
+
     methods: {
       async login () {
         this.loader = true;
-        this.infoError = [];
+        this.error = {};
 
         await this.$axios.$post('/auth/admin', {
           email: this.email,
@@ -81,10 +93,9 @@
             this.$router.push('/admin');
           })
           .catch(error => {
-            console.log(error);
             this.loader = false;
             this.password = '';
-            this.infoError = error.response.data.error;
+            this.error = error.response.data.errors;
           });
       },
       ...mapActions(['saveToken', 'fetchAdmin'])
@@ -95,11 +106,10 @@
 <style lang="scss" type="text/scss">
     .info--error {
         margin-bottom: 10px;
-        p {
-            text-align: left;
-            color: red;
-            font-weight: bold;
-        }
+        text-align: left;
+        color: red;
+        font-weight: bold;
+        margin-top: 10px;
     }
     .is-waiting {
         position: relative;

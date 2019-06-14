@@ -52,7 +52,9 @@
   import {mapActions} from 'vuex'
 
   export default {
-    middleware: 'auth',
+    middleware: [
+      'redirectIfAdminGuest'
+    ],
 
     layout: 'admin',
 

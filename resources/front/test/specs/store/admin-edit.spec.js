@@ -34,8 +34,8 @@ const testedAction = (context = {}, payload = {}) => {
     axios.$get = () => Promise.reject(error);
     axios.$post = () => Promise.reject(error);
   } else {
-    axios.$get = () => Promise.resolve(admin);
-    axios.$post = () => Promise.resolve(admin);
+    axios.$get = () => Promise.resolve({data: admin});
+    axios.$post = () => Promise.resolve({data: admin});
   }
   return index.actions[action].bind({
     $axios: axios,

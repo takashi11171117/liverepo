@@ -3,7 +3,7 @@
         <vue-tags-input
                 v-model="tag"
                 :tags="tags"
-                :autocomplete-items="autocompleteTags"
+                :autocomplete-items="autocomplete_tags"
                 @tags-changed="update"
                 placeholder="タグを入力"
         />
@@ -16,9 +16,27 @@
       return {
         tag: '',
         tags: [],
-        autocompleteTags: [],
+        autocomplete_tags: [],
         debounce: null,
       };
+    },
+
+    mounted: function() {
+      this.tags = this.prop_tags;
+    },
+
+    props: {
+      prop_tags: {
+        required: true,
+        type: Array
+      },
+      onUpdate: {
+        required: true,
+        type: Function,
+      }
+      // autocomplete_tags: {
+      //   type: Array
+      // }
     },
 
     watch: {
@@ -27,19 +45,18 @@
 
     methods: {
       update(newTags) {
-        this.autocompleteTags = [];
+        this.autocomplete_tags = [];
         this.tags = newTags;
+        this.onUpdate(newTags);
       },
       initItems() {
         if (this.tag.length < 2) return;
-        const url = `https://itunes.apple.com/search?term=
-        ${this.tag}&entity=allArtist&attribute=allArtistTerm&limit=6`;
 
         clearTimeout(this.debounce);
         this.debounce = setTimeout(() => {
-          this.$axios.$get(url).then(response => {
-            this.autocompleteTags = response.results.map(a => {
-              return { text: a.artistName };
+          this.$axios.$get(`/admin/report_tag/tagify?tag=${this.tag}`).then(({data}) => {
+            this.autocomplete_tags = data.map(name => {
+              return { text: name };
             });
           }).catch((e) => console.warn(e));
         }, 600);

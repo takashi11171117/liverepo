@@ -18,15 +18,22 @@ Route::get('/', function()
     return "Hello!! This is liverepo's api";
 });
 
-Route::post("/auth/admin", "AuthAdminController@login");
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('register', 'Auth\User\RegisterController@action');
+    Route::post('login', 'Auth\User\LoginController@action');
+    Route::get('me', 'Auth\User\MeController@action');
+
+    Route::post('admin', 'Auth\Admin\LoginController@action');
+});
 
 Route::group(['namespace' => 'Front'], function () {
     Route::get("/", "ReportController@index");
 });
 
-// TODO Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['assign.guard:admins','jwt.auth']],function ()
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => []],function ()
+//Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => []],function ()
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['assign.guard:admins','jwt.auth']],function ()
 {
+    // admin
     Route::get('admin', [
         'as'   => 'admin.admin.index',
         'uses' => 'AdminController@index'
@@ -48,6 +55,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => []],f
         'uses' => 'AdminController@destroy'
     ]);
 
+    // report
     Route::get('report', [
         'as'   => 'admin.report.index',
         'uses' => 'ReportController@index'
@@ -67,5 +75,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => []],f
     Route::delete('report/{id}/delete', [
         'as' => 'admin.report.destroy',
         'uses' => 'ReportController@destroy'
+    ]);
+
+    // tag
+    Route::get('report_tag/tagify', [
+        'as' => 'admin.report_tag.index',
+        'uses' => 'ReportTagController@tagify'
     ]);
 });

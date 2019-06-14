@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\Admin\Admin\Post;
+use App\Http\Requests\Admin\Admin\Put;
 use App\Http\Resources\Admin\AdminIndexResource;
 use App\Http\Resources\Admin\AdminResource;
 use App\Scoping\Scopes\AdminSearchScope;
@@ -29,18 +31,11 @@ class AdminController extends Controller
     }
 
     /**
-     * @param \App\Http\Requests\Admin\Post $request
      * @return AdminResource
      */
-    public function store(\App\Http\Requests\Admin\Post $request)
+    public function store(Post $request)
     {
-        $admin = new Admin;
-
-        $admin->name = $request->name;
-        $admin->email = $request->email;
-        $admin->password = password_hash($request->password, PASSWORD_DEFAULT);
-
-        $admin->save();
+        $admin = Admin::create($request->only('name', 'email', 'password'));
 
         return new AdminResource($admin);
     }
@@ -53,6 +48,10 @@ class AdminController extends Controller
     {
         $admin = Admin::find($id);
 
+        if ($admin == null) {
+            return response()->json(['error' => '管理者は存在しません。'], 404);
+        }
+
         return new AdminResource($admin);
     }
 
@@ -61,21 +60,24 @@ class AdminController extends Controller
      * @param $id
      * @return AdminResource
      */
-    public function update(\App\Http\Requests\Admin\Put $request, $id)
+    public function update(Put $request, $id)
     {
         $admin = Admin::find($id);
+
+        if ($admin == null) {
+            return response()->json(['error' => '管理者は存在しません。'], 404);
+        }
 
         if (!empty($request->name)) {
             $admin->name = $request->name;
         }
-
 
         if (!empty($request->email)) {
             $admin->email = $request->email;
         }
 
         if (!empty($request->password)) {
-            $admin->password = password_hash($request->password, PASSWORD_DEFAULT);
+            $admin->password = $request->password;
         }
 
         $admin->save();
@@ -91,7 +93,13 @@ class AdminController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        Admin::destroy($id);
+        $admin = Admin::find($id);
+
+        if ($admin == null) {
+            return response()->json(['error' => '管理者は存在しません。'], 404);
+        }
+
+        $admin->delete();
 
         $args = [];
 

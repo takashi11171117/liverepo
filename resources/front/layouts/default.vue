@@ -1,7 +1,7 @@
 <template>
   <div class="site">
     <Header />
-    <nuxt/>
+    <nuxt class="site-content"/>
     <Footer />
   </div>
 </template>
@@ -69,6 +69,16 @@
 
   *, *:before, *:after {
     box-sizing: border-box;
+  }
+
+  .site {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+  }
+
+  .site-content {
+    flex: 1;
   }
 </style>
 

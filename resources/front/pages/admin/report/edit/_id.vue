@@ -6,7 +6,9 @@
   import ReportEdit from "../../../../components/admin/ReportEdit";
 
   export default {
-    middleware: 'auth',
+    middleware: [
+      'redirectIfAdminGuest'
+    ],
 
     layout: 'admin',
 

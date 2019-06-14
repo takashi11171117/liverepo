@@ -32,6 +32,15 @@ class Admin extends Authenticatable implements JWTSubject
         'password', 'remember_token',
     ];
 
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($admin) {
+            $admin->password = password_hash($admin->password, PASSWORD_DEFAULT);
+        });
+    }
+
     public static function validation($request)
     {
         return Validator::make($request->json()->all(), [

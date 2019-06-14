@@ -10,7 +10,9 @@
   import AdminReportIndexTable from '../../../components/admin/AdminReportIndexTable'
 
   export default {
-    middleware: 'auth',
+    middleware: [
+      'redirectIfAdminGuest'
+    ],
 
     layout: 'admin',
 

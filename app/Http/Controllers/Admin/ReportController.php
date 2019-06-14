@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\Admin\Report\Post;
+use App\Http\Requests\Admin\Report\Put;
 use App\Http\Resources\Admin\ReportIndexResourse;
 use App\Http\Resources\Admin\ReportResourse;
 use App\Scoping\Scopes\ReportSearchScope;
@@ -31,20 +33,26 @@ class ReportController extends Controller
     }
 
     /**
-     * @param Request $request
      * @return mixed
      * @throws \Throwable
      */
-    public function store(Request $request)
+    public function store(Post $request)
     {
         $params = $request->all();
         $report = new Report;
         $images = $request->file('images');
+        $temp_tags = explode(',', $request->get('tags'));
+        $tags = array_map(function($tag) {
+            return ['name' => $tag, 'taxonomy' => 'place'];
+        }, $temp_tags);
 
-        DB::beginTransaction();
-        try {
+        DB::transaction(function () use ($report, $params, $tags, $images) {
             $report->fill($params)->save();
 
+            // タグの登録
+            $report->report_tags()->createMany($tags);
+
+            // 画像の登録
             $disk = Storage::disk('s3');
 
             $file = $images[0];
@@ -62,12 +70,7 @@ class ReportController extends Controller
             $disk->put('report_images/thumb-' . $filename, (string) $image->encode());
 
             $report->report_images()->create(['path'=> $filename]);
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response()->json([], 200);
-        }
+        });
 
         return new ReportResourse($report);
     }
@@ -80,6 +83,10 @@ class ReportController extends Controller
     {
         $report = Report::with(['report_images', 'report_tags'])->find($id);
 
+        if($report == null) {
+            return response()->json(['error' => 'レポートはありません。'], 404);
+        }
+
         return new ReportResourse($report);
     }
 
@@ -89,39 +96,49 @@ class ReportController extends Controller
      * @return mixed
      * @throws \Throwable
      */
-    public function update(Request $request, $id)
+    public function update(Put $request, $id)
     {
         $params = $request->all();
         $report = Report::find($id);
-        $images = $request->file('images');
 
-        DB::beginTransaction();
-        try {
+        if($report == null) {
+            return response()->json(['error' => 'レポートはありません。'], 404);
+        }
+
+        $images = $request->file('images');
+        $temp_tags = explode(',', $request->get('tags'));
+        $tags = array_map(function($tag) {
+            return ['name' => $tag, 'taxonomy' => 'place'];
+        }, $temp_tags);
+
+        DB::transaction(function () use ($report, $params, $tags, $images) {
+            // 普通のパラメーター
             $report->fill($params)->save();
 
-            $disk = Storage::disk('s3');
+            // タグの登録
+            $report->report_tags()->createMany($tags);
 
-            $file = $images[0];
-            $extension = $images[0]->getClientOriginalExtension();
-            $filename = $report->id . '_01' . ".$extension";
 
-            $image = \Image::make($file)
+            // 画像の登録
+
+            if ($images !== null) {
+                $disk = Storage::disk('s3');
+
+                $file      = $images[0];
+                $extension = $images[0]->getClientOriginalExtension();
+                $filename  = $report->id . '_01' . ".$extension";
+                $image = \Image::make($file)
                            ->resize(1024, null, function ($constraint) {
                                $constraint->aspectRatio();
                            });
-            $disk->put('report_images/' . $filename, (string) $image->encode());
+                $disk->put('report_images/' . $filename, (string)$image->encode());
+                $image = \Image::make($file)
+                               ->fit(300, 300);
+                $disk->put('report_images/thumb-' . $filename, (string)$image->encode());
 
-            $image = \Image::make($file)
-                           ->fit(300, 300);
-            $disk->put('report_images/thumb-' . $filename, (string) $image->encode());
-
-            $report->report_images()->create(['path'=> $filename]);
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollback();
-
-            return response()->json(null, 200);
-        }
+                $report->report_images()->create(['path' => $filename]);
+            }
+        });
 
         return new ReportResourse($report);
     }
@@ -134,7 +151,13 @@ class ReportController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        Report::destroy($id);
+        $report = Report::find($id);
+
+        if($report == null) {
+            return response()->json(['error' => 'レポートはありません。'], 404);
+        }
+
+        $report->delete();
 
         $args = [];
 
