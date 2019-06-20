@@ -7,6 +7,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Report::class, function (Faker $faker) {
     return [
+        'user_id' => factory(\App\Models\User::class)->create()->id,
         'title'   => $faker->realText(100),
         'content' => $faker->realText(3000),
         'status'  => rand(0, 2),

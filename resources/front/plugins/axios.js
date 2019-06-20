@@ -1,13 +1,9 @@
-import swal from 'sweetalert2'
-
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+import Cookies from "universal-cookie";
+let cookies = null;
 
 export default ({ $axios, store, redirect }) => {
   $axios.defaults.baseURL = process.env.apiUrl;
-
-  if (process.server) {
-    return;
-  }
+  let arrUrl = [];
 
   // Request interceptor
   $axios.onRequest(request => {
@@ -15,8 +11,13 @@ export default ({ $axios, store, redirect }) => {
 
     const token = store.getters['token'];
 
-    if (token) {
+    arrUrl = request.url.split('/');
+
+    if (token && arrUrl[0] === 'admin') {
       request.headers.common['Authorization'] = `Bearer ${token}`;
+    } else {
+      cookies = new Cookies(request.headers.common.cookie);
+      request.headers.common['Authorization'] = cookies.get('auth._token.local');
     }
 
     return request;
@@ -26,31 +27,16 @@ export default ({ $axios, store, redirect }) => {
   $axios.onError(error => {
     const { status } = error.response || {};
 
-    if (status >= 500) {
-      swal({
-        type: 'error',
-        title: 'エラー',
-        text: '500: サーバーエラー',
-        reverseButtons: true,
-        confirmButtonText: 'OK',
-        cancelButtonText: 'キャンセル'
-      })
+    if (status === 404) {
+      if (arrUrl[0] === 'admin') {
+        redirect('/admin');
+      } else {
+        redirect('/');
+      }
     }
 
-    // if (status === 401 && store.getters['check']) {
-    //   swal({
-    //     type: 'warning',
-    //     title: 'エラー',
-    //     text: '401: 認証エラー',
-    //     reverseButtons: true,
-    //     confirmButtonText: 'ログインページ',
-    //     cancelButtonText: 'キャンセル'
-    //   }).then(() => {
-    //     store.dispatch('logout');
-    //     redirect({
-    //       path: '/admin/login'
-    //     });
-    //   });
-    // }
+    if (status === 401 && store.getters['check'] && arrUrl[0] === 'admin') {
+      redirect('/admin/logout');
+    }
   })
 }

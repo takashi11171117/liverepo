@@ -31,7 +31,7 @@
                     <div class="user-menu">
                         <b-dropdown position="is-bottom-left" aria-role="menu">
                             <a
-                                    class="navbar-item"
+                                    class="dropdown-button"
                                     slot="trigger"
                                     role="button">
                                 <b-icon icon="menu-down"></b-icon>
@@ -112,7 +112,7 @@
     .nav-login,
     .nav-post-report{
         padding-top: 5px;
-        padding-right: 15px;
+        padding-right: 10px;
     }
 
     .button {
@@ -159,5 +159,11 @@
 
     nav ul li:last-child::after {
         height: 0;
+    }
+
+    .dropdown {
+        padding: 10px;
+        margin-right: 20px;
+        padding-left: 0px;
     }
 </style>

@@ -29,7 +29,7 @@ export const mutations = {
 
 export const actions = {
   async fetchReportPagination({ commit }, query) {
-    await this.$axios.$get(`/admin/report`, {
+    await this.$axios.$get(`admin/report`, {
       params: {
         page: query.page,
         per_page: query.per_page,
@@ -58,9 +58,6 @@ export const actions = {
           perPage: per_page,
           search: query.s
         });
-    }).catch((error) => {
-      console.log(error);
-      this.$router.push({ path: '/admin/login' })
     })
   },
 
@@ -81,7 +78,7 @@ export const actions = {
       }
 
       await this.$axios.$post(
-        `/admin/report/${admin.id}/delete${query_string}`,
+        `admin/report/${admin.id}/delete${query_string}`,
         {_method: 'DELETE'}
       ).then((res) => {
         commit('UPDATE_PAGINATION',
@@ -106,7 +103,7 @@ export const actions = {
     formData.append('images[]', file);
     formData.append('tags', tags);
     await this.$axios.$post(
-      '/admin/report/add',
+      'admin/report/add',
       formData,
       {
         headers: {

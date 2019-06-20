@@ -24,7 +24,7 @@
     },
 
     async asyncData({store, query}) {
-      await store.dispatch('admin-index/fetchAdminPagination', query);
+      await store.dispatch('admin-index/fetchAdminPagination', query)
     },
   }
 </script>

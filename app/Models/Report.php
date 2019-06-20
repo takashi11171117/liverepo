@@ -33,4 +33,8 @@ class Report extends Model
     {
         return $this->belongsToMany(ReportTag::class);
     }
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }

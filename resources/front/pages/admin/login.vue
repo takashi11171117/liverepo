@@ -78,11 +78,12 @@
         this.loader = true;
         this.error = {};
 
-        await this.$axios.$post('/auth/admin', {
+        await this.$axios.$post('auth/admin', {
           email: this.email,
           password: this.password
         })
           .then((data) => {
+            console.log(data);
             this.saveToken({
               token: data.token,
               remember: data.expires_in

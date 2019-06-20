@@ -5,6 +5,7 @@ namespace Tests\Unit\Models;
 use App\Models\Report;
 use App\Models\ReportImage;
 use App\Models\ReportTag;
+use App\Models\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -34,5 +35,12 @@ class ReportTest extends TestCase
         $report->report_tags()->sync([$report_tag->id]);
 
         $this->assertInstanceOf(ReportTag::class, $report->report_tags->first());
+    }
+
+    public function test_it_belongs_to_a_user()
+    {
+        $report = factory(Report::class)->create();
+
+        $this->assertInstanceOf(User::class, $report->user);
     }
 }

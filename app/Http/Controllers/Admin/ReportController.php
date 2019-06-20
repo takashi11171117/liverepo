@@ -10,11 +10,19 @@ use App\Scoping\Scopes\ReportSearchScope;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Report;
+use App\Services\ReportService;
 use Storage;
 use DB;
 
 class ReportController extends Controller
 {
+    protected $reportService;
+
+    public function __construct(ReportService $report_service)
+    {
+        $this->reportService = $report_service;
+    }
+
     /**
      * @param Request $request
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
@@ -42,15 +50,12 @@ class ReportController extends Controller
         $report = new Report;
         $images = $request->file('images');
         $temp_tags = explode(',', $request->get('tags'));
-        $tags = array_map(function($tag) {
-            return ['name' => $tag, 'taxonomy' => 'place'];
-        }, $temp_tags);
 
-        DB::transaction(function () use ($report, $params, $tags, $images) {
+        DB::transaction(function () use ($report, $params, $temp_tags, $images) {
             $report->fill($params)->save();
 
             // タグの登録
-            $report->report_tags()->createMany($tags);
+            $this->reportService->syncReportTag($report, $temp_tags);
 
             // 画像の登録
             $disk = Storage::disk('s3');

@@ -28,9 +28,29 @@ Route::group(['prefix' => 'auth'], function () {
 
 Route::group(['namespace' => 'Front'], function () {
     Route::get("/", "ReportController@index");
+
+    Route::group(['prefix' => 'comedy'], function() {
+        Route::get('report/{id}', [
+            'as'   => 'comedy.report.show',
+            'uses' => 'ReportController@show'
+        ]);
+    });
 });
 
-//Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => []],function ()
+Route::group(['prefix' => 'user', 'namespace' => 'Front\User', 'middleware' => ['assign.guard:api','jwt.auth']],function ()
+{
+    // admin
+    Route::get('report/{user_id}', [
+        'as'   => 'user.report',
+        'uses' => 'ReportController@index'
+    ]);
+
+    Route::post('report/add/{user_id}', [
+        'as' => 'user.store',
+        'uses' => 'ReportController@store'
+    ]);
+});
+
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['assign.guard:admins','jwt.auth']],function ()
 {
     // admin

@@ -99,18 +99,6 @@ test('actions', async t => {
 
   router.resetHistory();
 
-  resetState();
-
-  await testedAction({ commit }, {
-    reject: true,
-  });
-  t.deepEqual(store.getters['pagination'], {});
-  t.is(store.getters['isLoading'], true);
-  t.is(store.getters['page'], 1);
-  t.is(store.getters['perPage'], 20);
-  t.is(store.getters['search'], '');
-  t.true(router.called);
-
   //deleteReport
   action = 'deleteReport';
   const stub = sinon.stub(window, 'confirm');

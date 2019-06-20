@@ -22,3 +22,4 @@ yarn-error.log
 /resources/front/test/e2e/screenshots
 /resources/front/test/e2e/reports
 /test/screenshots
+/files

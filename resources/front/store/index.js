@@ -1,5 +1,4 @@
-import Cookies from "js-cookie"
-import {cookieFromRequest} from '../utils'
+import Cookies from "../utils/cookie"
 
 export const state = () => ({
   device: {
@@ -59,42 +58,36 @@ export const getters = {
 };
 
 export const actions = {
-  saveToken({commit}, {token, remember}) {
-    Cookies.set('token', token, {expires: remember ? 365 : null});
+  saveToken({commit}, {token}) {
+    Cookies().set('token', token);
     commit('SET_TOKEN', token);
   },
   async fetchAdmin({commit}, {admin}) {
-    Cookies.set('admin', admin, {expires: 365});
+    Cookies().set('admin', admin);
     commit('FETCH_ADMIN_SUCCESS', admin);
   },
   updateAdmin({commit}, payload) {
     commit('UPDATE_ADMIN', payload)
   },
   logout({commit}) {
-    Cookies.remove('token');
-    Cookies.remove('admin');
+    Cookies().remove('token');
+    Cookies().remove('admin');
 
     commit('LOGOUT');
     this.$router.push('/admin/login')
   },
   nuxtServerInit({state, commit}, {req}) {
-    const token = cookieFromRequest(req, 'token');
-    const cookie_admin = cookieFromRequest(req, 'admin');
-    let admin = undefined;
-    if (cookie_admin) {
-      admin = JSON.parse(decodeURIComponent(cookie_admin));
-    }
+    let cookies = Cookies(req);
+    const token = cookies.get('token');
+    const admin = cookies.get('admin');
     if (token && admin) {
       commit('SET_TOKEN', token);
       commit('FETCH_ADMIN_SUCCESS', admin);
     }
   },
   nuxtClientInit({ commit }) {
-    const token = Cookies.get('token');
-    let admin = undefined;
-    if (Cookies.get('admin')) {
-      admin = JSON.parse(decodeURIComponent(Cookies.get('admin')));
-    }
+    const token = Cookies().get('token');
+    const admin = Cookies().get('admin');
     if (token && admin) {
       commit('SET_TOKEN', token);
       commit('FETCH_ADMIN_SUCCESS', admin);

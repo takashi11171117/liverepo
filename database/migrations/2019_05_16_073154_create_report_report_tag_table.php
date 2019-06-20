@@ -32,6 +32,6 @@ class CreateReportReportTagTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('report_tag_relationships');
+        Schema::dropIfExists('report_report_tag');
     }
 }

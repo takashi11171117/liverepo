@@ -91,16 +91,6 @@ test('actions', async t => {
   t.is(store.getters['rating'], report.rating);
   t.deepEqual(store.getters['report_images'], report.report_images);
 
-  resetState();
-  await testedAction({ commit }, {id: 1, reject: true});
-
-  t.true(router.called);
-  t.is(store.getters['title'], '');
-  t.is(store.getters['content'], '');
-  t.is(store.getters['status'], '0');
-
-  router.resetHistory();
-
   //updateEachData
   resetState();
 
@@ -130,11 +120,6 @@ test('actions', async t => {
   t.deepEqual(store.getters['report_images'], []);
   t.deepEqual(store.getters['report_tags'], []);
   t.is(store.getters['file'], null);
-
-  await testedAction({ commit, state }, {id: 1, reject: true});
-
-  t.true(snackbarMock.called);
-  t.deepEqual(store.getters['error'], error.response.data.errors);
 });
 
 const resetState = () => {

@@ -4,8 +4,7 @@ import _ from 'lodash'
 import * as index from '../../../store/index'
 import test from "ava";
 import sinon from "sinon";
-import Cookies from "js-cookie";
-import * as utils from '../../../utils';
+import Cookies from '../../../utils/cookie';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -57,9 +56,9 @@ test('actions', async t => {
   //saveToken
   action = 'saveToken';
   const cookieSetMock = sinon.spy();
-  Cookies.set = cookieSetMock;
+  Cookies().set = cookieSetMock;
 
-  testedAction({ commit }, {token: token, remember: 3600});
+  testedAction({ commit }, {token: token});
   t.true(cookieSetMock.called);
   t.is(store.getters['token'], token);
   cookieSetMock.resetHistory();
@@ -81,7 +80,7 @@ test('actions', async t => {
   //logout
   action = 'logout';
   const cookieRemoveMock = sinon.spy();
-  Cookies.remove = cookieRemoveMock;
+  Cookies().remove = cookieRemoveMock;
 
   const router = sinon.stub();
 
@@ -94,25 +93,24 @@ test('actions', async t => {
 
   //nuxtServerInit
   action = 'nuxtServerInit';
-  const cookieFromRequestMock = sinon.stub();
-  const obj = {
+  let obj = {
     name: 'test',
     email: 'test@gmail.com'
   };
-  const str = encodeURIComponent(JSON.stringify(obj));
-  cookieFromRequestMock.returns(str);
-  utils.cookieFromRequest = cookieFromRequestMock;
+  let str = encodeURIComponent(JSON.stringify(obj));
+  const cookieGetMock = sinon.stub();
+  Cookies().get = cookieGetMock;
+  cookieGetMock.withArgs('admin').returns(obj);
+  cookieGetMock.withArgs('token').returns(str);
 
   testedAction({ commit });
+  t.is(cookieGetMock.callCount, 2);
   t.deepEqual(store.getters['admin'], obj);
   t.deepEqual(store.getters['token'], str);
   t.is(store.getters['check'], true);
 
   //nuxtClientInit
   action = 'nuxtClientInit';
-  const cookieGetMock = sinon.stub();
-  cookieGetMock.returns(str);
-  Cookies.get = cookieGetMock;
 
   testedAction({ commit });
   t.deepEqual(store.getters['admin'], obj);

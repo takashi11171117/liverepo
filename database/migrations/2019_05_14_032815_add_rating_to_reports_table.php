@@ -26,7 +26,7 @@ class AddRatingToReportsTable extends Migration
     public function down()
     {
         Schema::table('reports', function (Blueprint $table) {
-            $table->dropColumn('rating');
+            $table->dropColumn(['rating']);
         });
     }
 }

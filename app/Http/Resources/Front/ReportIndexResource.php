@@ -15,6 +15,7 @@ class ReportIndexResource extends JsonResource
     public function toArray($request)
     {
         $result = [
+            'id' => $this->id,
             'title' => $this->title,
             'rating' => $this->rating,
             'content' => $this->content,

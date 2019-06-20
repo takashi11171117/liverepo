@@ -70,12 +70,12 @@ export default {
       local: {
         endpoints: {
           login: {
-            url: '/auth/login',
+            url: 'auth/login',
             method: 'post',
             propertyName: 'meta.token'
           },
           user: {
-            url: '/auth/me',
+            url: 'auth/me',
             method: 'get',
             propertyName: 'data'
           }

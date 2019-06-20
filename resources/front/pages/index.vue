@@ -1,31 +1,33 @@
 <template>
   <main class="main">
     <div class="columns is-mobile is-multiline">
-      <div v-if="reports.data !== undefined" v-for="(report, key) in reports.data" class="column is-12-mobile is-6-tablet is-6-desktop">
-        <section class="main-content border-radius">
-          <div class="is-clearfix user-data">
-            <div class=user-icon>
-              <!--<img src="images/download.jpg"  class=border-radius alt="user icon">-->
-            </div>
-            <div class=user-name>By user name</div>
-            <div class=user-profile>age / gender / states</div>
-          </div>
-          <h1>{{ $truncate(report.title, 30) }}</h1>
-          <div class="is-clearfix">
-            <img v-if="report.report_images !== undefined && report.report_images.length > 0" :src="report.report_images[0].path" alt="thumbnail" class="thumbnail">
-            <img v-if="report.report_images !== undefined && report.report_images.length === 0" src="http://placehold.jp/120x120.png" alt="thumbnail" class="thumbnail">
-            <div class="clearfix review-content">
-              <div class="review-star">
-                <div class="star-rating">
-                  <div class="star-rating-front" :style="'width: ' + report.rating/5*100 + '%'">★★★★★</div>
-                  <div class="star-rating-back">★★★★★</div>
-                </div>
-                <div class="star-number">{{ report.rating }}</div>
+      <div v-if="reports.data !== undefined" v-for="(report) in reports.data" class="column is-12-mobile is-6-tablet is-6-desktop">
+        <n-link :to="{name: 'comedy-report-id', params: {id: report.id}}" :key="report.id">
+          <section class="main-content border-radius">
+            <div class="is-clearfix user-data">
+              <div class=user-icon>
+                <!--<img src="images/download.jpg"  class=border-radius alt="user icon">-->
               </div>
-              <p class="review-text">{{ $truncate(report.content, 80) }}</p>
+              <div class=user-name>By user name</div>
+              <div class=user-profile>age / gender / states</div>
             </div>
-          </div>
-        </section>
+            <h1>{{ $truncate(report.title, 30) }}</h1>
+            <div class="is-clearfix">
+              <img v-if="report.report_images !== undefined && report.report_images.length > 0" :src="report.report_images[0].path" alt="thumbnail" class="thumbnail">
+              <img v-if="report.report_images !== undefined && report.report_images.length === 0" src="http://placehold.jp/120x120.png" alt="thumbnail" class="thumbnail">
+              <div class="clearfix review-content">
+                <div class="review-star">
+                  <div class="star-rating">
+                    <div class="star-rating-front" :style="'width: ' + report.rating/5*100 + '%'">★★★★★</div>
+                    <div class="star-rating-back">★★★★★</div>
+                  </div>
+                  <div class="star-number">{{ report.rating }}</div>
+                </div>
+                <p class="review-text">{{ $truncate(report.content, 80) }}</p>
+              </div>
+            </div>
+          </section>
+        </n-link>
       </div>
     </div>
     <Pagination
