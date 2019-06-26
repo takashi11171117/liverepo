@@ -51,7 +51,7 @@
       }
     },
     async asyncData({$axios, query}){
-      const reports = await $axios.$get('http://localhost:8000', {
+      const reports = await $axios.$get('/', {
         params: {
           page: query.page,
           per_page: query.per_page,

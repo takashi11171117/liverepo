@@ -17,7 +17,9 @@ export default ({ $axios, store, redirect }) => {
       request.headers.common['Authorization'] = `Bearer ${token}`;
     } else {
       cookies = new Cookies(request.headers.common.cookie);
-      request.headers.common['Authorization'] = cookies.get('auth._token.local');
+      if(cookies.get('auth._token.local')) {
+        request.headers.common['Authorization'] = cookies.get('auth._token.local');
+      }
     }
 
     return request;
