@@ -1,6 +1,8 @@
 <?php
 namespace Deployer;
 
+use Symfony\Component\Console\Input\InputOption;
+
 require 'recipe/laravel.php';
 require 'recipe/yarn.php';
 
@@ -15,7 +17,7 @@ set('git_tty', true);
 
 set('branch', 'master');
 
-// Shared files/dirs between deploys 
+// Shared files/dirs between deploys
 add('shared_files', []);
 add('shared_dirs', []);
 
@@ -26,6 +28,7 @@ add('writable_dirs', []);
 // Hosts
 
 host('206.189.91.142')
+    ->stage('staging')
     ->user('saito')
     ->port(10022)
     ->forwardAgent(true)
@@ -47,5 +50,17 @@ after('deploy:failed', 'deploy:unlock');
 // Migrate database before symlink new release.
 
 before('deploy:symlink', 'artisan:migrate');
+before('deploy:symlink', 'artisan:cache:clear');
+before('deploy:symlink', 'artisan:config:cache');
 after('deploy:update_code', 'yarn:install');
+
+before('deploy:shared','upload:env');
+task('upload:env', function () {
+    $stage = get('stage');
+    if ($stage === 'production') {
+        upload('.env.production', '{{deploy_path}}/shared/.env');
+    } else if ($stage === 'staging') {
+        upload('.env.staging', '{{deploy_path}}/shared/.env');
+    }
+})->desc('.envをアップロード');
 
