@@ -6,7 +6,8 @@ const app = express();
 import {default as config} from './nuxt.config';
 config.dev = !(process.env.NODE_ENV === 'production');
 config.port = 3002;
-config.env.apiUrl = 'http://localhost:8080';
+config.env.apiServerUrl = 'http://localhost:8000';
+config.env.apiClientUrl = 'http://localhost:8000';
 
 export const nuxt = new Nuxt(config);
 

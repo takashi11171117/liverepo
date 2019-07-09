@@ -8,7 +8,8 @@ export default {
     middleware: ['check-auth']
   },
   env: {
-    apiUrl: process.env.APP_URL || 'http://localhost:8000',
+    apiServerUrl: process.env.API_SERVER_URL || 'http://localhost:8000',
+    apiClientUrl: process.env.API_CLIENT_URL || 'http://localhost:8000',
     appName: process.env.APP_NAME || 'Lumen-Nuxt',
     imageUrl: process.env.IMAGE_URL || 'https://liverepotest.s3.ap-northeast-1.amazonaws.com/',
   },

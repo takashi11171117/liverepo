@@ -7,7 +7,11 @@ export default ({ $axios, store, redirect }) => {
 
   // Request interceptor
   $axios.onRequest(request => {
-    request.baseURL = process.env.apiUrl;
+    if (process.server) {
+      request.baseURL = process.env.apiServerUrl;
+    } else {
+      request.baseURL = process.env.apiClientUrl;
+    }
 
     const token = store.getters['token'];
 

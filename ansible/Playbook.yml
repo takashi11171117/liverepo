@@ -1,0 +1,244 @@
+- name: Install prerequisites
+  hosts: all
+  user: root
+  gather_facts: no
+  tasks:
+    - name: Install Python 2.x
+      raw: which python || apt-get update && apt-get install -qq -y python-simplejson
+      register: python_check
+      changed_when: not python_check.stdout is search('/usr/bin/python')
+    - name: Update apt keys
+      command: apt-key update
+    - name: Update apt cache
+      apt: update_cache=yes
+    - name: Run apt upgrade
+      apt: upgrade=yes
+    - name: Install unattended-upgrades
+      apt: pkg=unattended-upgrades state=present
+
+    - name: Adjust apt update intervals
+      copy: src=templates/apt_auto_upgrades dest=/etc/apt/apt.conf.d/20auto-upgrades
+
+    - name: Make sure unattended-upgrades only installs security updates
+      lineinfile: dest=/etc/apt/apt.conf.d/50unattended-upgrades regexp="-updates" state=absent
+
+    - name: Make sure unattended-upgrades only installs security updates
+      lineinfile: dest=/etc/apt/apt.conf.d/50unattended-upgrades regexp="-proposed" state=absent
+
+    - name: Make sure unattended-upgrades only installs security updates
+      lineinfile: dest=/etc/apt/apt.conf.d/50unattended-upgrades regexp="-backports" state=absent
+    - name: apt install gnupg
+      apt: name={{ item }} update_cache=yes cache_valid_time=3600
+      with_items:
+        - zip
+        - unzip
+    - name: Add repository for PHP 7.
+      apt_repository: repo='ppa:ondrej/php'
+    - name: Stop atd
+      service: name=atd state=stopped
+    - name: Detect atd init file
+      command: "[ -f /etc/init/atd.conf ]"
+      register: atd_init_exists
+      ignore_errors: True
+    - name: Disable atd autostart
+      command: mv /etc/init/atd.conf /etc/init/atd.conf.noexec
+      when: atd_init_exists|success
+
+- name: SETUP
+  hosts: all
+  remote_user: root
+  become: true
+  vars_files:
+    - ./vars/main.yml
+    - ./secret/key.yml
+  handlers:
+    - include: ./handlers.yml
+  tasks:
+    - name: Write hostname to /etc/hostname
+      copy:
+        content: "{{ hostname }}"
+        dest: /etc/hostname
+        owner: root
+        group: root
+        mode: 0644
+
+    - name: Issue hostname command
+      hostname: name={{ hostname }}
+
+    - name: Add hostname entries to hosts file (localhost)
+      lineinfile: dest=/etc/hosts regexp="^127.0.0.1" line="127.0.0.1 localhost {{ hostname }}" state=present
+
+    - name: apt install language-pack-ja
+      apt:
+        name: language-pack-ja
+
+    - name: set locale
+      command: update-locale LANG=ja_JP.UTF-8
+      when: ansible_env.LANG | default('') != 'ja_JP.UTF-8'
+
+    - name: set timezone to Asia/Tokyo
+      timezone:
+        name: Asia/Tokyo
+    
+    - name: install and start NTP
+      apt: name=ntp
+
+    - name: Change root password
+      user: name=root password={{ new_root_password|password_hash('sha512') }}
+      when: new_root_password is defined
+
+    - name: Lock the root user (use 'sudo passwd root' to re-enable)
+      command: passwd -l root
+
+    - name: Remove sudo group rights
+      lineinfile: dest=/etc/sudoers regexp="^%sudo" state=absent validate='visudo -cf %s'
+
+    - name: Create {{ new_user }} user account
+      user: name={{ new_user }} password={{ new_user_password|password_hash('sha512') }} groups="www-data, sudo" shell=/bin/bash state=present #generate_ssh_key=yes
+
+    - name: Add user {{ new_user }} to sudoers
+      action: lineinfile dest=/etc/sudoers regexp="^{{ new_user }} ALL" line="{{ new_user }} ALL=(ALL) ALL" state=present validate="visudo -cf %s"
+
+    - name: Ensure public key is in authorized_keys
+      authorized_key:
+        key: "{{ auth_public_key }}"
+        user: "{{ new_user }}"
+
+    - name: Update ssh parameters
+      lineinfile:
+        dest: /etc/ssh/sshd_config
+        state: present
+        regexp: "^{{ item.key }}"
+        line: "{{ item.key }} {{ item.value }}"
+        insertafter: EOF
+      with_items:
+        - { key: 'Port', value: '{{ ssh_port | default("22") }}' }
+        - { key: 'PermitRootLogin', value: 'no' }
+        - { key: 'PasswordAuthentication', value: 'no' }
+        - { key: 'LoginGraceTime', value: '20' }
+        - { key: 'X11Forwarding', value: 'no' }
+        - { key: 'AllowUsers', value: '{{ new_user }}' }
+      notify:
+        - restart ssh
+
+    - name: Install fail2ban
+      apt: package=fail2ban state=present
+
+    - name: Copy fail2ban default config
+      template: src=./templates/fail2ban.conf.j2 dest=/etc/fail2ban/jail.local
+      notify:
+        - restart fail2ban
+
+    - name: Install logwatch
+      action: apt pkg=logwatch state=installed
+
+    - name: Make logwatch mail $logwatch_email daily
+      action: lineinfile dest=/etc/cron.daily/00logwatch regexp="^/usr/sbin/logwatch" line="/usr/sbin/logwatch --output mail --mailto $logwatch_email --detail high" state=present create=yes
+
+    - name: Install ufw
+      apt: package=ufw state=present
+
+    - name: Configure ufw defaults
+      ufw: direction={{ item.direction }} policy={{ item.policy }}
+      with_items:
+        - { direction: 'incoming', policy: 'deny' }
+        - { direction: 'outgoing', policy: 'allow' }
+      notify:
+        - restart ufw
+
+    - name: Configure ufw rules
+      ufw: rule={{ item.rule }} port={{ item.port }} proto={{ item.proto }}
+      with_items:
+        - { rule: 'limit', port: '{{ ssh_port | default("22") }}', proto: 'tcp' }
+        - { rule: 'allow', port: '80', proto: 'tcp' }
+        - { rule: 'allow', port: '443', proto: 'tcp' }
+      notify:
+        - restart ufw
+
+    - name: Enable ufw logging
+      ufw: logging=on
+      notify:
+        - restart ufw
+
+    - name: Enable ufw
+      ufw: state=enabled
+
+    - name: Set up postmail selections
+      command: echo "postfix postfix/main_mailer_type select Internet Site" | debconf-set-selections
+
+    - name: Set up postmail selections
+      command: echo "postfix postfix/mailname string localhost" | debconf-set-selections
+
+    - name: Set up postmail selections
+      command: echo "postfix postfix/destinations string localhost.localdomain, localhost" | debconf-set-selections
+    
+    - name: Install postfix
+      apt: pkg=postfix state=present
+
+    - name: Set postfix loopback-only
+      lineinfile: dest=/etc/postfix/main.cf regexp="^inet_interfaces" line="inet_interfaces = loopback-only" state=present
+      notify:
+        - restart postfix
+
+    - name: Set postfix hostname
+      lineinfile: dest=/etc/postfix/main.cf regexp="^myhostname" line="myhostname = {{ hostname }}.{{ domain }}" state=present
+      notify:
+        - restart postfix
+
+    - name: Create root email alias
+      lineinfile: dest=/etc/aliases regexp="^root" line="root{{':'}} {{ admin_email }}" state=present
+      notify:
+        - restart postfix
+
+- name: LEMP Provisioning
+  hosts: all
+  become: yes
+  become_user: saito
+  vars_files:
+    - ./vars/main.yml
+  roles: 
+    - geerlingguy.nginx
+    - geerlingguy.php
+    - geerlingguy.php-mysql
+    - role: geerlingguy.git
+      git_package:
+        - get
+    - geerlingguy.composer
+    - geerlingguy.nodejs
+
+- name: after Provisioning
+  hosts: all
+  user: root
+  vars_files:
+    - ./vars/main.yml
+  tasks:
+    - name: yarn global install
+      command: npm i -g yarn
+    - name: npm permission
+      file:
+        path: "/usr/local/lib/npm/bin"
+        owner: saito
+        group: saito
+        mode: 0755
+    - name: npm permission
+      file:
+        path: "/usr/local/lib/npm/lib"
+        owner: saito
+        group: saito
+        mode: 0755
+    - name: Git config name
+      git_config: name=user.name scope=global value="{{ git_name }}"
+
+    - name: Git config email
+      git_config: name=user.email scope=global value="{{ git_email }}"
+
+    - name: Project Folder Creation
+      file: dest="/var/www/{{hostname}}" mode=2755 state=directory owner=saito group=www-data
+
+    - name: copy a directory
+      copy:
+        src: ./id_rsa
+        dest: /home/{{new_user}}/.ssh
+        mode: 0600
+        owner: saito
+

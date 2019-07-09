@@ -5,7 +5,6 @@
   "author": "Saito Takashi <takashi11171117@gmail.com>",
   "private": true,
   "scripts": {
-    "local": "concurrently \"yarn dev\" \"php artisan serve\" \"node server-test.js\" \"node ./nodejs-server-server/index.js\"",
     "dev": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
@@ -15,7 +14,7 @@
     "test:unit": "TEST=unit yarn ava ./resources/front/test/specs/* --verbose",
     "test:e2e": "nightwatch -c ./resources/front/test/e2e/globals.json",
     "test": "yarn test:unit & yarn test:e2e",
-    "test:build": "concurrently \"babel-node server-test.js\" \"node ./nodejs-server-server/index.js\""
+    "test:build": "concurrently \"babel-node server-test.js\" \"php artisan migrate:refresh --seed && php artisan serve\""
   },
   "dependencies": {
     "@johmun/vue-tags-input": "^2.0.1",
@@ -41,6 +40,7 @@
   "devDependencies": {
     "@babel/cli": "^7.4.3",
     "@babel/core": "^7.4.3",
+    "@babel/node": "^7.5.0",
     "@babel/polyfill": "^7.4.0",
     "@babel/preset-env": "^7.4.3",
     "@babel/register": "^7.4.0",

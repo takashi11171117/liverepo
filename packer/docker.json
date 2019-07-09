@@ -1,0 +1,22 @@
+{
+    "builders": [
+      {
+        "type": "docker",
+        "image": "jrei/systemd-ubuntu",
+        "export_path": "liverepo_image.tar"
+      }
+    ],
+    "provisioners": [
+        {
+            "type": "ansible",
+            "playbook_file": "../ansible/Playbook_docker.yml"
+        }
+    ],
+    "post-processors": [
+      {
+        "type": "docker-import",
+        "repository": "asupara7/liverepo_image",
+        "tag": "0.0.1"
+      }
+    ]
+  }

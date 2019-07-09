@@ -1,0 +1,78 @@
+- name: Install prerequisites
+  hosts: all
+  user: root
+  gather_facts: no
+  tasks:
+    - name: Install Python 2.x
+      raw: which python || apt-get update && apt-get install -qq -y python-simplejson
+      register: python_check
+      changed_when: not python_check.stdout is search('/usr/bin/python')
+    - name: apt install gnupg
+      apt: name={{ item }} update_cache=yes cache_valid_time=3600
+      with_items:
+        - ssl-cert
+        - ca-certificates
+        - gnupg
+    - name: Update apt keys
+      command: apt-key update
+    - name: Update apt cache
+      apt: update_cache=yes
+    - name: Run apt upgrade
+      apt: upgrade=yes
+    - name: Install unattended-upgrades
+      apt: pkg=unattended-upgrades state=present
+
+    - name: Adjust apt update intervals
+      copy: src=templates/apt_auto_upgrades dest=/etc/apt/apt.conf.d/20auto-upgrades
+
+    - name: Make sure unattended-upgrades only installs security updates
+      lineinfile: dest=/etc/apt/apt.conf.d/50unattended-upgrades regexp="-updates" state=absent
+
+    - name: Make sure unattended-upgrades only installs security updates
+      lineinfile: dest=/etc/apt/apt.conf.d/50unattended-upgrades regexp="-proposed" state=absent
+
+    - name: Make sure unattended-upgrades only installs security updates
+      lineinfile: dest=/etc/apt/apt.conf.d/50unattended-upgrades regexp="-backports" state=absent
+    - name: Add repository for PHP 7.
+      apt_repository: repo='ppa:ondrej/php'
+
+- name: SETUP
+  hosts: all
+  remote_user: root
+  vars_files:
+    - ./vars/main_docker.yml
+  handlers:
+    - include: ./handlers.yml
+  tasks:
+    - name: Install logwatch
+      action: apt pkg=logwatch state=installed
+
+    - name: Make logwatch mail $logwatch_email daily
+      action: lineinfile dest=/etc/cron.daily/00logwatch regexp="^/usr/sbin/logwatch" line="/usr/sbin/logwatch --output mail --mailto $logwatch_email --detail high" state=present create=yes
+
+- name: LEMP Provisioning
+  hosts: all
+  user: root
+  vars_files:
+    - ./vars/main_docker.yml
+  roles: 
+    - geerlingguy.nginx
+    - geerlingguy.php
+    - geerlingguy.php-mysql
+    - role: geerlingguy.git
+      git_package:
+        - get
+    - geerlingguy.composer
+    - geerlingguy.nodejs
+
+- name: after Provisioning
+  hosts: all
+  user: root
+  vars_files:
+    - ./vars/main_docker.yml
+  tasks:
+    - name: install yarn pm2
+      command: npm i -g yarn pm2
+    - name: Project Folder Creation
+      file: dest="/var/www/{{hostname}}" mode=2755 state=directory owner=root group=www-data
+
