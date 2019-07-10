@@ -3,9 +3,9 @@
         <div class="hero-head">
             <nav class="navbar" role="navigation" aria-label="main navigation">
                 <div class="navbar-brand">
-                    <a class="navbar-item" href="https://bulma.io">
+                    <n-link :to="{name: 'admin'}" class="navbar-item">
                         <img id="logo" src="~assets/logo.svg" width="112" height="28">
-                    </a>
+                    </n-link>
 
                     <div class="navbar-item is-expanded login">
                         <div class="admin">
@@ -92,5 +92,8 @@
             align-items: center;
             display: flex;
         }
+    }
+    .navbar-item img {
+        width: 112px;
     }
 </style>

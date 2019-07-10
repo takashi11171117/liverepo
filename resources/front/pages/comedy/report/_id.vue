@@ -6,23 +6,12 @@
                     <div class=user-icon>
                         <img src="images/download.jpg"  class=border-radius alt="user icon">
                     </div>
-                    <div class=user-name>By {{ data.user.name }}</div>
-                    <div class=user-profile>30代 / 女性 / 大阪府</div>
+                    <div class="user-name">By {{ data.user.name }}</div>
+                    <div class="user-profile">30代 / 女性 / 大阪府</div>
+                    <div class="posted-date">1days ago</div>
                 </div>
                 <div class="clearfix postedData">
-                    <h1>{{ data.title }}</h1>
-                    <div class="is-clearfix category">
-                        <ul class="tags">
-                            <li>ヤング</li>
-                            <li>漫才</li>
-                        </ul>
-                    </div>
-                    <div class="is-clearfix live-data">
-                        <ul>
-                            <li>ライブ名： ヤングのパタパタ漫才</li>
-                            <li>ライブ日時： 18:40</li>
-                        </ul>
-                    </div>
+                    <h1 id="report-title">{{ data.title }}</h1>
                     <div class="is-clearfix review-star">
                         <div class="review-star">
                             <div class="star-rating">
@@ -31,11 +20,23 @@
                             </div>
                             <div class="star-number">{{ data.rating }}</div>
                         </div>
-                        <div class="posted-date">1days ago</div>
                     </div>
-                    <div class="is-clearfix like">
-                        <div class="like-button"><i class="far fa-thumbs-up"></i></div>
-                        <div class="like-number">380</div>
+                    <div class="is-clearfix category">
+                        <ul class="tags">
+                            <li>ヤング</li>
+                            <li>漫才</li>
+                        </ul>
+                    </div>
+                    <div class="is-clearfix live-data">
+                        <ul>
+                            <li><span>ライブ名</span>ヤングのパタパタ漫才</li>
+                            <li><span>ライブ日時</span>18:40</li>
+                        </ul>
+                    </div>
+
+                    <div class="is-clearfix like-area">
+                        <div class="like-button"><i class="far fa-thumbs-up"></i> 380</div>
+                        <div class="favorite-button"><i class="far fa-thumbs-up"></i></div>
                     </div>
 
                     <hr class="dropdown-divider">
@@ -89,13 +90,48 @@
 </script>
 
 <style lang="sass" scoped>
+    #report-title
+        font-size: 30px
+        line-height: 1.2
+        margin: 20px 20px 0 20px
+
+    .user-data
+        margin-top: 20px
+
+    .user-name
+        padding-right: 10px
+        font-weight: bold
+        font-size: 16px
+
+    .user-profile
+        color: #888
+        padding-right: 10px
+
+    .category
+        margin-bottom: 20px
+
+    .live-data
+        margin-bottom: 30px
+        font-size: 14px
+        li
+            display: inline-block
+            padding-right: 10px
+        span
+            background-color: #F8D047
+            padding: 8px 10px
+            border-radius: 5px
+            color: white
+            font-weight: bold
+            margin-right: 10px
+
     .tags
         margin-bottom: 10px
         margin-top: 10px
+
     .tags li
         display: inline-block
         position: relative
-        padding: 0.2em 1.4em
+        padding: 0.4em 1.4em
         margin-right: 10px
         background: #fff
         color: #000
@@ -103,7 +139,7 @@
         border-left: solid 0.5px #000
         border-bottom: solid 5px #000
         border-right: solid 5px #000
-        font-size: 12px
+        font-size: 14px
         font-weight: bold
         &:before
             content: " "
@@ -127,11 +163,27 @@
             border-style: solid
             border-color: #FFF
             border-bottom-color: transparent
+
+    .like-area
+        background-color: #f0f0f0
+        padding: 20px
+        div
+            display: inline-block
+            background-color: #aaaaaa
+            color: white
+            padding: 12px
+            border-radius: 5px;
+
     #image-list img
         float: left
         width: 120px
         height: auto
+
     .dropdown-divider
-        margin-top: 20px
-        margin-bottom: 20px
+        margin-top: 30px
+        margin-bottom: 30px
+
+    .review-text
+        margin: 0 10px 20px 20px
+        font-size: 18px
 </style>

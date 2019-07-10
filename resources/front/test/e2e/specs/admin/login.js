@@ -15,7 +15,7 @@ module.exports = {
       .setValue('input[type=email]', '')
       .setValue('input[type=password]', '')
       .click('button.form__submit')
-      .pause(30)
+      .pause(100)
       .assert.visible('.info--error')
   },
   'I can enter the admin page' : (client) => {
@@ -25,10 +25,10 @@ module.exports = {
     client
       .url(`${url}/admin/login`)
       .waitForElementVisible('body', 1000)
-      .setValue('input[type=email]', 'test')
-      .setValue('input[type=password]', 'test')
+      .setValue('input[type=email]', 'test@gmail.com')
+      .setValue('input[type=password]', '3387Ezweb')
       .click('button.form__submit')
-      .pause(100)
+      .pause(500)
       .assert.containsText('.app-main h1.title', 'メンバー一覧')
   },
 
