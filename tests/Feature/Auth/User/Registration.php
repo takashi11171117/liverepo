@@ -45,6 +45,18 @@ class RegistrationTest extends TestCase
              ->assertJsonValidationErrors(['password']);
     }
 
+    public function test_it_requires_a_gender()
+    {
+        $this->json('POST', 'auth/register')
+             ->assertJsonValidationErrors(['gender']);
+    }
+
+    public function test_it_requires_a_birth()
+    {
+        $this->json('POST', 'auth/register')
+             ->assertJsonValidationErrors(['birth']);
+    }
+
     public function test_it_registers_a_user()
     {
         $this->json('POST', 'auth/register', [
@@ -64,7 +76,9 @@ class RegistrationTest extends TestCase
         $this->json('POST', 'auth/register', [
             'name' => 'Alex',
             'email' => $email = 'alex@codecourse.com',
-            'password' => 'secret'
+            'password' => 'secret',
+            'gender' => 1,
+            'birth' => (new \DateTime())->format('Y/m/d m:d:s'),
         ])
              ->assertJsonFragment([
                  'email' => $email

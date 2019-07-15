@@ -16,7 +16,7 @@
     },
   }
 </script>
-<style>
+<style lang="sass">
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   a, abbr, acronym, address, big, cite, code,
@@ -29,61 +29,66 @@
   article, aside, canvas, details, embed,
   figure, figcaption, footer, header, hgroup,
   menu, nav, output, ruby, section, summary,
-  time, mark, audio, video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font: inherit;
-    font-size: 100%;
-    vertical-align: baseline;
-  }
+  time, mark, audio, video
+    margin: 0
+    padding: 0
+    border: 0
+    font: inherit
+    font-size: 100%
+    vertical-align: baseline
+
   /* HTML5 display-role reset for older browsers */
   article, aside, details, figcaption, figure,
-  footer, header, hgroup, menu, nav, section {
-    display: block;
-  }
-  body {
-    line-height: 1;
-    font-family: 'Noto Sans JP', sans-serif;
-  }
-  ol, ul {
-    list-style: none;
-  }
-  blockquote, q {
-    quotes: none;
-  }
+  footer, header, hgroup, menu, nav, section
+    display: block
+
+  body
+    line-height: 1
+    font-family: 'Noto Sans JP', sans-serif
+
+  ol, ul
+    list-style: none
+
+  blockquote, q
+    quotes: none
+
   blockquote:before, blockquote:after,
-  q:before, q:after {
-    content: '';
-  }
-  table {
-    border-collapse: collapse;
-    border-spacing: 0;
-  }
+  q:before, q:after
+    content: ''
 
-  .clearfix::after {
-    display: block;
-    clear: both;
-    content: '';
-  }
+  table
+    border-collapse: collapse
+    border-spacing: 0
 
-  *, *:before, *:after {
-    box-sizing: border-box;
-  }
+  .clearfix::after
+    display: block
+    clear: both
+    content: ''
 
-  .site {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-  }
+  *, *:before, *:after
+    box-sizing: border-box
 
-  .site-content {
-    flex: 1;
-  }
+  .site
+    display: flex
+    min-height: 100vh
+    flex-direction: column
 
-  img {
-    width: 100%;
-    height: auto;
-  }
+  .site-content
+    flex: 1
+
+  img
+    width: 100%
+    height: auto
+
+  .info--error
+    margin-bottom: 10px
+    text-align: left
+    color: red
+    font-weight: bold
+    margin-top: 10px
+    font-size: 12px
+
+  a:hover
+      opacity: .8
 </style>
 

@@ -1,20 +1,15 @@
 module.exports = {
-  tags: 'admin_login',
+  tags: 'auth_login',
   'I can get error messages' : (client) => {
     const url = client.globals.baseUrl;
 
     // get error
     client
-      .url(`${url}/admin/login`)
+      .url(`${url}/auth/login`)
       .waitForElementVisible('body', 1000)
-      .assert.visible('input[type=email]')
-      .assert.visible('input[type=password]')
-      .assert.visible('button.form__submit')
-      .assert.visible('.navbar-item img')
-      .assert.containsText('.card-header-title', '管理画面ログイン')
       .setValue('input[type=email]', '')
       .setValue('input[type=password]', '')
-      .click('button.form__submit')
+      .click('button#login-button')
       .pause(100)
       .assert.visible('.info--error')
   },
@@ -23,13 +18,13 @@ module.exports = {
 
     // be successful
     client
-      .url(`${url}/admin/login`)
+      .url(`${url}/auth/login`)
       .waitForElementVisible('body', 1000)
       .setValue('input[type=email]', 'test@gmail.com')
       .setValue('input[type=password]', '3387Ezweb')
-      .click('button.form__submit')
-      .pause(300)
-      .assert.containsText('.app-main h1.title', 'メンバー一覧')
+      .click('button#login-button')
+      .pause(500)
+      .assert.visible('.main-content')
   },
 
   after : (client) => {

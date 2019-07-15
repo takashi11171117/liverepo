@@ -49,6 +49,11 @@ Route::group(['prefix' => 'user', 'namespace' => 'Front\User', 'middleware' => [
         'as' => 'user.store',
         'uses' => 'ReportController@store'
     ]);
+
+    Route::post('profile', [
+        'as' => 'user.profile',
+        'uses' => 'ReportController@profile'
+    ]);
 });
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['assign.guard:admins','jwt.auth']],function ()

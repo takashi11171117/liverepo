@@ -14,10 +14,22 @@ class PrivateUserResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
-            'id' => $this->id,
+        $args = [
+            'id'     => $this->id,
             'email' => $this->email,
-            'name' => $this->name
+            'name'   => $this->name,
+            'gender' => $this->gender,
+            'birth'  => $this->birth,
         ];
+
+        if ($this->image_path !== null) {
+            $args['src'] = config('const.IMAGE_URL') . 'profile_images/' . $this->image_path;
+        }
+
+        if ($this->image_path !== null) {
+            $args['thumb'] = config('const.IMAGE_URL') . 'profile_images/thumb-' . $this->image_path;
+        }
+
+        return $args;
     }
 }

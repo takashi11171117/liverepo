@@ -26,6 +26,8 @@ class ReportIndexResource extends JsonResource
             $result['report_images'] = $report_images;
         }
 
+        $result['user'] = new UserResource($this->user);
+
         return $result;
     }
 }

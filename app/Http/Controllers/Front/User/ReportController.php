@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\Front\User;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Front\User\Report\Post;
+use App\Http\Requests\Front\User\Report\Post as ReportPost;
+use App\Http\Requests\Front\User\Profile\Post as ProfilePost;
 use App\Http\Resources\Front\UserReportIndexResource;
 use App\Http\Resources\Front\UserReportResource;
 use App\Models\Report;
 use App\Models\User;
 use App\Services\ReportService;
 use DB;
+use Illuminate\Http\Request;
 use Storage;
 
 class ReportController extends Controller
@@ -32,7 +34,7 @@ class ReportController extends Controller
      * @return mixed
      * @throws \Throwable
      */
-    public function store(Post $request, $user_id)
+    public function store(ReportPost $request, $user_id)
     {
         $params = $request->all();
         $report = new Report();
@@ -68,5 +70,39 @@ class ReportController extends Controller
         });
 
         return new UserReportResource($report);
+    }
+
+    /**
+     * @param Request $request
+     * @param $id
+     */
+    public function profile(ProfilePost $request)
+    {
+        $user_id = $request->get('user_id');
+        $user = User::find($user_id);
+
+        $args = $request->only(['user_name01', 'user_name02']);
+
+        $file = $request->file('image');
+
+        if ($file !== null) {
+            // 画像の登録
+            $disk = Storage::disk('s3');
+
+            $extension = $file->getClientOriginalExtension();
+            $filename  = "{$user_id}_icon.$extension";
+
+            $image = \Image::make($file)
+                           ->fit(500, 500);
+            $disk->put('profile_images/' . $filename, (string)$image->encode());
+
+            $image = \Image::make($file)
+                           ->fit(100, 100);
+            $disk->put('profile_images/thumb-' . $filename, (string)$image->encode());
+
+            $args['image_path'] = $filename;
+        }
+
+        $user->update($args);
     }
 }

@@ -2,14 +2,19 @@
   <main class="main">
     <div class="columns is-mobile is-multiline">
       <div v-if="reports.data !== undefined" v-for="(report) in reports.data" class="column is-12-mobile is-6-tablet is-6-desktop">
-        <n-link :to="{name: 'comedy-report-id', params: {id: report.id}}" :key="report.id">
+        <n-link :to="{name: 'comedy-report-id', params: {id: report.id}}" :key="report.id" class="box-link">
           <section class="main-content border-radius">
             <div class="is-clearfix user-data">
               <div class=user-icon>
-                <!--<img src="images/download.jpg"  class=border-radius alt="user icon">-->
+                <template v-if="report.user.thumb !== undefined">
+                  <img :src="report.user.thumb">
+                </template>
+                <template v-else>
+                  <img src="~assets/none_image.jpg">
+                </template>
               </div>
-              <div class=user-name>By user name</div>
-              <div class=user-profile>age / gender / states</div>
+              <div class=user-name>By {{ report.user.name }}</div>
+              <div class=user-profile>{{ $calcAge(report.user.birth) }} / {{ $data.genderOption[report.user.gender] }} / states</div>
             </div>
             <h1>{{ $truncate(report.title, 30) }}</h1>
             <div class="is-clearfix">
@@ -74,16 +79,18 @@
   .main-content
     background-color: #fff
     border-radius: 8px
-    padding: 10px 15px
+    padding: 15px 20px
     h1
-      padding: 5px 0 10px 0
-      font-size: 18px
+      padding: 10px 0 10px 0
+      font-size: 20px
       font-weight: bold
+      line-height: 1.2
 
   .user-data div
     float: left
     line-height: 30px
     font-size: 14px
+    margin-bottom: 15px
 
   .thumbnail
     float: right
@@ -92,17 +99,25 @@
   .user-icon
     width: 30px
     height: 30px
+    margin-right: 10px
     img
       border-radius: 5px
 
+  .user-name
+    margin-right: 10px
+    font-weight: bold
+
+  .user-profile
+    color: #888
+
   .review-content
     overflow: hidden
-    width: calc(100% - 140px)
+    width: calc(100% - 120px)
     display: flex
     flex-direction: column
 
   .review-star
-    padding-bottom: 5px
+    padding-bottom: 15px
     display: flex
 
   .star
@@ -120,14 +135,13 @@
     align-items: center
 
   .postedData>div
-    margin-left: 10px
     margin-bottom: 5px
 
   .review-text
     padding-right: 10px
     line-height: 150%
     margin-bottom: 10px
-    font-size: 14px
+    font-size: 16px
 
   .star-rating
     position: relative
@@ -146,4 +160,9 @@
 
   .star-rating-back
     color: #ccc
+
+  .box-link
+    display: block
+    color: #000
+
 </style>

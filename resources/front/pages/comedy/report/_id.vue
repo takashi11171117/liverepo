@@ -4,11 +4,15 @@
             <template v-if="isData">
                 <div class="is-clearfix user-data">
                     <div class=user-icon>
-                        <img src="images/download.jpg"  class=border-radius alt="user icon">
+                        <template v-if="data.user.thumb !== undefined">
+                            <img :src="data.user.thumb">
+                        </template>
+                        <template v-else>
+                            <img src="~assets/none_image.jpg">
+                        </template>
                     </div>
-                    <div class="user-name">By {{ data.user.name }}</div>
-                    <div class="user-profile">30代 / 女性 / 大阪府</div>
-                    <div class="posted-date">1days ago</div>
+                    <div class=user-name>By {{ data.user.name }}</div>
+                    <div class=user-profile>{{ $calcAge(data.user.birth) }} / {{ $data.genderOption[data.user.gender] }} / states</div>
                 </div>
                 <div class="clearfix postedData">
                     <h1 id="report-title">{{ data.title }}</h1>
@@ -93,7 +97,7 @@
     #report-title
         font-size: 30px
         line-height: 1.2
-        margin: 20px 20px 0 20px
+        margin: 20px 0 0 0
 
     .user-data
         margin-top: 20px
@@ -186,4 +190,6 @@
     .review-text
         margin: 0 10px 20px 20px
         font-size: 18px
+        white-space: pre-wrap
+        word-wrap: break-word
 </style>

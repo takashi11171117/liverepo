@@ -1,5 +1,5 @@
 import Vuex from 'vuex'
-import { shallowMount, createLocalVue } from '@vue/test-utils'
+import { shallowMount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
 import test from 'ava'
 import sinon from 'sinon'
 import * as indexStore from '../../../../store/index'
@@ -31,8 +31,9 @@ test('template test at the exception of login page', t => {
       $store
     },
     stubs: {
-      'b-icon': '<div class="b-icon"></div>'
-    }
+      'b-icon': '<div class="b-icon"></div>',
+      NLink: RouterLinkStub,
+    },
   });
   t.is(wrapper.find('#logout').text(), 'ログアウト');
   t.regex(wrapper.find('#account').text(), /ようこそ testさん/);
@@ -62,7 +63,8 @@ test('script test at login page', t => {
       $nuxt,
     },
     stubs: {
-      'b-icon': '<div class="b-icon"></div>'
+      'b-icon': '<div class="b-icon"></div>',
+      NLink: RouterLinkStub,
     }
   });
 
@@ -92,7 +94,8 @@ test('template test at login page', t => {
       $store
     },
     stubs: {
-      'b-icon': '<div class="b-icon"></div>'
+      'b-icon': '<div class="b-icon"></div>',
+      NLink: RouterLinkStub,
     }
   });
   t.is(wrapper.find('.buttons').html(), '<div class="buttons"><!----></div>');

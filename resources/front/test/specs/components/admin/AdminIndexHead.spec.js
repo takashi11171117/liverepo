@@ -29,7 +29,7 @@ test('template test', t => {
       $store,
     },
     stubs: {
-      'n-link': RouterLinkStub,
+      NLink: RouterLinkStub,
     }
   });
 
@@ -68,7 +68,7 @@ test('script test', async t => {
       $store,
     },
     stubs: {
-      'n-link': RouterLinkStub,
+      NLink: RouterLinkStub,
     }
   });
 

@@ -26,7 +26,17 @@ class RegisterRequest extends FormRequest
         return [
             'email' => 'required|email|unique:users,email',
             'name' => 'required',
-            'password' => 'required'
+            'password' => 'required',
+            'gender' => 'required|numeric',
+            'birth' => 'required|date',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'gender' => '性別',
+            'birth' => '生年月日',
         ];
     }
 }

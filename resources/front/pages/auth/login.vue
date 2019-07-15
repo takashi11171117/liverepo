@@ -8,20 +8,30 @@
                         <div class="field">
                             <label class="label">メールアドレス</label>
                             <div class="control">
-                                <input class="input" type="email" placeholder="e.g. alex@codecourse.com" v-model="form.email">
+                                <input class="input" type="email" v-model="form.email">
                             </div>
+                            <template v-if="error.hasOwnProperty('email') && error.email.length > 0">
+                                <p class="info info--error" v-for="value in error.email">
+                                    {{ value }}
+                                </p>
+                            </template>
                         </div>
 
                         <div class="field">
                             <label class="label">パスワード</label>
                             <div class="control">
-                                <input class="input" type="password" v-model="form.password">
+                                <input class="input" type="password" v-model="form.password" placeholder="パスワード">
                             </div>
+                            <template v-if="error.hasOwnProperty('password') && error.password.length > 0">
+                                <p class="info info--error" v-for="value in error.password">
+                                    {{ value }}
+                                </p>
+                            </template>
                         </div>
 
                         <div class="field">
                             <p class="control">
-                                <button class="button is-info is-medium">
+                                <button class="button is-info is-medium" id="login-button">
                                     ログイン
                                 </button>
                             </p>
@@ -29,9 +39,9 @@
                         <hr class="is-divider">
                         <p>
                             アカウントを持っていない場合は
-                            <nuxt-link :to="{name: 'auth-register'}">
+                            <n-link :to="{name: 'auth-register'}">
                                 新規登録
-                            </nuxt-link>
+                            </n-link>
                             から。
                         </p>
                     </form>
@@ -47,8 +57,9 @@
       return {
         form: {
           email: '',
-          password: ''
-        }
+          password: '',
+        },
+        error: {},
       }
     },
 
@@ -60,16 +71,20 @@
       async signin () {
         await this.$auth.loginWith('local', {
           data: this.form
-        });
-
-        if (this.$route.query.redirect) {
-          this.$router.replace(this.$route.query.redirect);
-          return
-        }
-
-        this.$router.replace({
-          name: 'index'
         })
+          .then(() => {
+            if (this.$route.query.redirect) {
+              this.$router.replace(this.$route.query.redirect);
+              return;
+            }
+
+            this.$router.replace({
+              name: 'index'
+            })
+          })
+          .catch(error => {
+            this.error = error.response.data.errors;
+          });
       }
     }
   }

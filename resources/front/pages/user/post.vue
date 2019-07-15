@@ -1,7 +1,8 @@
 <template>
-    <main class="main">
-        <section class="columns is-mobile is-multiline">
+    <div class="container is-fluid">
+        <div class="columns is-centered">
             <div class="column">
+                <h1>レポート投稿</h1>
                 <b-field
                         :type="error.hasOwnProperty('title') ? 'is-danger': ''"
                         :message="error.hasOwnProperty('title') ? error.title[0] : ''"
@@ -93,8 +94,8 @@
                     <button id="submit" @click="onSubmit()" class="button is-primary">保存する</button>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -144,7 +145,7 @@
               message: 'レポートを追加しました。',
               type: 'is-success',
             });
-            this.$router.push('/admin/report');
+            this.$router.push('/');
           }).catch((error) => {
             console.log(error);
             this.$set(this, 'error', error.response.data.errors);
@@ -174,6 +175,13 @@
 </script>
 
 <style scoped lang="sass">
+    .container
+        margin-top: 30px
+        margin-bottom: 100px
+    h1
+        font-size: 28px
+        font-weight: bold
+        margin-bottom: 20px
     #tagify
         margin-bottom: 20px
     #image-list
