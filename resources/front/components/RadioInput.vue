@@ -8,6 +8,7 @@
                 v-for="(value, key) in options"
                 v-model="innerValue"
                 :native-value="key"
+                :key="key"
         >
             {{ value }}
         </b-radio>
