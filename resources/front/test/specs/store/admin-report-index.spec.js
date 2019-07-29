@@ -11,7 +11,7 @@ const localVue = createLocalVue();
 localVue.use(Vuex);
 
 let pagination = {
-  "first_page_url": "/admin/report?page=1",
+  "first_page_url": "/admin/reports?page=1",
   "path": "path",
   "per_page": 20,
   "total": 78,
@@ -34,8 +34,8 @@ let pagination = {
     }
   ],
   "last_page": 6,
-  "last_page_url": "/admin/report?page=4",
-  "next_page_url": "/admin/report?page=2",
+  "last_page_url": "/admin/reports?page=4",
+  "next_page_url": "/admin/reports?page=2",
   "to": 20,
   "prev_page_url": null,
   "current_page": 1

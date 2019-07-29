@@ -1,5 +1,5 @@
 import Vuex from 'vuex'
-import { mount, createLocalVue } from '@vue/test-utils'
+import { shallowMount, createLocalVue } from '@vue/test-utils'
 import test from 'ava'
 import Buefy from 'buefy';
 import sinon from "sinon";
@@ -21,7 +21,7 @@ const $store = {
 };
 
 test('template test', t => {
-  const wrapper = mount(AdminEdit, {
+  const wrapper = shallowMount(AdminEdit, {
     localVue,
     mocks: {
       $store,
@@ -29,9 +29,9 @@ test('template test', t => {
   });
 
   t.is(wrapper.find('.title').text(), 'メンバー編集');
-  t.true(wrapper.find('#name').exists());
-  t.true(wrapper.find('#email').exists());
-  t.true(wrapper.find('#password').exists());
+  t.true(wrapper.find('textinput-stub[name="name"]').exists());
+  t.true(wrapper.find('textinput-stub[name="email"]').exists());
+  t.true(wrapper.find('textinput-stub[name="password"]').exists());
   t.true(wrapper.find('#password-confirm').exists());
   t.is(wrapper.find('button').text(), '保存する');
 

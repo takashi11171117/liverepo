@@ -23,7 +23,7 @@
             </b-select>
 
             <p class="control">
-                <n-link id="new" :to="{ path: '/admin/admin/new' }" class="button is-info">新規追加</n-link>
+                <n-link id="new" :to="{ name: 'admin-admins-new' }" class="button is-info">新規追加</n-link>
             </p>
         </b-field>
     </div>

@@ -29,7 +29,7 @@ export const mutations = {
 
 export const actions = {
   async fetchAdminPagination({ commit }, query) {
-    await this.$axios.$get('admin/admin', {
+    await this.$axios.$get('admin/admins', {
       params: {
         page: query.page,
         per_page: query.per_page,
@@ -80,7 +80,7 @@ export const actions = {
       }
 
       await this.$axios.$post(
-        `admin/admin/${admin.id}/delete${query_string}`,
+        `admin/admins/${admin.id}${query_string}`,
         {_method: 'DELETE'}
       ).then((res) => {
         commit('UPDATE_PAGINATION',
@@ -98,7 +98,7 @@ export const actions = {
 
   async addAdmin({ commit }, {name, email, password, password_confirmation}) {
     await this.$axios.$post(
-      'admin/admin/add',
+      'admin/admins',
       {name, email, password, password_confirmation}
     );
   }

@@ -1,46 +1,37 @@
 <template>
     <section class="container">
         <h1 class="title">メンバー追加</h1>
-        <b-field
+        <TextInput
                 label="名前"
-                :type="error.hasOwnProperty('name') ? 'is-danger': ''"
-                :message="error.hasOwnProperty('name') ? error.name[0] : ''"
-        >
-            <b-input v-model="name"
-                     id="name">
-            </b-input>
-        </b-field>
+                name="name"
+                v-model="name"
+                placeholder="名前"
+                :error="error"
+        />
 
-        <b-field
+        <TextInput
                 label="メールアドレス"
-                :type="error.hasOwnProperty('email') ? 'is-danger': ''"
-                :message="error.hasOwnProperty('email') ? error.email[0] : ''"
-        >
-            <b-input type="email"
-                     id="email"
-                     v-model="email"
-                     maxlength="50">
-            </b-input>
-        </b-field>
+                name="email"
+                v-model="email"
+                placeholder="メールアドレス"
+                :error="error"
+        />
 
-        <b-field
+        <TextInput
                 label="パスワード"
-                :type="error.hasOwnProperty('password') ? 'is-danger': ''"
-                :message="error.hasOwnProperty('password') ? error.password[0] : ''"
-        >
-            <b-input
-                    type="password"
-                    id="password"
-                    v-model="password">
-            </b-input>
-        </b-field>
+                name="password"
+                v-model="password"
+                type="password"
+                :error="error"
+        />
 
-        <b-field label="パスワード確認">
-            <b-input type="password"
-                     id="password-confirm"
-                     v-model="passwordConfirm">
-            </b-input>
-        </b-field>
+        <TextInput
+                label="パスワード確認"
+                name="password-confirm"
+                v-model="passwordConfirm"
+                type="password"
+                :error="error"
+        />
 
         <div class="buttons">
             <button id="submit" @click="onSubmit()" class="button is-primary">保存する</button>
@@ -50,6 +41,7 @@
 
 <script>
   import {mapActions} from 'vuex'
+  import TextInput from '../../../components/TextInput';
 
   export default {
     middleware: [
@@ -57,6 +49,10 @@
     ],
 
     layout: 'admin',
+
+    components: {
+      TextInput
+    },
 
     data() {
       return {

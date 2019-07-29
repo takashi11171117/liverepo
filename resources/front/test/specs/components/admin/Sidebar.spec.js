@@ -1,6 +1,6 @@
 import { shallowMount, RouterLinkStub } from '@vue/test-utils'
 import test from 'ava'
-import Sidebar from '../../../../components/admin/Sidebar'
+import Sidebar from '../../../../layouts/parcial/admin/Sidebar'
 
 test('The title is correct', t => {
   const wrapper = shallowMount(Sidebar, {
@@ -26,9 +26,9 @@ test('There are two input elements', t => {
     path: '/admin',
   });
   t.deepEqual(links.at(1).props().to, {
-    path: '/admin/admin',
+    path: '/admin/admins',
   });
   t.deepEqual(links.at(2).props().to, {
-    path: '/admin/report',
+    path: '/admin/reports',
   });
 });

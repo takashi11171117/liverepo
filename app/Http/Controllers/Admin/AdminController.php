@@ -117,7 +117,7 @@ class AdminController extends Controller
             $args['s'] = $request->s;
         }
 
-        return redirect()->route('admin.admin.index', $args, 301);
+        return redirect()->route('admin.admins.index', $args, 301);
     }
 
     protected function scopes()

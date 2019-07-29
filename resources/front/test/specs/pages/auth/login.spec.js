@@ -14,8 +14,8 @@ test('template test', async t => {
     },
   });
   t.is(wrapper.find('.title').text(), 'ログイン');
-  t.true(wrapper.find('input[type="email"]').exists());
-  t.true(wrapper.find('input[type="password"]').exists());
+  t.true(wrapper.find('textinput-stub[type="email"]').exists());
+  t.true(wrapper.find('textinput-stub[type="password"]').exists());
   t.true(wrapper.find('#login-button').exists());
   t.is(wrapper.find('#login-button').text(), 'ログイン');
 });

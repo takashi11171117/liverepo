@@ -23,7 +23,7 @@
             </b-select>
 
             <p class="control">
-                <n-link id="new" :to="{ path: '/admin/report/new' }" class="button is-info">新規追加</n-link>
+                <n-link id="new" :to="{ name: 'admin-reports-new' }" class="button is-info">新規追加</n-link>
             </p>
         </b-field>
     </div>
@@ -53,7 +53,7 @@
       onSearch(event) {
         this.UPDATE_INPUT({'search': event.target.value});
         this.$router.push({
-          path: '/admin/report',
+          path: '/admin/reports',
           query: {
             page: this.page,
             per_page: this.perPage,
@@ -64,7 +64,7 @@
       changePerPage(event) {
         this.UPDATE_INPUT({'perPage': event.target.value});
         this.$router.push({
-          path: '/admin/report',
+          path: '/admin/reports',
           query: {
             page: this.page,
             per_page: event.target.value,

@@ -5,84 +5,46 @@
                 <div class="column is-6">
                     <h1 class="title is-4">新規登録(無料)</h1>
                     <form action="" @submit.prevent="register">
-                        <div class="field">
-                            <label class="label">ユーザー名</label>
-                            <div class="control">
-                                <input class="input" type=text placeholder="ユーザー名" v-model="form.name">
-                            </div>
-                            <template v-if="error.hasOwnProperty('name') && error.name.length > 0">
-                                <p class="info info--error" v-for="value in error.name">
-                                    {{ value }}
-                                </p>
-                            </template>
-                        </div>
+                        <TextInput
+                                label="ユーザー名"
+                                name="name"
+                                v-model="form.name"
+                                placeholder="ユーザー名"
+                                :error="error"
+                        />
 
-                        <div class="field">
-                            <label class="label">メールアドレス</label>
-                            <div class="control">
-                                <input class="input" type="email" placeholder="メールアドレス" v-model="form.email">
-                            </div>
-                            <template v-if="error.hasOwnProperty('email') && error.email.length > 0">
-                                <p class="info info--error" v-for="value in error.email">
-                                    {{ value }}
-                                </p>
-                            </template>
-                        </div>
+                        <TextInput
+                                label="メールアドレス"
+                                name="email"
+                                type="email"
+                                v-model="form.email"
+                                placeholder="メールアドレス"
+                                :error="error"
+                        />
 
-                        <div class="field">
-                            <label class="label">パスワード</label>
-                            <div class="control">
-                                <input class="input" type="password" v-model="form.password">
-                            </div>
-                            <template v-if="error.hasOwnProperty('password') && error.password.length > 0">
-                                <p class="info info--error" v-for="value in error.password">
-                                    {{ value }}
-                                </p>
-                            </template>
-                        </div>
+                        <TextInput
+                                label="パスワード"
+                                name="password"
+                                type="password"
+                                v-model="form.password"
+                                placeholder="パスワード"
+                                :error="error"
+                        />
 
-                        <div class="field">
-                            <label class="label">性別</label>
-                            <div class="control">
-                                <b-select
-                                        v-model="form.gender"
-                                >
-                                    <option
-                                            v-for="(rating, key) in $data.genderOption"
-                                            v-bind:value="key"
-                                            :key="key">
-                                        {{ rating }}
-                                    </option>
-                                </b-select>
-                            </div>
-                            <template v-if="error.hasOwnProperty('gender') && error.gender.length > 0">
-                                <p class="info info--error" v-for="value in error.gender">
-                                    {{ value }}
-                                </p>
-                            </template>
-                        </div>
+                        <SelectInput
+                                name="gender"
+                                label="性別"
+                                v-model="form.gender"
+                                :error="error"
+                                :options="$data.genderOption"
+                        />
 
-                        <div class="field">
-                            <label class="label">生年月日</label>
-                            <div class="control">
-                                <template>
-                                    <b-field>
-                                        <b-datepicker
-                                                placeholder="クリックして選択"
-                                                icon="calendar-today"
-                                                v-model="form.birth"
-                                                :month-names="$data.monthNamesOption"
-                                                :day-names="$data.dayNamesOption">
-                                        </b-datepicker>
-                                    </b-field>
-                                </template>
-                            </div>
-                            <template v-if="error.hasOwnProperty('birth') && error.birth.length > 0">
-                                <p class="info info--error" v-for="value in error.birth">
-                                    {{ value }}
-                                </p>
-                            </template>
-                        </div>
+                        <DateInput
+                                label="生年月日"
+                                name="birth"
+                                v-model="form.birth"
+                                :error="error"
+                        />
 
                         <p class="kiyaku">
                             利用規約に同意のうえ、「利用規約に同意して登録」ボタンを押してください。
@@ -111,6 +73,10 @@
 </template>
 
 <script>
+  import TextInput from '../../components/TextInput';
+  import SelectInput from '../../components/SelectInput';
+  import DateInput from '../../components/DateInput';
+
   export default {
     data () {
       return {
@@ -119,10 +85,16 @@
           email: '',
           password: '',
           gender: '',
-          birth: new Date()
+          birth: null
         },
         error: {}
       }
+    },
+
+    components: {
+      TextInput,
+      SelectInput,
+      DateInput
     },
 
     middleware: [
@@ -131,6 +103,7 @@
 
     methods: {
       async register () {
+        this.form.birth = Date.format(this.form.birth, "Y/m/d H:i:s");
         await this.$axios.$post('/auth/register', this.form)
           .then(() => {
             this.$router.replace({

@@ -37,7 +37,7 @@ export const mutations = {
 
 export const actions = {
   async fetchAdmin({commit}, {id}) {
-    await this.$axios.$get(`admin/admin/${id}`)
+    await this.$axios.$get(`admin/admins/${id}`)
       .then(({data}) => {
         commit('UPDATE_ADMIN_FORM', {
           admin: data,
@@ -53,7 +53,7 @@ export const actions = {
   async updateAdmin({commit, state}) {
     if (confirm('更新してもよろしいですか？')) {
       await this.$axios.$post(
-        `admin/admin/${state.admin.id}/update`,
+        `admin/admins/${state.admin.id}`,
         {
           _method: 'PUT',
           name: state.name,

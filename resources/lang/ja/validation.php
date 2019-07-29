@@ -99,5 +99,11 @@ return [
     'attributes'           => [
         'email'    => 'メールアドレス',
         'password' => 'パスワード',
+        'birth' => '生年月日',
+        'user_name01' => '姓',
+        'user_name02' => '名',
+        'description' => '紹介文',
+        'gender' => '性別',
+
     ],
 ];

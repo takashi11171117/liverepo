@@ -106,7 +106,7 @@ test('script test', async t => {
   t.true(stub2.called);
   t.true(spy.called);
   t.true(spy2.called);
-  t.deepEqual(spy.args[0][0], '/admin/report');
+  t.deepEqual(spy.args[0][0], '/admin/reports');
   t.deepEqual(spy2.args[0][0], {
     duration: 5000,
     message: 'レポートを追加しました。',

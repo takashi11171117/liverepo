@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Front\User;
+namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Front\User\Report\Post as ReportPost;
@@ -14,7 +14,7 @@ use DB;
 use Illuminate\Http\Request;
 use Storage;
 
-class ReportController extends Controller
+class SettingController extends Controller
 {
     protected $reportService;
 
@@ -34,7 +34,7 @@ class ReportController extends Controller
      * @return mixed
      * @throws \Throwable
      */
-    public function store(ReportPost $request, $user_id)
+    public function post(ReportPost $request, $user_id)
     {
         $params = $request->all();
         $report = new Report();
@@ -81,7 +81,15 @@ class ReportController extends Controller
         $user_id = $request->get('user_id');
         $user = User::find($user_id);
 
-        $args = $request->only(['user_name01', 'user_name02']);
+        $args = $request->only([
+            'user_name01',
+            'user_name02',
+            'send_mail_flg',
+            'url',
+            'description',
+            'gender',
+            'birth',
+        ]);
 
         $file = $request->file('image');
 

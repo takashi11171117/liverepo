@@ -29,7 +29,7 @@ const $store = {
   getters: {
     'admin-report-index/isLoading': false,
     'admin-report-index/pagination': {
-      "first_page_url": "/admin/report?page=1",
+      "first_page_url": "/admin/reports?page=1",
       "path": "path",
       "per_page": 20,
       "total": 78,
@@ -52,8 +52,8 @@ const $store = {
         }
       ],
       "last_page": 6,
-      "last_page_url": "/admin/report?page=4",
-      "next_page_url": "/admin/report?page=2",
+      "last_page_url": "/admin/reports?page=4",
+      "next_page_url": "/admin/reports?page=2",
       "to": 20,
       "prev_page_url": null,
       "current_page": 1
@@ -82,7 +82,7 @@ test('template test', t => {
 
   const links = wrapper.findAll(RouterLinkStub);
   t.deepEqual(links.at(0).props().to, {
-    path: '/admin/report/edit/1',
+    path: '/admin/reports/edit/1',
   });
 
   const spy = sinon.spy();

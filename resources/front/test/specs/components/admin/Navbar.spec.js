@@ -3,7 +3,7 @@ import { shallowMount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
 import test from 'ava'
 import sinon from 'sinon'
 import * as indexStore from '../../../../store/index'
-import NavBar from '../../../../components/admin/NavBar'
+import NavBar from '../../../../layouts/parcial/admin/NavBar'
 
 const localVue = createLocalVue();
 localVue.use(Vuex);

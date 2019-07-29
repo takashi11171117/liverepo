@@ -2,50 +2,33 @@
     <main class="main">
         <article class="main-content border-radius">
             <template v-if="isData">
-                <div class="is-clearfix user-data">
-                    <div class=user-icon>
-                        <template v-if="data.user.thumb !== undefined">
-                            <img :src="data.user.thumb">
-                        </template>
-                        <template v-else>
-                            <img src="~assets/none_image.jpg">
-                        </template>
-                    </div>
-                    <div class=user-name>By {{ data.user.name }}</div>
-                    <div class=user-profile>{{ $calcAge(data.user.birth) }} / {{ $data.genderOption[data.user.gender] }} / states</div>
-                </div>
-                <div class="clearfix postedData">
+                <UserData :user="data.user"/>
+                <div class="postedData">
                     <h1 id="report-title">{{ data.title }}</h1>
-                    <div class="is-clearfix review-star">
-                        <div class="review-star">
-                            <div class="star-rating">
-                                <div class="star-rating-front" :style="'width: ' + data.rating/5*100 + '%'">★★★★★</div>
-                                <div class="star-rating-back">★★★★★</div>
-                            </div>
-                            <div class="star-number">{{ data.rating }}</div>
-                        </div>
-                    </div>
-                    <div class="is-clearfix category">
+                    <ReviewStars :report="data"/>
+
+                    <div class="category">
                         <ul class="tags">
                             <li>ヤング</li>
                             <li>漫才</li>
                         </ul>
                     </div>
-                    <div class="is-clearfix live-data">
+
+                    <div class="live-data">
                         <ul>
                             <li><span>ライブ名</span>ヤングのパタパタ漫才</li>
                             <li><span>ライブ日時</span>18:40</li>
                         </ul>
                     </div>
 
-                    <div class="is-clearfix like-area">
+                    <div class="like-area">
                         <div class="like-button"><i class="far fa-thumbs-up"></i> 380</div>
                         <div class="favorite-button"><i class="far fa-thumbs-up"></i></div>
                     </div>
 
                     <hr class="dropdown-divider">
 
-                    <div class="is-clearfix" id="image-list" v-if="data.report_images !== null && data.report_images.length > 0">
+                    <div id="image-list" v-if="data.report_images !== null && data.report_images.length > 0">
                         <ul>
                             <li v-for="(report_image, index) in data.report_images">
                                 <div class="thumb-image">
@@ -71,14 +54,21 @@
 </template>
 
 <script>
+  import UserData from '../../../components/front/UserData';
+  import ReviewStars from '../../../components/front/ReviewStars';
+
   export default {
     data() {
       return {
         data: {},
       }
     },
+    components: {
+      UserData,
+      ReviewStars,
+    },
     async asyncData({$axios, params}) {
-      let {data} = await $axios.$get(`/comedy/report/${params.id}`);
+      let {data} = await $axios.$get(`/comedy/reports/${params.id}`);
 
       return {data};
     },
@@ -94,6 +84,22 @@
 </script>
 
 <style lang="sass" scoped>
+    main
+        background-color: #f8d048
+        height: auto
+        color: #000
+        padding: 20px
+
+    .main-content
+        background-color: #fff
+        border-radius: 8px
+        padding: 15px 20px
+        h1
+            padding: 10px 0 10px 0
+            font-size: 20px
+            font-weight: bold
+            line-height: 1.2
+
     #report-title
         font-size: 30px
         line-height: 1.2
@@ -163,7 +169,7 @@
             right: -5px
             width: 0
             height: 0
-            border-width: 0px 6px 6px 0px
+            border-width: 0 6px 6px 0
             border-style: solid
             border-color: #FFF
             border-bottom-color: transparent
@@ -178,10 +184,11 @@
             padding: 12px
             border-radius: 5px;
 
-    #image-list img
-        float: left
-        width: 120px
-        height: auto
+    #image-list
+        display: flex
+        img
+            width: 120px
+            height: auto
 
     .dropdown-divider
         margin-top: 30px

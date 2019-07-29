@@ -37,7 +37,7 @@ export const mutations = {
 
 export const actions = {
   async fetchEachData({commit}, {id}) {
-    await this.$axios.$get(`admin/report/${id}`)
+    await this.$axios.$get(`admin/reports/${id}`)
       .then(({data}) => {
         let args = {
           title: data.title,
@@ -75,7 +75,7 @@ export const actions = {
       formData.append('tags', report_tags);
       formData.append('_method', 'PUT');
       await this.$axios.$post(
-        `admin/report/${id}/update`,
+        `admin/reports/${id}`,
         formData,
         {
           headers: {

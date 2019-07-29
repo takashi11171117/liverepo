@@ -1,5 +1,5 @@
 import Vuex from 'vuex'
-import { mount, createLocalVue } from '@vue/test-utils'
+import { shallowMount, createLocalVue } from '@vue/test-utils'
 import test from 'ava'
 import Buefy from 'buefy';
 import VueTagsInput from '@johmun/vue-tags-input'
@@ -68,7 +68,7 @@ const $store = {
 };
 
 test('template test', t => {
-  const wrapper = mount(ReportEdit, {
+  const wrapper = shallowMount(ReportEdit, {
     localVue,
     mocks: {
       $store,
@@ -79,11 +79,12 @@ test('template test', t => {
   });
 
   t.is(wrapper.find('.title').text(), 'レポート編集');
-  t.true(wrapper.find('#title').exists());
-  t.true(wrapper.find('#content').exists());
-  t.true(wrapper.find('#status').exists());
-  t.true(wrapper.find('#rating').exists());
-  t.true(wrapper.find('#image1').exists());
+  t.true(wrapper.find('textinput-stub[name="title"]').exists());
+  t.true(wrapper.find('textinput-stub[name="content"]').exists());
+  t.true(wrapper.find('selectinput-stub[name="status"]').exists());
+  t.true(wrapper.find('selectinput-stub[name="rating"]').exists());
+  t.true(wrapper.find('tagifyinput-stub[name="tags"]').exists());
+  t.true(wrapper.find('imageinput-stub[name="images.0"]').exists());
   t.is(wrapper.find('button').text(), '保存する');
 
   const spy = sinon.spy();

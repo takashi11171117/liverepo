@@ -36,7 +36,7 @@
 
                 <b-table-column custom-key="actions">
                     <div style="width: 60px;">
-                        <n-link :to="{ path: `/admin/report/edit/${props.row.id}` }" class="button is-small is-light">
+                        <n-link :to="{ name: 'admin-reports-edit-id', params: {id: props.row.id} }" class="button is-small is-light">
                             <b-icon icon="lead-pencil" size="is-small"></b-icon>
                         </n-link>
                         <button :id="`delete${ props.row.id }`" class="button is-small is-danger"
@@ -49,7 +49,7 @@
         </b-table>
         <p class="no-data" v-else-if="pagination !== null || Object.keys(pagination.data).length === 0">データがありません。</p>
         <Pagination
-                current_path="/admin/report"
+                current_path="/admin/reports"
                 v-bind:pagination="pagination"
                 v-if="Object.keys(pagination.data).length > 0"
         />
@@ -59,7 +59,7 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
-  import Pagination from './Pagination'
+  import Pagination from '../Pagination'
 
   export default {
     components: {
@@ -87,10 +87,9 @@
   }
 </script>
 
-<style scoped>
-    .no-data {
-        background-color: #fff;
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
+<style lang="sass" scoped>
+    .no-data
+        background-color: #fff
+        padding-top: 10px
+        padding-bottom: 10px
 </style>

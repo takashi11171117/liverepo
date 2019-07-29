@@ -1,7 +1,7 @@
 <template>
     <header>
         <h1 class="index-page">レポートを書いたらライブに行ける！お笑いライブレポ</h1>
-        <div class="clearfix navBarMenu">
+        <div class="navBarMenu">
             <div class="nav-logo">
                 <n-link :to="{ name: 'index' }" id="logo">
                     <img src="~assets/logo.svg" width="112" height="28">
@@ -24,7 +24,7 @@
 
                 <template v-if="$auth.loggedIn">
                     <div class="nav-post-report">
-                        <n-link :to="{ name: 'user-post' }" id="post-report" class="button">
+                        <n-link :to="{ name: 'setting-post' }" id="post-report" class="button">
                             投稿する
                         </n-link>
                     </div>
@@ -38,12 +38,12 @@
                             </a>
 
                             <b-dropdown-item aria-role="menu-item" has-link>
-                                <n-link :to="{ name: 'user' }" id="mypage">
+                                <n-link :to="{ name: 'setting' }" id="mypage">
                                     マイページ
                                 </n-link>
                             </b-dropdown-item>
                             <b-dropdown-item aria-role="menu-item">
-                                <n-link :to="{ name: 'user-profile' }" id="account">
+                                <n-link :to="{ name: 'setting-profile' }" id="account">
                                     アカウント設定
                                 </n-link>
                             </b-dropdown-item>
@@ -58,7 +58,7 @@
             <!--<img src="images/main_image.png" alt="LIVE REPO">-->
         </div>
         <nav>
-            <ul class="clearfix">
+            <ul>
                 <li><a href="#">新着</a></li>
                 <li><a href="#">トレンド</a></li>
             </ul>
@@ -77,17 +77,8 @@
         background-color: #f8d048
         padding: 15px 0 15px 0
 
-
-    #nav-right
-        float: right
-        > div
-            float: left
-
     .nav-menu
-        padding-top: 5px
-        padding-right: 8px
-        padding-left: 15px
-        float: left
+        padding: 5px 15px 0 8px;
         div
             font-size: 8px
             font-weight: bold
@@ -96,24 +87,18 @@
         display: flex
         justify-content: flex-start
         #logo
-            margin-left: 20px
-            margin-right: 20px
-        div
-            display: inline-block
+            margin: 0 20px
         img
             padding-top: 5px
             width: 100px
-            /* float: left */
 
     .nav-search
-        padding-top: 8px
-        padding-right: 10px
+        padding: 8px 0 0 10px
 
     .nav-login,
     .nav-post-report,
     .nav-new-user
-        padding-top: 5px
-        padding-right: 20px
+        padding: 5px 20px 0 0
 
     .nav-new-user,
     .nav-post-report
@@ -123,25 +108,21 @@
     .button
         font-weight: bold
         font-size: 14px
-        padding-top: 18px
-        padding-bottom: 18px
-        padding-left: 15px
-        padding-right: 15px
+        padding: 18px 15px
 
     nav
         background-color: #000
         ul
+            display: flex
             margin: 0 auto
             li
-                float: left
                 position: relative
                 a
                     color: #fff
                     font-size: 20px
                     text-decoration: none
                     text-align: center
-                    padding: 15px 30px
-                    padding-bottom: 18px
+                    padding: 15px 30px 18px 30px
                     display: inline-block
                 &:after
                     position: absolute
@@ -157,7 +138,6 @@
                     height: 0
 
     .dropdown
-        padding: 10px
+        padding: 10px 0 10px 10px
         margin-right: 20px
-        padding-left: 0
 </style>

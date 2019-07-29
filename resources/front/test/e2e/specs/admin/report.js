@@ -32,7 +32,7 @@ module.exports = {
         name: 'token',
         value: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXV0aFwvYWRtaW4iLCJpYXQiOjE1NjI2NzE2NjUsImV4cCI6MTU2MjY3NTI2NSwibmJmIjoxNTYyNjcxNjY1LCJqdGkiOiJaazBHWXpneEdaNk5KSTZiIiwic3ViIjoxMSwicHJ2IjoiZGY4ODNkYjk3YmQwNWVmOGZmODUwODJkNjg2YzQ1ZTgzMmU1OTNhOSJ9.aawo5jmISurKgxXZPUuOWK_KTVLi-uXJW4T14nvRenc'
       })
-      .url(`${url}/admin/report`)
+      .url(`${url}/admin/reports`)
       .waitForElementVisible('body', 1000)
       .assert.containsText('h1.title', 'レポート一覧')
       .assert.visible('#search')

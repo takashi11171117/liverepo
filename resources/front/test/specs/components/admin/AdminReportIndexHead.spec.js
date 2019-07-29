@@ -38,7 +38,7 @@ test('template test', t => {
 
   const links = wrapper.findAll(RouterLinkStub);
   t.deepEqual(links.at(0).props().to, {
-    path: '/admin/report/new',
+    path: '/admin/reports/new',
   });
 
   const spy = sinon.spy();
@@ -102,7 +102,7 @@ test('script test', async t => {
 
 
   t.deepEqual(router.args[0][0], {
-    path: '/admin/report',
+    path: '/admin/reports',
     query: {
       page: 1,
       per_page: 20,
@@ -128,7 +128,7 @@ test('script test', async t => {
 
 
   t.deepEqual(router.args[0][0], {
-    path: '/admin/report',
+    path: '/admin/reports',
     query: {
       page: 1,
       per_page: event2.target.value,

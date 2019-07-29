@@ -28,6 +28,11 @@ class Post extends FormRequest
             'user_name01' => 'nullable|max:255',
             'user_name02' => 'nullable|max:255',
             'image' => 'nullable|image|max:10000',
+            'url' => 'nullable|max:255',
+            'description' => 'nullable|max:1200',
+            'gender' => 'required|numeric',
+            'birth' => 'required|date',
+            'show_mail_flg' => 'required|numeric'
         ];
 
         return $args;

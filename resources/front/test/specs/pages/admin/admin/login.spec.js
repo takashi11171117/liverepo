@@ -7,8 +7,8 @@ import AdminLogin from '../../../../../pages/admin/login'
 test('template test', t => {
   const wrapper = shallowMount(AdminLogin);
   t.is(wrapper.find('.card-header-title').text(), '管理画面ログイン');
-  t.is(wrapper.find('input[type="email"]').attributes('placeholder'), 'メールアドレス');
-  t.is(wrapper.find('input[type="password"]').attributes('placeholder'), 'パスワード');
+  t.is(wrapper.find('textinput-stub[type="email"]').attributes('placeholder'), 'メールアドレス');
+  t.is(wrapper.find('textinput-stub[type="password"]').attributes('placeholder'), 'パスワード');
   t.is(wrapper.find('button').text(), 'ログイン');
 
   // pushing login button

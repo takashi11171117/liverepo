@@ -1,75 +1,50 @@
 <template>
     <section class="container">
         <h1 class="title">レポート編集</h1>
-        <b-field
+        <TextInput
                 label="タイトル"
-                :type="error.hasOwnProperty('title') ? 'is-danger': ''"
-                :message="error.hasOwnProperty('title') ? error.name[0] : ''"
-        >
-            <b-input type="text"
-                     id="title"
-                     @input="UPDATE_INPUT({'title': $event})"
-                     :value="title">
-            </b-input>
-        </b-field>
+                name="title"
+                :value="title"
+                @input="UPDATE_INPUT({'title': $event})"
+                placeholder="タイトル"
+                :error="error"
+        />
 
-        <b-field
+        <TextInput
                 label="本文"
-                :type="error.hasOwnProperty('content') ? 'is-danger': ''"
-                :message="error.hasOwnProperty('content') ? error.content[0] : ''"
-        >
-            <b-input type="textarea"
-                     id="content"
-                     @input="UPDATE_INPUT({'content': $event})"
-                     :value="content">
-            </b-input>
-        </b-field>
+                name="content"
+                :value="content"
+                @input="UPDATE_INPUT({'content': $event})"
+                placeholder="本文"
+                :error="error"
+                type="textarea"
+        />
 
-        <b-field
+        <SelectInput
                 label="ステータス"
-                :type="error.hasOwnProperty('status') ? 'is-danger': ''"
-                :message="error.hasOwnProperty('status') ? error.status[0] : ''"
-        >
-            <b-select
-                    id="status"
-                    @change="UPDATE_INPUT({'status': $event})"
-                    :value="status"
-            >
-                <option
-                        v-for="(status, key) in $data.reportStatus"
-                        :value="key"
-                        :key="key">
-                    {{ status }}
-                </option>
-            </b-select>
-        </b-field>
+                name="status"
+                :value="status"
+                @input="UPDATE_INPUT({'content': $event})"
+                :error="error"
+                :options="$data.reportStatus"
+        />
 
-        <b-field
+        <SelectInput
                 label="評価"
-                :type="error.hasOwnProperty('rating') ? 'is-danger': ''"
-                :message="error.hasOwnProperty('rating') ? error.rating[0] : ''"
-        >
-            <b-select
-                    id="rating"
-                    @change="UPDATE_INPUT({'rating': $event})"
-                    :value="rating"
-            >
-                <option
-                        v-for="(rating, key) in $data.reportRating"
-                        v-bind:value="key"
-                        :key="key">
-                    {{ rating }}
-                </option>
-            </b-select>
-        </b-field>
+                name="rating"
+                :value="rating"
+                @input="UPDATE_INPUT({'content': $event})"
+                :error="error"
+                :options="$data.reportRating"
+        />
 
-        <div id="tagify">
-            <p class="label">タグ</p>
-            <Tagify
-                    :prop_tags="report_tags"
-                    :onUpdate="(newTags) => {UPDATE_INPUT({'report_tags': newTags})}"
-            />
-        </div>
+        <TagifyInput
+                name="tags"
+                label="タグ"
+                :error="error"
+                :report_tags="report_tags"
+                :onUpdate="newTags => report_tags = newTags"
+        />
 
         <div id="image-list" v-if="report_images !== null && report_images.length > 0">
             <p class="label">画像一覧</p>
@@ -89,32 +64,13 @@
                 ref="lightbox"
         />
 
-        <b-field
+        <ImageInput
                 label="画像1"
-                :type="error.hasOwnProperty('images.0') ? 'is-danger': ''"
-                :message="error.hasOwnProperty('images.0') ? error['images.0'][0] : ''"
-        >
-            <div class="file-button">
-                <b-upload
-                        id="image1"
-                        @input="UPDATE_INPUT({'file': $event})"
-                        :value="file"
-                        v-preview-input="image1"
-                        accept="image/*"
-                >
-                    <a class="button is-primary">
-                        <b-icon icon="upload"></b-icon>
-                        <span>Click to upload</span>
-                    </a>
-                </b-upload>
-                <span class="file-name" v-if="file">
-                    {{ file.name }}
-                </span>
-            </div>
-            <div v-if="file">
-                <img :src="image1">
-            </div>
-        </b-field>
+                v-model="file"
+                @input="UPDATE_INPUT({'file': $event})"
+                name="images.0"
+                :error="error"
+        />
 
         <div class="buttons">
             <button id="submit" @click="updateEachData({id: reportId})" class="button is-primary">保存する</button>
@@ -123,7 +79,11 @@
 </template>
 
 <script>
+  import TextInput from '../../components/TextInput';
+  import SelectInput from '../../components/SelectInput';
+  import TagifyInput from '../../components/TagifyInput';
   import Tagify from '../../components/Tagify';
+  import ImageInput from '../../components/ImageInput';
   import {mapGetters, mapActions, mapMutations} from 'vuex';
 
   export default {
@@ -133,6 +93,10 @@
 
     components: {
       Tagify,
+      TextInput,
+      TagifyInput,
+      SelectInput,
+      ImageInput,
     },
 
     data() {
@@ -143,7 +107,7 @@
 
     props: {
       reportId: {
-        type: String,
+        type: Number,
       },
     },
 

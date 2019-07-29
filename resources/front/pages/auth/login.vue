@@ -5,36 +5,28 @@
                 <div class="column is-6">
                     <h1 class="title is-4">ログイン</h1>
                     <form action="" @submit.prevent="signin">
-                        <div class="field">
-                            <label class="label">メールアドレス</label>
-                            <div class="control">
-                                <input class="input" type="email" v-model="form.email">
-                            </div>
-                            <template v-if="error.hasOwnProperty('email') && error.email.length > 0">
-                                <p class="info info--error" v-for="value in error.email">
-                                    {{ value }}
-                                </p>
-                            </template>
-                        </div>
+                        <TextInput
+                                label="メールアドレス"
+                                name="email"
+                                type="email"
+                                v-model="form.email"
+                                placeholder="メールアドレス"
+                                :error="error"
+                        />
 
-                        <div class="field">
-                            <label class="label">パスワード</label>
-                            <div class="control">
-                                <input class="input" type="password" v-model="form.password" placeholder="パスワード">
-                            </div>
-                            <template v-if="error.hasOwnProperty('password') && error.password.length > 0">
-                                <p class="info info--error" v-for="value in error.password">
-                                    {{ value }}
-                                </p>
-                            </template>
-                        </div>
+                        <TextInput
+                                label="パスワード"
+                                name="password"
+                                type="password"
+                                v-model="form.password"
+                                placeholder="パスワード"
+                                :error="error"
+                        />
 
-                        <div class="field">
-                            <p class="control">
-                                <button class="button is-info is-medium" id="login-button">
-                                    ログイン
-                                </button>
-                            </p>
+                        <div class="control">
+                            <button class="button is-info is-medium" id="login-button">
+                                ログイン
+                            </button>
                         </div>
                         <hr class="is-divider">
                         <p>
@@ -52,6 +44,8 @@
 </template>
 
 <script>
+  import TextInput from '../../components/TextInput';
+
   export default {
     data () {
       return {
@@ -61,6 +55,10 @@
         },
         error: {},
       }
+    },
+
+    components: {
+      TextInput,
     },
 
     middleware: [

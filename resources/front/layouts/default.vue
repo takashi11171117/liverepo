@@ -6,8 +6,8 @@
   </div>
 </template>
 <script>
-  import Header from '~/components/front/Header.vue'
-  import Footer from '~/components/front/Footer.vue'
+  import Header from './parcial/front/Header.vue'
+  import Footer from './parcial/front/Footer.vue'
 
   export default {
     components: {
@@ -45,6 +45,8 @@
   body
     line-height: 1
     font-family: 'Noto Sans JP', sans-serif
+    word-wrap: break-word
+    overflow-wrap: break-word
 
   ol, ul
     list-style: none
@@ -59,11 +61,6 @@
   table
     border-collapse: collapse
     border-spacing: 0
-
-  .clearfix::after
-    display: block
-    clear: both
-    content: ''
 
   *, *:before, *:after
     box-sizing: border-box
@@ -90,5 +87,10 @@
 
   a:hover
       opacity: .8
+
+  .select:not(.is-multiple):not(.is-loading):after
+    border-color: #000
+    right: 1.125em
+    z-index: 4
 </style>
 

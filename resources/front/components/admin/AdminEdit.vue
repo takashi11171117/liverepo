@@ -1,49 +1,43 @@
 <template>
     <section class="container">
         <h1 class="title">メンバー編集</h1>
-        <b-field
+        <TextInput
                 label="名前"
-                :type="error.hasOwnProperty('name') ? 'is-danger': ''"
-                :message="error.hasOwnProperty('name') ? error.name[0] : ''"
-        >
-            <b-input :value="name"
-                     @input="UPDATE_INPUT({'name': $event})"
-                     id="name">
-            </b-input>
-        </b-field>
+                name="name"
+                :value="name"
+                @input="UPDATE_INPUT({'name': $event})"
+                placeholder="名前"
+                :error="error"
+        />
 
-        <b-field
+        <TextInput
                 label="メールアドレス"
-                :type="error.hasOwnProperty('email') ? 'is-danger': ''"
-                :message="error.hasOwnProperty('email') ? error.email[0] : ''"
-        >
-            <b-input type="email"
-                     id="email"
-                     @input="UPDATE_INPUT({'email': $event})"
-                     :value="email"
-                     maxlength="50">
-            </b-input>
-        </b-field>
+                name="email"
+                type="email"
+                :value="email"
+                @input="UPDATE_INPUT({'email': $event})"
+                placeholder="メールアドレス"
+                :error="error"
+        />
 
-        <b-field
+        <TextInput
                 label="パスワード"
-                :type="error.hasOwnProperty('password') ? 'is-danger': ''"
-                :message="error.hasOwnProperty('password') ? error.password[0] : ''"
-        >
-            <b-input type="password"
-                     id="password"
-                     @input="UPDATE_INPUT({'password': $event})"
-                     :value="password">
-            </b-input>
-        </b-field>
+                name="password"
+                type="password"
+                :value="password"
+                @input="UPDATE_INPUT({'password': $event})"
+                placeholder="パスワード"
+                :error="error"
+        />
 
-        <b-field label="パスワード確認">
-            <b-input type="password"
-                     id="password-confirm"
-                     @input="UPDATE_INPUT({'passwordConfirm': $event})"
-                     :value="passwordConfirm">
-            </b-input>
-        </b-field>
+        <TextInput
+                label="パスワード確認"
+                id="password-confirm"
+                type="password"
+                :value="passwordConfirm"
+                @input="UPDATE_INPUT({'passwordConfirm': $event})"
+                :error="error"
+        />
 
         <div class="buttons">
             <button id="submit" @click="updateAdmin()" class="button is-primary">保存する</button>
@@ -52,12 +46,17 @@
 </template>
 
 <script>
-  import {mapGetters, mapActions, mapMutations} from 'vuex'
+  import TextInput from '../../components/TextInput';
+  import {mapGetters, mapActions, mapMutations} from 'vuex';
 
   export default {
     middleware: 'auth',
 
     layout: 'admin',
+
+    components: {
+      TextInput,
+    },
 
     computed: {
       ...mapGetters(

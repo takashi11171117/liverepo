@@ -20,7 +20,15 @@ class PrivateUserResource extends JsonResource
             'name'   => $this->name,
             'gender' => $this->gender,
             'birth'  => $this->birth,
+            'description'  => $this->description,
+            'url'  => $this->url,
+            'user_name01' => $this->user_name01,
+            'user_name02' => $this->user_name02,
         ];
+
+        if ($this->mail_send_flg) {
+            $args['email'] = $this->email;
+        }
 
         if ($this->image_path !== null) {
             $args['src'] = config('const.IMAGE_URL') . 'profile_images/' . $this->image_path;

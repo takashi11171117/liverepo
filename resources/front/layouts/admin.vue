@@ -8,8 +8,8 @@
     </div>
 </template>
 <script>
-  import NavBar from '~/components/admin/NavBar.vue'
-  import Sidebar from '~/components/admin/Sidebar.vue'
+  import NavBar from './parcial/admin/NavBar.vue'
+  import Sidebar from './parcial/admin/Sidebar.vue'
   import { mapGetters, mapActions } from 'vuex'
 
   export default {
@@ -49,25 +49,22 @@
     ])
   }
 </script>
-<style lang="scss">
-    @import "~bulma/bulma";
-    @import '~bulma/sass/utilities/initial-variables';
-    @import '~bulma/sass/utilities/derived-variables';
-    @import '~bulma/sass/utilities/mixins';
-    .animated {
-        animation-duration: .377s;
-    }
-    html {
-        background-color: whitesmoke;
-    }
-    .app-main {
-        padding-top: 52px;
-        margin-left: 230px;
-        @include mobile() {
-            margin-left: 0;
-        }
-    }
-    .app-content {
-        padding: 20px;
-    }
+<style lang="sass">
+    @import "~bulma/bulma"
+    @import '~bulma/sass/utilities/initial-variables'
+    @import '~bulma/sass/utilities/derived-variables'
+    @import '~bulma/sass/utilities/mixins'
+    .animated
+        animation-duration: .377s
+    html
+        background-color: whitesmoke
+        word-wrap: break-word
+        overflow-wrap: break-word
+    .app-main
+        padding-top: 52px
+        margin-left: 230px
+        @include mobile()
+            margin-left: 0
+    .app-content
+        padding: 20px
 </style>

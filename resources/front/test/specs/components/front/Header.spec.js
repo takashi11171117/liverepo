@@ -2,7 +2,7 @@ import Vuex from 'vuex'
 import { shallowMount, createLocalVue, RouterLinkStub } from '@vue/test-utils'
 import test from 'ava'
 import Buefy from 'buefy';
-import Header from '../../../../components/front/Header'
+import Header from '../../../../layouts/parcial/front/Header'
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
@@ -30,10 +30,10 @@ test('template test', t => {
   });
 
   t.deepEqual(links.at(1).props().to, {
-    name: 'user-post',
+    name: 'setting-post',
   });
 
   t.deepEqual(links.at(2).props().to, {
-    name: 'user',
+    name: 'setting',
   });
 });

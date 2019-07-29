@@ -30,81 +30,81 @@ Route::group(['namespace' => 'Front'], function () {
     Route::get("/", "ReportController@index");
 
     Route::group(['prefix' => 'comedy'], function() {
-        Route::get('report/{id}', [
-            'as'   => 'comedy.report.show',
+        Route::get('reports/{id}', [
+            'as'   => 'comedy.reports.show',
             'uses' => 'ReportController@show'
         ]);
     });
 });
 
-Route::group(['prefix' => 'user', 'namespace' => 'Front\User', 'middleware' => ['assign.guard:api','jwt.auth']],function ()
+Route::group(['prefix' => 'setting', 'namespace' => 'Front', 'middleware' => ['assign.guard:api','jwt.auth']],function ()
 {
     // admin
     Route::get('report/{user_id}', [
-        'as'   => 'user.report',
-        'uses' => 'ReportController@index'
+        'as'   => 'setting.report',
+        'uses' => 'SettingController@index'
     ]);
 
-    Route::post('report/add/{user_id}', [
-        'as' => 'user.store',
-        'uses' => 'ReportController@store'
+    Route::post('report/{user_id}', [
+        'as' => 'setting.report.store',
+        'uses' => 'SettingController@post'
     ]);
 
     Route::post('profile', [
-        'as' => 'user.profile',
-        'uses' => 'ReportController@profile'
+        'as' => 'users.profile',
+        'uses' => 'SettingController@profile'
     ]);
 });
 
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['assign.guard:admins','jwt.auth']],function ()
 {
     // admin
-    Route::get('admin', [
-        'as'   => 'admin.admin.index',
+    Route::get('admins', [
+        'as'   => 'admin.admins.index',
         'uses' => 'AdminController@index'
     ]);
-    Route::post('admin/add', [
-        'as' => 'admin.admin.store',
+    Route::post('admins', [
+        'as' => 'admin.admins.store',
         'uses' => 'AdminController@store'
     ]);
-    Route::get('admin/{id}', [
-        'as' => 'admin.admin.show',
+    Route::get('admins/{id}', [
+        'as' => 'admin.admins.show',
         'uses' => 'AdminController@show'
     ]);
-    Route::put('admin/{id}/update', [
-        'as' => 'admin.admin.update',
+    Route::put('admins/{id}', [
+        'as' => 'admin.admins.update',
         'uses' => 'AdminController@update'
     ]);
-    Route::delete('admin/{id}/delete', [
+    Route::delete('admins/{id}', [
         'as' => 'admin.admin.destroy',
         'uses' => 'AdminController@destroy'
     ]);
 
     // report
-    Route::get('report', [
-        'as'   => 'admin.report.index',
+    Route::get('reports', [
+        'as'   => 'admin.reports.index',
         'uses' => 'ReportController@index'
     ]);
-    Route::post('report/add', [
-        'as' => 'admin.report.store',
+    Route::post('reports', [
+        'as' => 'admin.reports.store',
         'uses' => 'ReportController@store'
     ]);
-    Route::get('report/{id}', [
-        'as' => 'admin.report.show',
+    Route::get('reports/{id}', [
+        'as' => 'admin.reports.show',
         'uses' => 'ReportController@show'
     ]);
-    Route::put('report/{id}/update', [
-        'as' => 'admin.report.update',
+    Route::put('reports/{id}', [
+        'as' => 'admin.reports.update',
         'uses' => 'ReportController@update'
     ]);
-    Route::delete('report/{id}/delete', [
-        'as' => 'admin.report.destroy',
+    Route::delete('reports/{id}', [
+        'as' => 'admin.reports.destroy',
         'uses' => 'ReportController@destroy'
     ]);
 
     // tag
-    Route::get('report_tag/tagify', [
-        'as' => 'admin.report_tag.index',
+    Route::get('report_tags/tagify', [
+        'as' => 'admin.report_tags.index',
         'uses' => 'ReportTagController@tagify'
     ]);
 });

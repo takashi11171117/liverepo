@@ -35,7 +35,7 @@
                 </b-table-column>
 
                 <b-table-column custom-key="actions">
-                    <n-link :to="{ path: `/admin/admin/edit/${props.row.id}` }" class="button is-small is-light">
+                    <n-link :to="{ name: 'admin-admins-edit-id', params: {id: props.row.id} }" class="button is-small is-light">
                         <b-icon icon="lead-pencil" size="is-small"></b-icon>
                     </n-link>
                     <button :id="`delete${ props.row.id }`" class="button is-small is-danger"
@@ -57,7 +57,7 @@
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
-  import Pagination from './Pagination'
+  import Pagination from '../Pagination'
 
   export default {
     components: {
@@ -85,10 +85,9 @@
   }
 </script>
 
-<style scoped>
-    .no-data {
-        background-color: #fff;
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
+<style lang="sass" scoped>
+    .no-data
+        background-color: #fff
+        padding-top: 10px
+        padding-bottom: 10px
 </style>

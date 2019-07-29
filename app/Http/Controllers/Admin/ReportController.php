@@ -180,7 +180,7 @@ class ReportController extends Controller
             $args['s'] = $request->s;
         }
 
-        return redirect()->route('admin.report.index', $args, 301);
+        return redirect()->route('admin.reports.index', $args, 301);
     }
 
     protected function scopes()
