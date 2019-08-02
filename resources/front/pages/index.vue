@@ -87,6 +87,12 @@
     display: flex
     flex-direction: column
 
+  .review-text
+    padding-right: 10px
+    line-height: 150%
+    margin-bottom: 10px
+    font-size: 16px
+
   .thumbnail-box
     width: 120px
 

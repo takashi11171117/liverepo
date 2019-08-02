@@ -204,8 +204,9 @@ Vue.mixin({
       console.dir(args);
     },
     $calcAge: (birth) => {
-      if (birth === "" || birth === null || birth === undefined) {
-        const birthDate = new Date(birth);
+      if (!(birth === "" || birth === null || birth === undefined)) {
+        let newBirth = new Date(birth.replace(/-/g,"/"));
+        const birthDate = new Date(newBirth);
 
         const y2 = birthDate.getFullYear().toString().padStart(4, '0');
         const m2 = (birthDate.getMonth() + 1).toString().padStart(2, '0');

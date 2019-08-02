@@ -18,12 +18,6 @@
 </script>
 
 <style lang="sass" scoped>
-    .review-text
-        padding-right: 10px
-        line-height: 150%
-        margin-bottom: 10px
-        font-size: 16px
-
     .star-rating
         position: relative
         width: 5em
