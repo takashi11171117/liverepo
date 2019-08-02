@@ -18,7 +18,8 @@ class ReportController extends Controller
     {
         $reports = Report::with([
             'report_images',
-        ])->status(config('const.PUBLISH'))->paginate(20);
+        ])->orderBy('created_at', 'desc')
+          ->status(config('const.PUBLISH'))->paginate(20);
 
         return ReportIndexResource::collection($reports);
     }

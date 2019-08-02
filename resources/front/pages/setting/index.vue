@@ -92,7 +92,7 @@
                             </div>
                             <div class="dropdown-divider"></div>
                         </section>
-                        <section>
+                        <section v-else>
                             <p>まだ投稿はありません。</p>
                         </section>
                     </section>
