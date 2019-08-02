@@ -2,7 +2,7 @@ import { shallowMount, createLocalVue } from '@vue/test-utils'
 import test from 'ava'
 import Buefy from 'buefy';
 import sinon from "sinon";
-import AdminNew from '../../../../../pages/admin/admin/new'
+import AdminNew from '../../../../../pages/admin/admins/new'
 
 const localVue = createLocalVue();
 localVue.use(Buefy);
@@ -12,10 +12,10 @@ test('template test', t => {
     localVue
   });
   t.is(wrapper.find('.title').text(), 'メンバー追加');
-  t.true(wrapper.find('#name').exists());
-  t.true(wrapper.find('#email').exists());
-  t.true(wrapper.find('#password').exists());
-  t.true(wrapper.find('#password-confirm').exists());
+  t.true(wrapper.find('textinput-stub[name="name"]').exists());
+  t.true(wrapper.find('textinput-stub[name="email"]').exists());
+  t.true(wrapper.find('textinput-stub[name="password"]').exists());
+  t.true(wrapper.find('textinput-stub[name="password-confirm"]').exists());
   t.is(wrapper.find('button').text(), '保存する');
 
   // pushing login button

@@ -148,15 +148,22 @@
 
       async addProfile({user_name01, user_name02, description, url, gender, birth, show_mail_flg, file}) {
         let formData = new FormData;
-        let date = Date.format(birth, "Y/m/d H:i:s");
+
+        if (this.$isset(birth)) {
+          let date = Date.format(birth, "Y/m/d H:i:s");
+          formData.append('birth', date);
+        }
+
+        if (this.$isset(file)) {
+          formData.append('image', file);
+        }
+
         formData.append('user_name01', user_name01);
         formData.append('user_name02', user_name02);
         formData.append('description', description);
         formData.append('gender', gender);
-        formData.append('birth', date);
         formData.append('show_mail_flg', show_mail_flg);
         formData.append('url', url);
-        formData.append('image', file);
         formData.append('user_id', this.$auth.user.id);
         await this.$axios.$post(
           'setting/profile',

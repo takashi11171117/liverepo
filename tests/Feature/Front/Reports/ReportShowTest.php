@@ -12,7 +12,7 @@ class ReportShowTest extends TestCase
 {
     public function test_it_fails_if_a_report_cant_be_found()
     {
-        $this->json('GET', "comedy/report/100")
+        $this->json('GET', "comedy/reports/100")
              ->assertStatus(404);
     }
 
@@ -20,7 +20,7 @@ class ReportShowTest extends TestCase
     {
         $report = factory(Report::class)->create();
 
-        $this->json('GET', "comedy/report/{$report->id}")
+        $this->json('GET', "comedy/reports/{$report->id}")
              ->assertJsonFragment([
                  'id' => $report->id
              ]);

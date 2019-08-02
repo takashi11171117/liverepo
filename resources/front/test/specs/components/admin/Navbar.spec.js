@@ -19,7 +19,7 @@ const $store = {
 test('template test at the exception of login page', t => {
   const $nuxt = {
     $route: {
-      path: '/admin'
+      name: 'admin'
     }
   };
 
@@ -52,7 +52,7 @@ test('script test at login page', t => {
   let admin = { name: 'test' };
   const $nuxt = {
     $route: {
-      path: '/admin/login'
+      name: 'admin-login'
     }
   };
 

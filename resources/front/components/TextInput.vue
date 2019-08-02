@@ -24,7 +24,7 @@
     },
     data () {
       let innerId;
-      this.id !== null ? innerId = this.id : innerId = this.name;
+      this.$isset(this.id) ? innerId = this.id : innerId = this.name;
 
       return {
         innerId

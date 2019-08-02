@@ -25,10 +25,11 @@ class Post extends FormRequest
     public function rules(Request $request)
     {
         $args = [
+            'user_id' => 'required|numeric',
             'user_name01' => 'nullable|max:255',
             'user_name02' => 'nullable|max:255',
             'image' => 'nullable|image|max:10000',
-            'url' => 'nullable|max:255',
+            'url' => 'nullable|max:100|regex:/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',
             'description' => 'nullable|max:1200',
             'gender' => 'required|numeric',
             'birth' => 'required|date',

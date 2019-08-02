@@ -11,7 +11,7 @@ class AdminUpdateTest extends TestCase
 {
     public function test_it_fails_if_unauthenticated()
     {
-        $response = $this->json('PUT', 'admin/admin/1/update')
+        $response = $this->json('PUT', 'admin/admins/1')
             ->assertStatus(401);
     }
 
@@ -19,7 +19,7 @@ class AdminUpdateTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'PUT', "admin/admin/100/update", [
+        $this->jsonAsAdmin($admin, 'PUT', "admin/admins/100", [
             'name' => 'test',
             'email' => 'mail@gmail.com',
         ])
@@ -30,7 +30,7 @@ class AdminUpdateTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'PUT', 'admin/admin/1/update')
+        $this->jsonAsAdmin($admin, 'PUT', 'admin/admins/1')
              ->assertJsonValidationErrors(['name']);
     }
 
@@ -38,7 +38,7 @@ class AdminUpdateTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'PUT', 'admin/admin/1/update')
+        $this->jsonAsAdmin($admin, 'PUT', 'admin/admins/1')
              ->assertJsonValidationErrors(['email']);
     }
 
@@ -46,7 +46,7 @@ class AdminUpdateTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'PUT', 'admin/admin/1/update', [
+        $this->jsonAsAdmin($admin, 'PUT', 'admin/admins/1', [
             'name' => 'test_content',
             'email' => 'test',
             'password'  => '3387Ezweb',
@@ -58,7 +58,7 @@ class AdminUpdateTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'PUT', 'admin/admin/1/update', [
+        $this->jsonAsAdmin($admin, 'PUT', 'admin/admins/1', [
             'name' => 'test_content',
             'email' => 'test@gmail.com',
             'password'  => '3387E',
@@ -70,7 +70,7 @@ class AdminUpdateTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'PUT', 'admin/admin/1/update', [
+        $this->jsonAsAdmin($admin, 'PUT', 'admin/admins/1', [
             'name' => 'test_content',
             'email' => 'test@gmail.com',
             'password'  => '3387ezweb',
@@ -82,7 +82,7 @@ class AdminUpdateTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'PUT', 'admin/admin/1/update', [
+        $this->jsonAsAdmin($admin, 'PUT', 'admin/admins/1', [
             'name' => 'test_content',
             'email' => 'test@gmail.com',
             'password'  => 'webEzweb',
@@ -94,7 +94,7 @@ class AdminUpdateTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'PUT', 'admin/admin/1/update', [
+        $this->jsonAsAdmin($admin, 'PUT', 'admin/admins/1', [
             'name' => 'test_content',
             'email' => 'test@gmail.com',
             'password'  => '3387Ezweb',

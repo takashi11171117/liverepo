@@ -26,25 +26,27 @@
                         <div class="favorite-button"><i class="far fa-thumbs-up"></i></div>
                     </div>
 
-                    <hr class="dropdown-divider">
+                    <hr class="dropdown-divider" />
 
                     <div id="image-list" v-if="data.report_images !== null && data.report_images.length > 0">
                         <ul>
                             <li v-for="(report_image, index) in data.report_images">
-                                <div class="thumb-image">
-                                    <img @click="openGallery(index)" :src="report_image.thumb" alt="thumbnail" class="thumbnail">
-                                </div>
+                                <img @click="openGallery(index)" :src="report_image.thumb" alt="thumbnail" class="thumbnail thumb-image">
                             </li>
                         </ul>
                     </div>
-                    <light-box
-                            v-if="data.report_images !== null && data.report_images.length > 0"
-                            :images="data.report_images"
-                            :show-light-box="false"
-                            ref="lightbox"
-                    />
 
-                    <hr class="dropdown-divider">
+                    <div v-if="data.report_images !== null && data.report_images.length > 0">
+                        <no-ssr>
+                            <light-box
+                                    :images="data.report_images"
+                                    :show-light-box="false"
+                                    ref="lightbox"
+                            />
+                        </no-ssr>
+                    </div>
+
+                    <hr class="dropdown-divider" />
 
                     <p class="review-text">{{ data.content }}</p>
                 </div>

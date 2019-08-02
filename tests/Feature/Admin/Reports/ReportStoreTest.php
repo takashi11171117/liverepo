@@ -14,7 +14,7 @@ class ReportStoreTest extends TestCase
 {
     public function test_it_fails_if_unauthenticated()
     {
-        $response = $this->json('POST', 'admin/report/add')
+        $response = $this->json('POST', 'admin/reports')
                          ->assertStatus(401);
     }
 
@@ -22,7 +22,7 @@ class ReportStoreTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'POST', 'admin/report/add', [
+        $this->jsonAsAdmin($admin, 'POST', 'admin/reports', [
             'content' => 'test_content',
             'status' => 0,
             'rating'  => '1',
@@ -36,7 +36,7 @@ class ReportStoreTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'POST', 'admin/report/add')
+        $this->jsonAsAdmin($admin, 'POST', 'admin/reports')
              ->assertJsonValidationErrors(['content']);
     }
 
@@ -44,7 +44,7 @@ class ReportStoreTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'POST', 'admin/report/add')
+        $this->jsonAsAdmin($admin, 'POST', 'admin/reports')
              ->assertJsonValidationErrors(['status']);
     }
 
@@ -52,7 +52,7 @@ class ReportStoreTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'POST', 'admin/report/add')
+        $this->jsonAsAdmin($admin, 'POST', 'admin/reports')
              ->assertJsonValidationErrors(['rating']);
     }
 
@@ -60,7 +60,7 @@ class ReportStoreTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'POST', 'admin/report/add')
+        $this->jsonAsAdmin($admin, 'POST', 'admin/reports')
              ->assertJsonValidationErrors(['tags']);
     }
 
@@ -68,7 +68,7 @@ class ReportStoreTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'POST', 'admin/report/add', [
+        $this->jsonAsAdmin($admin, 'POST', 'admin/reports', [
             'title' => 'test',
             'content' => 'test_content',
             'status' => 0,
@@ -86,7 +86,7 @@ class ReportStoreTest extends TestCase
 
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'POST', 'admin/report/add', [
+        $this->jsonAsAdmin($admin, 'POST', 'admin/reports', [
             'title' => 'test',
             'content' => 'test_content',
             'status' => 0,
@@ -104,7 +104,7 @@ class ReportStoreTest extends TestCase
 
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'POST', 'admin/report/add', [
+        $this->jsonAsAdmin($admin, 'POST', 'admin/reports', [
             'title' => 'test',
             'content' => 'test_content',
             'status' => 0,
@@ -122,7 +122,7 @@ class ReportStoreTest extends TestCase
 
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'POST', 'admin/report/add', [
+        $this->jsonAsAdmin($admin, 'POST', 'admin/reports', [
             'title' => 'test',
             'content' => 'test_content',
             'status' => 0,

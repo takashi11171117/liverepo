@@ -12,7 +12,7 @@ class ReportIndexTest extends TestCase
 {
     public function test_it_fails_if_user_isnt_authenticated()
     {
-        $this->json('GET', 'admin/report')
+        $this->json('GET', 'admin/reports')
              ->assertStatus(401);
     }
 
@@ -22,7 +22,7 @@ class ReportIndexTest extends TestCase
 
         $admin = factory(Admin::class)->create();
 
-        $response = $this->jsonAsAdmin($admin, 'GET', 'admin/report');
+        $response = $this->jsonAsAdmin($admin, 'GET', 'admin/reports');
 
         $response->assertJsonFragment([
             'title' => $report->title,
@@ -32,7 +32,7 @@ class ReportIndexTest extends TestCase
     public function test_it_has_paginated_data() {
         $admin = factory(Admin::class)->create();
 
-        $response = $this->jsonAsAdmin($admin, 'GET', 'admin/report')
+        $response = $this->jsonAsAdmin($admin, 'GET', 'admin/reports')
              ->assertJsonStructure([
                  'meta'
              ]);
@@ -59,13 +59,13 @@ class ReportIndexTest extends TestCase
         $data = $this->jsonAsAdmin(
             $admin,
             'GET',
-            '/admin/report?per_page=5&page=2'
+            '/admin/reports?per_page=5&page=2'
         )->assertStatus(200)
                      ->decodeResponseJson();
 
         $this->assertEquals($data['meta']['per_page'], 5);
         $this->assertEquals($data['meta']['current_page'], 2);
-        $this->assertEquals($data['links']['last'], 'http://localhost/admin/report?page=7');
+        $this->assertEquals($data['links']['last'], 'http://localhost/admin/reports?page=7');
 
         // searchのテスト
         $admin = factory(Admin::class)->create();
@@ -73,13 +73,13 @@ class ReportIndexTest extends TestCase
         $data = $this->jsonAsAdmin(
             $admin,
             'GET',
-            '/admin/report?s=dummy'
+            '/admin/reports?s=dummy'
         )->assertStatus(200)
                      ->decodeResponseJson();
 
         $this->assertEquals($data['meta']['per_page'], 20);
         $this->assertEquals($data['meta']['current_page'], 1);
-        $this->assertEquals($data['links']['last'], 'http://localhost/admin/report?page=1');
+        $this->assertEquals($data['links']['last'], 'http://localhost/admin/reports?page=1');
         $this->assertEquals($data['meta']['total'], 1);
     }
 }

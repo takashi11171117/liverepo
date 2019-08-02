@@ -76,7 +76,6 @@
           password: this.password
         })
           .then((data) => {
-            console.log(data);
             this.saveToken({
               token: data.token,
               remember: data.expires_in
@@ -98,7 +97,7 @@
 </script>
 
 <style lang="sass">
-    label
+    label, .help
         text-align: left
     .is-waiting
         position: relative

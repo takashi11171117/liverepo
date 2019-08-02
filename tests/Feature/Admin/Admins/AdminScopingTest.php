@@ -19,7 +19,7 @@ class AdminScopingTest extends TestCase
 
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'GET', "admin/admin?s=testtest")
+        $this->jsonAsAdmin($admin, 'GET', "admin/admins?s=testtest")
              ->assertJsonCount(1, 'data');
     }
 
@@ -33,7 +33,7 @@ class AdminScopingTest extends TestCase
 
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'GET', "admin/admin?s=zatzatzat")
+        $this->jsonAsAdmin($admin, 'GET', "admin/admins?s=zatzatzat")
              ->assertJsonCount(1, 'data');
     }
 }

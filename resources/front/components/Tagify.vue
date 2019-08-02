@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <no-ssr>
         <vue-tags-input
                 v-model="tag"
                 :tags="tags"
@@ -7,7 +7,7 @@
                 @tags-changed="update"
                 placeholder="タグを入力"
         />
-    </div>
+    </no-ssr>
 </template>
 
 <script>

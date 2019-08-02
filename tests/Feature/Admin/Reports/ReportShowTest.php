@@ -14,7 +14,7 @@ class ReportShowTest extends TestCase
     {
         $report = factory(Report::class)->create();
 
-        $response = $this->json('GET', "admin/report/{$report->id}")
+        $response = $this->json('GET', "admin/reports/{$report->id}")
                          ->assertStatus(401);
     }
 
@@ -24,7 +24,7 @@ class ReportShowTest extends TestCase
 
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'GET', "admin/report/100")
+        $this->jsonAsAdmin($admin, 'GET', "admin/reports/100")
              ->assertStatus(404);
     }
 
@@ -34,7 +34,7 @@ class ReportShowTest extends TestCase
 
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'GET', "admin/report/{$report->id}")
+        $this->jsonAsAdmin($admin, 'GET', "admin/reports/{$report->id}")
              ->assertJsonFragment([
                  'id' => $report->id
              ]);

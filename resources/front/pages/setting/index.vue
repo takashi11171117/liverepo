@@ -75,11 +75,14 @@
                     <section class="main-content border-radius">
                         <h1>投稿履歴</h1>
                         <hr class="dropdown-divider">
-                        <section v-if="reports.data !== undefined" v-for="(report) in reports.data" class="column is-12-mobile is-6-tablet is-6-desktop">
+                        <section v-if="reports.data !== undefined" v-for="(report) in reports.data" class="column is-12-mobile">
                             <UserData :user="report.user"/>
                             <h1>{{ $truncate(report.title, 30) }}</h1>
                             <div class="content">
-                                <ReviewStars :report="report"/>
+                                <div class="review-content">
+                                    <ReviewStars :report="report"/>
+                                    <p class="review-text">{{ $truncate(report.content, 80) }}</p>
+                                </div>
                                 <template v-if="report.report_images !== undefined && report.report_images.length > 0">
                                     <img :src="report.report_images[0].path" alt="thumbnail" class="thumbnail">
                                 </template>
@@ -148,6 +151,12 @@
             font-size: 20px
             font-weight: bold
             line-height: 1.2
+
+    .review-content
+        overflow: hidden
+        width: calc(100% - 120px)
+        display: flex
+        flex-direction: column
 
     .tagpage-box
         text-align: center

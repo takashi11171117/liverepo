@@ -74,7 +74,7 @@ module.exports = {
         name: 'token',
         value: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXV0aFwvYWRtaW4iLCJpYXQiOjE1NjI2NzE2NjUsImV4cCI6MTU2MjY3NTI2NSwibmJmIjoxNTYyNjcxNjY1LCJqdGkiOiJaazBHWXpneEdaNk5KSTZiIiwic3ViIjoxMSwicHJ2IjoiZGY4ODNkYjk3YmQwNWVmOGZmODUwODJkNjg2YzQ1ZTgzMmU1OTNhOSJ9.aawo5jmISurKgxXZPUuOWK_KTVLi-uXJW4T14nvRenc'
       })
-      .url(`${url}/admin/admin`)
+      .url(`${url}/admin/admins`)
       .waitForElementVisible('body', 1000)
       .click('#new')
       .pause(100)
@@ -116,7 +116,7 @@ module.exports = {
       })
       .url(`${url}/admin`)
       .waitForElementVisible('body', 1000)
-      .click('a[href="/admin/admin/edit/1"]')
+      .click('a[href="/admin/admins/edit/1"]')
       .pause(100)
       .assert.containsText('h1.title', 'メンバー編集')
       .assert.visible('#name')

@@ -28,7 +28,7 @@
 
         <SelectInput
                 label="評価"
-                name="status"
+                name="rating"
                 v-model="rating"
                 :error="error"
                 :options="$data.reportRating"

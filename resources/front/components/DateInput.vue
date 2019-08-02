@@ -24,12 +24,7 @@
     computed: {
       innerValue: {
         get() {
-          if (this.value !== null) {
-            console.log(this.value);
-            debugger;
-            return Date.format(this.value, "Y/m/d H:i:s")
-          }
-          return null;
+          return this.value;
         },
         set(val) {
           this.$emit('input', val)

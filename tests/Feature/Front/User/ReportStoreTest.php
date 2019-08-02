@@ -14,7 +14,7 @@ class ReportStoreTest extends TestCase
 {
     public function test_it_fails_if_unauthenticated()
     {
-        $response = $this->json('POST', 'user/report/add/1')
+        $response = $this->json('POST', 'setting/report/1')
                          ->assertStatus(401);
     }
 
@@ -22,7 +22,7 @@ class ReportStoreTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $this->jsonAsUser($user, 'POST', "user/report/add/{$user->id}", [
+        $this->jsonAsUser($user, 'POST', "setting/report/{$user->id}", [
             'content' => 'test_content',
             'status' => 0,
             'rating'  => '1',
@@ -36,7 +36,7 @@ class ReportStoreTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $this->jsonAsUser($user, 'POST', "user/report/add/{$user->id}")
+        $this->jsonAsUser($user, 'POST', "setting/report/{$user->id}")
              ->assertJsonValidationErrors(['content']);
     }
 
@@ -44,7 +44,7 @@ class ReportStoreTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $this->jsonAsUser($user, 'POST', "user/report/add/{$user->id}")
+        $this->jsonAsUser($user, 'POST', "setting/report/{$user->id}")
              ->assertJsonValidationErrors(['status']);
     }
 
@@ -52,7 +52,7 @@ class ReportStoreTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $this->jsonAsUser($user, 'POST', "user/report/add/{$user->id}")
+        $this->jsonAsUser($user, 'POST', "setting/report/{$user->id}")
              ->assertJsonValidationErrors(['rating']);
     }
 
@@ -60,7 +60,7 @@ class ReportStoreTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $this->jsonAsUser($user, 'POST', "user/report/add/{$user->id}")
+        $this->jsonAsUser($user, 'POST', "setting/report/{$user->id}")
              ->assertJsonValidationErrors(['tags']);
     }
 
@@ -68,7 +68,7 @@ class ReportStoreTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $this->jsonAsUser($user, 'POST', "user/report/add/{$user->id}", [
+        $this->jsonAsUser($user, 'POST', "setting/report/{$user->id}", [
             'title' => 'test',
             'content' => 'test_content',
             'status' => 0,
@@ -86,7 +86,7 @@ class ReportStoreTest extends TestCase
 
         $user = factory(User::class)->create();
 
-        $this->jsonAsUser($user, 'POST', "user/report/add/{$user->id}", [
+        $this->jsonAsUser($user, 'POST', "setting/report/{$user->id}", [
             'title' => 'test',
             'content' => 'test_content',
             'status' => 0,
@@ -104,7 +104,7 @@ class ReportStoreTest extends TestCase
 
         $user = factory(User::class)->create();
 
-        $this->jsonAsUser($user, 'POST', "user/report/add/{$user->id}", [
+        $this->jsonAsUser($user, 'POST', "setting/report/{$user->id}", [
             'title' => 'test',
             'content' => 'test_content',
             'status' => 0,
@@ -122,7 +122,7 @@ class ReportStoreTest extends TestCase
 
         $user = factory(User::class)->create();
 
-        $this->jsonAsUser($user, 'POST', "user/report/add/{$user->id}", [
+        $this->jsonAsUser($user, 'POST', "setting/report/{$user->id}", [
             'title' => 'test',
             'content' => 'test_content',
             'status' => 0,

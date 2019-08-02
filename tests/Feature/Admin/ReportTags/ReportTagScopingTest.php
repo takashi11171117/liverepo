@@ -20,7 +20,7 @@ class ReportTagScopingTest extends TestCase
 
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'GET', "admin/report_tag/tagify?tag=tes")
+        $this->jsonAsAdmin($admin, 'GET', "admin/report_tags/tagify?tag=tes")
              ->assertJsonCount(1, 'data');
     }
 }

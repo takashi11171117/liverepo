@@ -74,7 +74,7 @@ test('template test', t => {
       $store,
     },
     propsData: {
-      reportId: '1'
+      reportId: 1
     }
   });
 

@@ -16,7 +16,7 @@ module.exports = {
       .setValue('input[type=password]', '')
       .click('button.form__submit')
       .pause(100)
-      .assert.visible('.info--error')
+      .assert.visible('.help')
   },
   'I can enter the admin page' : (client) => {
     const url = client.globals.baseUrl;

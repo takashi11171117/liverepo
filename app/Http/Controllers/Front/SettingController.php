@@ -84,7 +84,7 @@ class SettingController extends Controller
         $args = $request->only([
             'user_name01',
             'user_name02',
-            'send_mail_flg',
+            'show_mail_flg',
             'url',
             'description',
             'gender',

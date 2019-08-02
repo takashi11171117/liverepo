@@ -3,9 +3,11 @@
         <h1 class="index-page">レポートを書いたらライブに行ける！お笑いライブレポ</h1>
         <div class="navBarMenu">
             <div class="nav-logo">
-                <n-link :to="{ name: 'index' }" id="logo">
-                    <img src="~assets/logo.svg" width="112" height="28">
-                </n-link>
+                <div class="nav-logo">
+                    <n-link :to="{ name: 'index' }" id="logo">
+                        <img src="~assets/logo.svg" width="112" height="28">
+                    </n-link>
+                </div>
                 <div class="nav-search">
                     <i class="fas fa-search fa-2x"></i>
                 </div>
@@ -42,20 +44,17 @@
                                     マイページ
                                 </n-link>
                             </b-dropdown-item>
-                            <b-dropdown-item aria-role="menu-item">
+                            <b-dropdown-item aria-role="menu-item" has-link>
                                 <n-link :to="{ name: 'setting-profile' }" id="account">
                                     アカウント設定
                                 </n-link>
                             </b-dropdown-item>
-                            <hr class="dropdown-divider">
+                            <hr class="dropdown-divider" />
                             <b-dropdown-item @click="$auth.logout()" aria-role="menu-item">ログアウト</b-dropdown-item>
                         </b-dropdown>
                     </div>
                 </template>
             </div>
-        </div>
-        <div class="main_image">
-            <!--<img src="images/main_image.png" alt="LIVE REPO">-->
         </div>
         <nav>
             <ul>

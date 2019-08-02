@@ -38,7 +38,7 @@ test('template test', t => {
 
   const links = wrapper.findAll(RouterLinkStub);
   t.deepEqual(links.at(0).props().to, {
-    path: '/admin/admin/new',
+    name: 'admin-admins-new',
   });
 
   const spy = sinon.spy();

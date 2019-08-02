@@ -9,9 +9,14 @@
             </template>
             <h1>{{ $truncate(report.title, 30) }}</h1>
             <div class="content">
-              <ReviewStars :report="report"/>
+              <div class="review-content">
+                <ReviewStars :report="report"/>
+                <p class="review-text">{{ $truncate(report.content, 80) }}</p>
+              </div>
               <template v-if="report.report_images !== undefined && report.report_images.length > 0">
-                <img :src="report.report_images[0].path" alt="thumbnail" class="thumbnail">
+                <div class="thumbnail-box">
+                  <img :src="report.report_images[0].path" alt="thumbnail" class="thumbnail">
+                </div>
               </template>
               <template v-else>
                 <img src="http://placehold.jp/120x120.png" alt="thumbnail" class="thumbnail">
@@ -76,9 +81,14 @@
       font-weight: bold
       line-height: 1.2
 
-  .thumbnail
+  .review-content
+    overflow: hidden
+    width: calc(100% - 120px)
+    display: flex
+    flex-direction: column
+
+  .thumbnail-box
     width: 120px
-    height: auto
 
   .postedData>div
     margin-bottom: 5px

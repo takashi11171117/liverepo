@@ -23,12 +23,12 @@ test('There are two input elements', t => {
 
   const links = wrapper.findAll(RouterLinkStub);
   t.deepEqual(links.at(0).props().to, {
-    path: '/admin',
+    name: 'admin',
   });
   t.deepEqual(links.at(1).props().to, {
-    path: '/admin/admins',
+    name: 'admin-admins',
   });
   t.deepEqual(links.at(2).props().to, {
-    path: '/admin/reports',
+    name: 'admin-reports',
   });
 });

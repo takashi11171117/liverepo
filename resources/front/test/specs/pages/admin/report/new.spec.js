@@ -2,7 +2,7 @@ import { shallowMount, createLocalVue } from '@vue/test-utils'
 import test from 'ava'
 import Buefy from 'buefy';
 import sinon from "sinon";
-import AdminReportNew from '../../../../../pages/admin/report/new'
+import AdminReportNew from '../../../../../pages/admin/reports/new'
 
 const localVue = createLocalVue();
 localVue.use(Buefy);
@@ -55,11 +55,12 @@ test('template test', t => {
     localVue
   });
   t.is(wrapper.find('.title').text(), 'レポート追加');
-  t.true(wrapper.find('#title').exists());
-  t.true(wrapper.find('#content').exists());
-  t.true(wrapper.find('#status').exists());
-  t.true(wrapper.find('#rating').exists());
-  t.true(wrapper.find('#image1').exists());
+  t.true(wrapper.find('textinput-stub[name="title"]').exists());
+  t.true(wrapper.find('textinput-stub[name="content"]').exists());
+  t.true(wrapper.find('selectinput-stub[name="status"]').exists());
+  t.true(wrapper.find('selectinput-stub[name="rating"]').exists());
+  t.true(wrapper.find('tagifyinput-stub[name="tags"]').exists());
+  t.true(wrapper.find('imageinput-stub[name="images.0"]').exists());
   t.is(wrapper.find('button').text(), '保存する');
 
   // pushing login button
@@ -76,7 +77,7 @@ test('script test', async t => {
 
   t.is(wrapper.vm.$data.title, '');
   t.is(wrapper.vm.$data.content, '');
-  t.is(wrapper.vm.$data.status, '0');
+  t.is(wrapper.vm.$data.status, '');
   t.deepEqual(wrapper.vm.$data.error, {});
 
   wrapper.vm.$router = {

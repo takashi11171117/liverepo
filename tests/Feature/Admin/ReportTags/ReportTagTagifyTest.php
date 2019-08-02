@@ -12,7 +12,7 @@ class ReportTagTagifyTest extends TestCase
 {
     public function test_it_fails_if_admin_isnt_authenticated()
     {
-        $this->json('GET', 'admin/report_tag/tagify')
+        $this->json('GET', 'admin/report_tags/tagify')
              ->assertStatus(401);
     }
 
@@ -22,7 +22,7 @@ class ReportTagTagifyTest extends TestCase
 
         $admin = factory(Admin::class)->create();
 
-        $response = $this->jsonAsAdmin($admin, 'GET', 'admin/report_tag/tagify');
+        $response = $this->jsonAsAdmin($admin, 'GET', 'admin/report_tags/tagify');
 
         $response->assertJsonFragment([
             'data' => [$report_tag->name],

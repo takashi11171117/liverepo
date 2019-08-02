@@ -12,7 +12,7 @@ class ReportIndexTest extends TestCase
 {
     public function test_it_fails_if_user_isnt_authenticated()
     {
-        $this->json('GET', 'user/report/1')
+        $this->json('GET', 'setting/report/1')
              ->assertStatus(401);
     }
 
@@ -24,7 +24,7 @@ class ReportIndexTest extends TestCase
             'user_id' => $user->id
         ]);
 
-        $response = $this->jsonAsUser($user, 'GET', "user/report/{$report->id}");
+        $response = $this->jsonAsUser($user, 'GET', "setting/report/{$report->id}");
 
         $response->assertJsonFragment([
             'title' => $report->title,
@@ -34,7 +34,7 @@ class ReportIndexTest extends TestCase
     public function test_it_has_paginated_data() {
         $user = factory(User::class)->create();
 
-        $response = $this->jsonAsUser($user, 'GET', 'user/report/1')
+        $response = $this->jsonAsUser($user, 'GET', 'setting/report/1')
                          ->assertJsonStructure([
                              'meta'
                          ]);

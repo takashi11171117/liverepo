@@ -11,7 +11,7 @@ class AdminStoreTest extends TestCase
 {
     public function test_it_fails_if_unauthenticated()
     {
-        $response = $this->json('POST', 'admin/admin/add')
+        $response = $this->json('POST', 'admin/admins')
             ->assertStatus(401);
     }
 
@@ -19,7 +19,7 @@ class AdminStoreTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'POST', 'admin/admin/add')
+        $this->jsonAsAdmin($admin, 'POST', 'admin/admins')
              ->assertJsonValidationErrors(['name']);
     }
 
@@ -27,7 +27,7 @@ class AdminStoreTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'POST', 'admin/admin/add')
+        $this->jsonAsAdmin($admin, 'POST', 'admin/admins')
              ->assertJsonValidationErrors(['email']);
     }
 
@@ -35,7 +35,7 @@ class AdminStoreTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'POST', 'admin/admin/add')
+        $this->jsonAsAdmin($admin, 'POST', 'admin/admins')
              ->assertJsonValidationErrors(['password']);
     }
 
@@ -43,7 +43,7 @@ class AdminStoreTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'POST', 'admin/admin/add', [
+        $this->jsonAsAdmin($admin, 'POST', 'admin/admins', [
             'name' => 'test_content',
             'email' => 'test',
             'password'  => '3387Ezweb',
@@ -55,7 +55,7 @@ class AdminStoreTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'POST', 'admin/admin/add', [
+        $this->jsonAsAdmin($admin, 'POST', 'admin/admins', [
             'name' => 'test_content',
             'email' => 'test@gmail.com',
             'password'  => '3387E',
@@ -67,7 +67,7 @@ class AdminStoreTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'POST', 'admin/admin/add', [
+        $this->jsonAsAdmin($admin, 'POST', 'admin/admins', [
             'name' => 'test_content',
             'email' => 'test@gmail.com',
             'password'  => '3387ezweb',
@@ -79,7 +79,7 @@ class AdminStoreTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'POST', 'admin/admin/add', [
+        $this->jsonAsAdmin($admin, 'POST', 'admin/admins', [
             'name' => 'test_content',
             'email' => 'test@gmail.com',
             'password'  => 'webEzweb',
@@ -91,7 +91,7 @@ class AdminStoreTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'POST', 'admin/admin/add', [
+        $this->jsonAsAdmin($admin, 'POST', 'admin/admins', [
             'name' => 'test_content',
             'email' => 'test@gmail.com',
             'password'  => '3387Ezweb',

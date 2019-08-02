@@ -11,7 +11,7 @@ class AdminIndexTest extends TestCase
 {
     public function test_it_fails_if_admin_isnt_authenticated()
     {
-        $this->json('GET', 'admin/admin')
+        $this->json('GET', 'admin/admins')
              ->assertStatus(401);
     }
 
@@ -19,7 +19,7 @@ class AdminIndexTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $response = $this->jsonAsAdmin($admin, 'GET', 'admin/admin');
+        $response = $this->jsonAsAdmin($admin, 'GET', 'admin/admins');
 
         $response->assertJsonFragment([
             'name' => $admin->name,
@@ -29,7 +29,7 @@ class AdminIndexTest extends TestCase
     public function test_it_has_paginated_data() {
         $admin = factory(Admin::class)->create();
 
-        $response = $this->jsonAsAdmin($admin, 'GET', 'admin/admin')
+        $response = $this->jsonAsAdmin($admin, 'GET', 'admin/admins')
                          ->assertJsonStructure([
                              'meta'
                          ]);

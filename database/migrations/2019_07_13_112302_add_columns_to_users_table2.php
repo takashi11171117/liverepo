@@ -15,7 +15,7 @@ class AddColumnsToUsersTable2 extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('user_name02')->default('');
-            $table->integer('show_mail_flag')->default(0);
+            $table->integer('show_mail_flg')->default(0);
             $table->string('url')->nullable();
             $table->string('description')->nullable();
             $table->integer('gender')->nullable();
@@ -34,7 +34,7 @@ class AddColumnsToUsersTable2 extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn([
                 'user_name02',
-                'show_mail_flag',
+                'show_mail_flg',
                 'url',
                 'description',
                 'gender',

@@ -14,7 +14,7 @@ class ReportDestroyTest extends TestCase
 {
     public function test_it_fails_if_unauthenticated()
     {
-        $response = $this->json('DELETE', 'admin/report/1/delete')
+        $response = $this->json('DELETE', 'admin/reports/1')
                          ->assertStatus(401);
     }
 
@@ -22,7 +22,7 @@ class ReportDestroyTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $response = $this->jsonAsAdmin($admin, 'DELETE', 'admin/report/1/delete')
+        $response = $this->jsonAsAdmin($admin, 'DELETE', 'admin/reports/1')
                          ->assertStatus(404);
     }
 
@@ -37,7 +37,7 @@ class ReportDestroyTest extends TestCase
 
         $admin = factory(Admin::class)->create();
 
-        $response = $this->jsonAsAdmin($admin, 'DELETE', "admin/report/{$reports[0]->id}/delete");
+        $response = $this->jsonAsAdmin($admin, 'DELETE', "admin/reports/{$reports[0]->id}");
 
         $this->assertDatabaseMissing('reports', [
                 'id' => $reports[0]->id

@@ -40,7 +40,7 @@ return [
     'ip'                   => ':attributeを正しいIPアドレスにしてください。',
     'max'                  => [
         'numeric' => ':attributeは:max以下にしてください。',
-        'file'    => ':attributeは:max KB以下のファイルにしてください。.',
+        'file'    => ':attributeは:max KB以下のファイルにしてください。',
         'string'  => ':attributeは:max文字以下にしてください。',
         'array'   => ':attributeは:max個以下にしてください。',
     ],
@@ -97,6 +97,7 @@ return [
     |
     */
     'attributes'           => [
+        'name' => 'ユーザー名',
         'email'    => 'メールアドレス',
         'password' => 'パスワード',
         'birth' => '生年月日',
@@ -104,6 +105,7 @@ return [
         'user_name02' => '名',
         'description' => '紹介文',
         'gender' => '性別',
-
+        'image' => 'アイコン',
+        'show_mail_flg' => 'メールアドレス表示'
     ],
 ];

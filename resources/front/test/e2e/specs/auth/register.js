@@ -12,7 +12,7 @@ module.exports = {
       .setValue('input[type=password]', '')
       .click('button#login-button')
       .pause(100)
-      .assert.visible('.info--error')
+      .assert.visible('.help')
   },
   'I can create user' : (client) => {
     const url = client.globals.baseUrl;
@@ -24,6 +24,9 @@ module.exports = {
       .setValue('input[type=text]', 'Hoge')
       .setValue('input[type=email]', 'test2@gmail.com')
       .setValue('input[type=password]', '3387Ezweb')
+      .click("select#gender option[value='0']")
+      .click(".datepicker input")
+      .click('.datepicker-cell.is-selectable')
       .click('button#login-button')
       .pause(500)
       .assert.containsText('.title', 'ログイン')

@@ -11,7 +11,7 @@ class AdminShowTest extends TestCase
 {
     public function test_it_fails_if_unauthenticated()
     {
-        $response = $this->json('GET', "admin/admin/1")
+        $response = $this->json('GET', "admin/admins/1")
                          ->assertStatus(401);
     }
 
@@ -19,7 +19,7 @@ class AdminShowTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'GET', "admin/report/100")
+        $this->jsonAsAdmin($admin, 'GET', "admin/reports/100")
              ->assertStatus(404);
     }
 
@@ -27,7 +27,7 @@ class AdminShowTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'GET', "admin/admin/{$admin->id}")
+        $this->jsonAsAdmin($admin, 'GET', "admin/admins/{$admin->id}")
              ->assertJsonFragment([
                  'id' => $admin->id
              ]);

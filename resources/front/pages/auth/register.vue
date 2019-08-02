@@ -31,6 +31,14 @@
                                 :error="error"
                         />
 
+                        <TextInput
+                                label="パスワード確認"
+                                name="password-confirm"
+                                v-model="form.password_confirmation"
+                                type="password"
+                                :error="error"
+                        />
+
                         <SelectInput
                                 name="gender"
                                 label="性別"
@@ -84,6 +92,7 @@
           name: '',
           email: '',
           password: '',
+          password_confirmation: '',
           gender: '',
           birth: null
         },
@@ -103,7 +112,9 @@
 
     methods: {
       async register () {
-        this.form.birth = Date.format(this.form.birth, "Y/m/d H:i:s");
+        if(this.$isset(this.form.birth)) {
+          this.form.birth = Date.format(this.form.birth, "Y/m/d H:i:s");
+        }
         await this.$axios.$post('/auth/register', this.form)
           .then(() => {
             this.$router.replace({

@@ -13,7 +13,7 @@ class ReportUpdateTest extends TestCase
 {
     public function test_it_fails_if_unauthenticated()
     {
-        $response = $this->json('PUT', '/admin/report/1/update')
+        $response = $this->json('PUT', '/admin/reports/1')
                          ->assertStatus(401);
     }
 
@@ -21,7 +21,7 @@ class ReportUpdateTest extends TestCase
     {
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'PUT', "/admin/report/100/update", [
+        $this->jsonAsAdmin($admin, 'PUT', "/admin/reports/100", [
             'title' => 'test2',
             'content' => 'test_content2',
             'status' => 0,
@@ -37,7 +37,7 @@ class ReportUpdateTest extends TestCase
 
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'PUT', "/admin/report/{$report->id}/update")
+        $this->jsonAsAdmin($admin, 'PUT', "/admin/reports/{$report->id}")
              ->assertJsonValidationErrors(['title']);
     }
 
@@ -47,7 +47,7 @@ class ReportUpdateTest extends TestCase
 
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'PUT', "/admin/report/{$report->id}/update")
+        $this->jsonAsAdmin($admin, 'PUT', "/admin/reports/{$report->id}")
              ->assertJsonValidationErrors(['content']);
     }
 
@@ -57,7 +57,7 @@ class ReportUpdateTest extends TestCase
 
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'PUT', "/admin/report/{$report->id}/update")
+        $this->jsonAsAdmin($admin, 'PUT', "/admin/reports/{$report->id}")
              ->assertJsonValidationErrors(['status']);
     }
 
@@ -67,7 +67,7 @@ class ReportUpdateTest extends TestCase
 
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'PUT', "/admin/report/{$report->id}/update")
+        $this->jsonAsAdmin($admin, 'PUT', "/admin/reports/{$report->id}")
              ->assertJsonValidationErrors(['rating']);
     }
 
@@ -77,7 +77,7 @@ class ReportUpdateTest extends TestCase
 
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'PUT', "/admin/report/{$report->id}/update", [
+        $this->jsonAsAdmin($admin, 'PUT', "/admin/reports/{$report->id}", [
             'title' => 'test2',
             'content' => 'test_content2',
             'status' => 0,
@@ -102,7 +102,7 @@ class ReportUpdateTest extends TestCase
 
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'PUT', "/admin/report/{$report->id}/update", [
+        $this->jsonAsAdmin($admin, 'PUT', "/admin/reports/{$report->id}", [
             'title' => 'test',
             'content' => 'test_content',
             'status' => 0,
@@ -122,7 +122,7 @@ class ReportUpdateTest extends TestCase
 
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'PUT', "/admin/report/{$report->id}/update", [
+        $this->jsonAsAdmin($admin, 'PUT', "/admin/reports/{$report->id}", [
             'title' => 'test',
             'content' => 'test_content',
             'status' => 0,
@@ -142,7 +142,7 @@ class ReportUpdateTest extends TestCase
 
         $admin = factory(Admin::class)->create();
 
-        $this->jsonAsAdmin($admin, 'PUT', "/admin/report/{$report->id}/update", [
+        $this->jsonAsAdmin($admin, 'PUT', "/admin/reports/{$report->id}", [
             'title' => 'test',
             'content' => 'test_content',
             'status' => 0,
