@@ -47,6 +47,14 @@
                                 :options="$data.genderOption"
                         />
 
+                        <SelectInput
+                                name="pref"
+                                label="都道府県"
+                                v-model="form.pref"
+                                :error="error"
+                                :options="$data.prefsOption"
+                        />
+
                         <DateInput
                                 label="生年月日"
                                 name="birth"
@@ -94,6 +102,7 @@
           password: '',
           password_confirmation: '',
           gender: '',
+          pref: '',
           birth: null
         },
         error: {}
@@ -112,10 +121,11 @@
 
     methods: {
       async register () {
+        let newForm = Object.assign({}, this.form);
         if(this.$isset(this.form.birth)) {
-          this.form.birth = Date.format(this.form.birth, "Y/m/d H:i:s");
+          newForm.birth = Date.format(this.form.birth, "Y/m/d H:i:s");
         }
-        await this.$axios.$post('/auth/register', this.form)
+        await this.$axios.$post('/auth/register', newForm)
           .then(() => {
             this.$router.replace({
               name: 'auth-login'

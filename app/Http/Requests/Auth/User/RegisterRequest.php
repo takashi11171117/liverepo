@@ -29,6 +29,7 @@ class RegisterRequest extends FormRequest
             'password' => 'required|confirmed|regex:/\A(?=.*?[a-zA-Z])(?=.*?\d)[a-zA-Z\d]{8,}+\z/',
             'gender' => 'required|numeric',
             'birth' => 'required|date',
+            'pref' => 'required|numeric',
         ];
     }
 
@@ -37,6 +38,7 @@ class RegisterRequest extends FormRequest
         return [
             'gender' => '性別',
             'birth' => '生年月日',
+            'pref' => '都道府県',
         ];
     }
 }

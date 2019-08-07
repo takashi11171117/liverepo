@@ -2,6 +2,7 @@
     <div class="form">
         <h1>レポート投稿</h1>
         <TextInput
+                label="タイトル"
                 name="title"
                 v-model="title"
                 placeholder="タイトルを入力"
@@ -9,6 +10,7 @@
         />
 
         <TextInput
+                label="本文"
                 name="content"
                 v-model="content"
                 placeholder="本文を入力"
@@ -17,6 +19,7 @@
         />
 
         <SelectInput
+                label="ステータス"
                 name="status"
                 v-model="status"
                 :error="error"
@@ -24,6 +27,7 @@
         />
 
         <SelectInput
+                label="評価"
                 name="rating"
                 v-model="rating"
                 :error="error"
@@ -31,10 +35,34 @@
         />
 
         <TagifyInput
-                name="tags"
+                label="開催場所"
+                name="place_tags"
                 :error="error"
-                :report_tags="report_tags"
-                :onUpdate="newTags => report_tags = newTags"
+                :report_tags="place_tags"
+                :onUpdate="newTags => place_tags = newTags"
+        />
+
+        <TagifyInput
+                label="出演者"
+                name="player_tags"
+                :error="error"
+                :report_tags="player_tags"
+                :onUpdate="newTags => player_tags = newTags"
+        />
+
+        <TagifyInput
+                label="タグ"
+                name="other_tags"
+                :error="error"
+                :report_tags="other_tags"
+                :onUpdate="newTags => other_tags = newTags"
+        />
+
+        <DateInput
+                label="開催日時"
+                name="opened_at"
+                v-model="opened_at"
+                :error="error"
         />
 
         <ImageInput
@@ -55,6 +83,13 @@
   import SelectInput from '../../components/SelectInput';
   import TagifyInput from '../../components/TagifyInput';
   import ImageInput from '../../components/ImageInput';
+  import DateInput from '../../components/DateInput';
+
+  const mapTags = (tags) => {
+    return tags.map((tag) => {
+      return tag.text;
+    });
+  };
 
   export default {
     middleware: [
@@ -65,7 +100,8 @@
       TextInput,
       SelectInput,
       TagifyInput,
-      ImageInput
+      ImageInput,
+      DateInput
     },
 
     data() {
@@ -75,16 +111,16 @@
         status: '',
         rating: '',
         file: null,
+        opened_at: null,
         error: {},
-        report_tags: []
+        place_tags: [],
+        player_tags: [],
+        other_tags: [],
       }
     },
 
     methods: {
       async onSubmit() {
-        let report_tags = this.report_tags.map((tag) => {
-          return tag.text;
-        });
         if (confirm('追加してもよろしいですか？')) {
           await this.addReport(
             {
@@ -93,7 +129,9 @@
               status: this.status,
               rating: this.rating,
               file: this.file,
-              tags: report_tags,
+              place_tags: mapTags(this.place_tags),
+              player_tags: mapTags(this.player_tags),
+              other_tags: mapTags(this.other_tags),
             }
           ).then(() => {
             this.$snackbar.open({
@@ -103,19 +141,21 @@
             });
             this.$router.push('/');
           }).catch((error) => {
-            console.log(error);
+            console.log(error.response.data);
             this.$set(this, 'error', error.response.data.errors);
           })
         }
       },
-      async addReport({title, content, status, rating, file, tags}) {
+      async addReport(params) {
         let formData = new FormData;
-        formData.append('title', title);
-        formData.append('content', content);
-        formData.append('status', status);
-        formData.append('rating', rating);
-        formData.append('images[]', file);
-        formData.append('tags', tags);
+        formData.append('title', params.title);
+        formData.append('content', params.content);
+        formData.append('status', params.status);
+        formData.append('rating', params.rating);
+        formData.append('images[]', params.file);
+        formData.append('place_tags', params.place_tags);
+        formData.append('player_tags', params.player_tags);
+        formData.append('other_tags', params.other_tags);
         await this.$axios.$post(
           `setting/report/${this.$auth.user.id}`,
           formData,

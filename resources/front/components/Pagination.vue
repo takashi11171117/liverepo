@@ -1,10 +1,10 @@
 <template>
     <nav v-if="pagination.data.length > 0" class="pagination is-centered is-rounded" role="navigation" aria-label="pagination">
-        <n-link id="previous-page" :to="{ path: current_path, query: previousLinkQuery }" class="pagination-previous" v-bind:disabled="!isPrevious">Previous</n-link>
-        <n-link id="next-page" :to="{ path: current_path, query: nextLinkQuery }" class="pagination-next" v-bind:disabled="!isNext">Next page</n-link>
+        <n-link id="previous-page" :to="{ path: current_path, query: previousLinkQuery }" class="pagination-previous" v-bind:disabled="!isPrevious"> < 前へ </n-link>
+        <n-link id="next-page" :to="{ path: current_path, query: nextLinkQuery }" class="pagination-next" v-bind:disabled="!isNext"> 次へ > </n-link>
         <ul class="pagination-list">
             <li v-if="isFirst">
-                <n-link id="first-page" :to="{ path: current_path, query: firstLinkQuery }" class="pagination-link" :aria-label="`Goto page 1`">1</n-link>
+                <n-link id="first-page" :to="{ path: current_path, query: firstLinkQuery }" class="pagination-link" :aria-label="`Goto page 1`"></n-link>
             </li>
             <li v-if="isFirst">
                 <span class="pagination-ellipsis">&hellip;</span>
@@ -55,22 +55,27 @@
       $route: function () {
         let query =  this.$route.query;
         let meta = this.pagination.meta;
-        this.isPrevious = meta.current_page !== 1;
-        this.isNext = meta.current_page !== meta.last_page;
-        this.isFirst = meta.current_page > 2;
-        this.isLast = meta.current_page < meta.last_page - 1;
+        let current_page = query.page;
+        console.log(query);
+        this.isPrevious = current_page !== 1;
+        this.isNext = current_page !== meta.last_page;
+        this.isFirst = current_page > 2;
+        this.isLast = current_page < meta.last_page - 1;
         this.firstLinkQuery = {  page: 1, per_page: meta.per_page, s: query.s };
-        this.previousLinkQuery = {  page: meta.current_page - 1, per_page: meta.per_page, s: query.s };
-        this.nextLinkQuery = {  page: meta.current_page + 1, per_page: meta.per_page, s: query.s };
+        this.previousLinkQuery = {  page: current_page - 1, per_page: meta.per_page, s: query.s };
+        this.nextLinkQuery = {  page: current_page + 1, per_page: meta.per_page, s: query.s };
         this.lastLinkQuery = {  page: meta.last_page, per_page: meta.per_page, s: query.s };
-        this.currentLinkQuery = {  page: meta.current_page, per_page: meta.per_page, s: query.s };
+        this.currentLinkQuery = {  page: current_page, per_page: meta.per_page, s: query.s };
       },
     },
   }
 </script>
 
-<style scoped>
-    .pagination {
+<style lang="sass" scoped>
+    .pagination
         margin-top: 20px;
-    }
+    
+    .pagination-next,
+    .pagination-link:not(.is-current)
+        background-color: #fff
 </style>

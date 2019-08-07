@@ -28,8 +28,9 @@ class Post extends FormRequest
             'content' => 'required|max:40000',
             'status' => 'required',
             'rating' => 'required',
-            'images.*' => 'required|image|max:10000',
-            'tags' => 'required'
+            'images.*' => 'nullable|image|max:10000',
+            'place_tags' => 'required',
+            'player_tags' => 'required',
         ];
     }
 
@@ -41,7 +42,8 @@ class Post extends FormRequest
             'status' => 'ステータス',
             'rating' => '評価',
             'images.0' => '画像1',
-            'tags' => 'タグ',
+            'place_tags' => '開催場所',
+            'player_tags' => '出演者',
         ];
     }
 }

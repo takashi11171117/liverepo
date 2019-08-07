@@ -19,6 +19,7 @@ class PrivateUserResource extends JsonResource
             'email' => $this->email,
             'name'   => $this->name,
             'gender' => $this->gender,
+            'pref' => $this->pref,
             'birth'  => $this->birth,
             'description'  => $this->description,
             'url'  => $this->url,

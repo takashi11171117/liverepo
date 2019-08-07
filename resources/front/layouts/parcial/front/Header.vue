@@ -40,7 +40,7 @@
                             </a>
 
                             <b-dropdown-item aria-role="menu-item" has-link>
-                                <n-link :to="{ name: 'setting' }" id="mypage">
+                                <n-link :to="{ name: 'users-name', params: {name: $auth.user.name} }" id="mypage">
                                     マイページ
                                 </n-link>
                             </b-dropdown-item>

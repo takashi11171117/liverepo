@@ -3,8 +3,9 @@
 namespace App\Http\Resources\Front;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use App\Models\User;
 
-class UserResource extends JsonResource
+class UserPageResource extends JsonResource
 {
     /**
      * Transform the resource into an array.

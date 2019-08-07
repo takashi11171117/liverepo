@@ -34,7 +34,18 @@ Route::group(['namespace' => 'Front'], function () {
             'as'   => 'comedy.reports.show',
             'uses' => 'ReportController@show'
         ]);
+
+        // tag
+        Route::get('report_tags/tagify', [
+            'as' => 'comedy.report_tags.index',
+            'uses' => 'ReportTagController@tagify'
+        ]);
     });
+
+    Route::get('users/{name}', [
+        'as' => 'users.index',
+        'uses' => 'UserController@index'
+    ]);
 });
 
 Route::group(['prefix' => 'setting', 'namespace' => 'Front', 'middleware' => ['assign.guard:api','jwt.auth']],function ()

@@ -4,6 +4,7 @@
 use App\Models\User;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
+use Illuminate\Http\UploadedFile;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,11 +18,27 @@ use Faker\Generator as Faker;
 */
 
 $factory->define(User::class, function (Faker $faker) {
+    $filename = 'user' . Str::random(40) .'.jpg';
+    $thumbnail = 'thumb-' . $filename;
+    Storage::disk('s3');
+    UploadedFile::fake()->image($filename, 300, 300)
+                ->storeAs('profile_images', $filename, ['disk' => 's3']);
+    UploadedFile::fake()->image($thumbnail, 80, 80)
+                ->storeAs('profile_images', $thumbnail, ['disk' => 's3']);
+
     return [
-        'name' => $faker->name,
+        'name' => $faker->unique()->word,
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
-        'password' => 'pass',
+        'password' => '3387Ezweb',
         'remember_token' => Str::random(10),
+        'birth' => $faker->dateTimeBetween('-80 years', '-20years')->format('Y-m-d'),
+        'gender' => rand(0, 1),
+        'show_mail_flg' => rand(0, 1),
+        'user_name01' => $faker->firstName,
+        'user_name02' => $faker->lastName,
+        'url' => $faker->url,
+        'description' => $faker->realText(200),
+        'image_path' => $filename,
     ];
 });

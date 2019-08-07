@@ -54,7 +54,7 @@
 
         clearTimeout(this.debounce);
         this.debounce = setTimeout(() => {
-          this.$axios.$get(`/admin/report_tags/tagify?tag=${this.tag}`).then(({data}) => {
+          this.$axios.$get(`/comedy/report_tags/tagify?tag=${this.tag}`).then(({data}) => {
             this.autocomplete_tags = data.map(name => {
               return { text: name };
             });

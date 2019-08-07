@@ -39,15 +39,19 @@ class SettingController extends Controller
         $params = $request->all();
         $report = new Report();
         $images = $request->file('images');
-        $temp_tags = explode(',', $request->get('tags'));
+        $temp_place_tags = explode(',', $request->get('place_tags'));
+        $temp_player_tags = explode(',', $request->get('player_tags'));
+        $temp_other_tags = explode(',', $request->get('other_tags'));
 
-        DB::transaction(function () use ($report, $params, $temp_tags, $images, $user_id) {
+        DB::transaction(function () use ($report, $params, $temp_place_tags, $temp_player_tags, $temp_other_tags, $images, $user_id) {
             $report->user()->associate(User::find($user_id));
 
             $report->fill($params)->save();
 
             // タグの登録
-            $this->reportService->syncReportTag($report, $temp_tags);
+            $this->reportService->syncReportTag($report, $temp_place_tags,  'place');
+            $this->reportService->syncReportTag($report, $temp_player_tags, 'player');
+            $this->reportService->syncReportTag($report, $temp_other_tags, 'other');
 
             // 画像の登録
             $disk = Storage::disk('s3');

@@ -16,7 +16,7 @@
                         <template v-if="$isset($auth.user.user_name01)">{{ $auth.user.user_name01 }} </template>
                         <template v-if="$isset($auth.user.user_name02)">{{ $auth.user.user_name02 }}</template>
                     </template>
-                    <p>{{ $calcAge($auth.user.birth) }} / {{ $data.genderOption[$auth.user.gender] }} / states</p>
+                    <p>{{ $calcAge($auth.user.birth) }} / {{ $data.genderOption[$auth.user.gender] }} / {{ $data.prefsOption[$auth.user.pref] }}</p>
                     <hr class="dropdown-divider">
                     <template v-if="$isset($auth.user.email)">
                         <p>
@@ -38,7 +38,9 @@
                     </template>
                     <template v-if="$isset($auth.user.url)">
                         <p>
-                            {{ $auth.user.url }}
+                            <a :href="$auth.user.url" target="_blank">
+                                {{ $auth.user.url }}
+                            </a>
                         </p>
                         <hr class="dropdown-divider">
                     </template>
@@ -57,13 +59,41 @@
                 </section>
             </div>
             <div class="column">
-                <section>
+                <section class="tab">
                     <b-tabs type="is-boxed">
                         <b-tab-item>
                             <template slot="header">
                                 <b-icon icon="information-outline"></b-icon>
                                 <span> 投稿履歴 <b-tag rounded> 3 </b-tag> </span>
                             </template>
+                            <b-content>
+                                <section class="main-content border-radius">
+                                <h1>投稿履歴</h1>
+                                <hr class="dropdown-divider">
+                                <template v-if="reports.data.length" >
+                                    <section v-for="(report) in reports.data" class="column is-12-mobile">
+                                        <UserData :user="report.user"/>
+                                        <h1>{{ $truncate(report.title, 30) }}</h1>
+                                        <div class="content">
+                                            <div class="review-content">
+                                                <ReviewStars :report="report"/>
+                                                <p class="review-text">{{ $truncate(report.content, 80) }}</p>
+                                            </div>
+                                            <template v-if="report.report_images !== undefined && report.report_images.length > 0">
+                                                <img :src="report.report_images[0].path" alt="thumbnail" class="thumbnail">
+                                            </template>
+                                            <template v-else>
+                                                <img src="http://placehold.jp/120x120.png" alt="thumbnail" class="thumbnail">
+                                            </template>
+                                        </div>
+                                        <div class="dropdown-divider"></div>
+                                    </section>
+                                </template>
+                                <template v-else>
+                                    <p>まだ投稿はありません。</p>
+                                </template>
+                            </section>
+                            </b-content>
                         </b-tab-item>
                         <b-tab-item>
                             <template slot="header">
@@ -72,30 +102,6 @@
                             </template>
                         </b-tab-item>
                     </b-tabs>
-                    <section class="main-content border-radius">
-                        <h1>投稿履歴</h1>
-                        <hr class="dropdown-divider">
-                        <section v-if="reports.data !== undefined" v-for="(report) in reports.data" class="column is-12-mobile">
-                            <UserData :user="report.user"/>
-                            <h1>{{ $truncate(report.title, 30) }}</h1>
-                            <div class="content">
-                                <div class="review-content">
-                                    <ReviewStars :report="report"/>
-                                    <p class="review-text">{{ $truncate(report.content, 80) }}</p>
-                                </div>
-                                <template v-if="report.report_images !== undefined && report.report_images.length > 0">
-                                    <img :src="report.report_images[0].path" alt="thumbnail" class="thumbnail">
-                                </template>
-                                <template v-else>
-                                    <img src="http://placehold.jp/120x120.png" alt="thumbnail" class="thumbnail">
-                                </template>
-                            </div>
-                            <div class="dropdown-divider"></div>
-                        </section>
-                        <section v-else>
-                            <p>まだ投稿はありません。</p>
-                        </section>
-                    </section>
                 </section>
             </div>
         </div>
@@ -234,4 +240,15 @@
 
     div.dropdown-divider
         margin-bottom: 10px
+        
+    .b-tabs
+        border-radius: 10px
+
+    .tab /deep/ .is-boxed
+        margin-bottom: 0
+
+    .tab /deep/ .tab-content
+        border-radius: 10px
+        padding: 0
+        margin-top: 10px
 </style>

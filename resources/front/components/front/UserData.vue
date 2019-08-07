@@ -9,7 +9,7 @@
             </template>
         </div>
         <div class="user-name">By {{ user.name }}</div>
-        <div class="user-profile">{{ $calcAge(user.birth) }} / {{ $data.genderOption[user.gender] }} / states</div>
+        <div class="user-profile">{{ $calcAge(user.birth) }} / {{ $data.genderOption[user.gender] }} / {{ $data.prefsOption[user.pref] }}</div>
     </div>
 </template>
 <script>

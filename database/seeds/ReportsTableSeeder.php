@@ -29,5 +29,15 @@ class ReportsTableSeeder extends Seeder
                     'password' => '3387Ezweb'
                 ]));
             });
+
+        factory(App\Models\Report::class, 21)
+            ->create([
+                'status' => 1,
+            ])
+            ->each(function(App\Models\Report $report) {
+                $report->report_tags()->saveMany(factory(App\Models\ReportTag::class, rand(0, 3))->make());
+                $report->report_images()->saveMany(factory(App\Models\ReportImage::class, 1)->make());
+                $report->user()->associate(factory(App\Models\User::class)->create());
+            });
     }
 }
