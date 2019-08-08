@@ -31,6 +31,18 @@ class UserPageResource extends JsonResource
             $args['thumb'] = config('const.IMAGE_URL') . 'profile_images/thumb-' . $this->image_path;
         }
 
+        if ($this->image_path !== null) {
+            $args['thumb'] = config('const.IMAGE_URL') . 'profile_images/thumb-' . $this->image_path;
+        }
+
+        if ($this->followUsers !== null) {
+            $args['follow_users'] = FollowUserResource::collection($this->followUsers);
+        }
+
+        if ($this->followers !== null) {
+            $args['followers'] = FollowerResource::collection($this->followers);
+        }
+
         return $args;
     }
 }

@@ -17,6 +17,28 @@
                         <template v-if="$isset(userData.user.user_name02)">{{ userData.user.user_name02 }}</template>
                     </template>
                     <p>{{ $calcAge(userData.user.birth) }} / {{ $data.genderOption[userData.user.gender] }} / {{ $data.prefsOption[userData.user.pref] }}</p>
+                    <template v-if="$auth.$state.loggedIn && (userData.user.name !== $auth.user.name)">
+                        <template v-if="currentFollowing">
+                            <template v-if="sending">
+                                <button class="button is-primary is-loading"></button>
+                            </template>
+                            <template v-else>
+                                <button @click="unFollow()" class="button is-primary">
+                                    フォロー中 -
+                                </button>
+                            </template>
+                        </template>
+                        <template v-else>
+                            <template v-if="sending">
+                                <button class="button is-primary is-loading"></button>
+                            </template>
+                            <template v-else>
+                                <button @click="follow()" class="button is-primary">
+                                    フォローする +
+                                </button>
+                            </template>
+                        </template>
+                    </template>
                     <hr class="dropdown-divider">
                     <template v-if="$isset(userData.user.email)">
                         <p>
@@ -24,12 +46,14 @@
                         </p>
                         <hr class="dropdown-divider">
                     </template>
-                    <p>
-                        <n-link :to="{ name: 'setting-profile' }">
-                            プロフィールを編集
-                        </n-link>
-                    </p>
-                    <hr class="dropdown-divider">
+                    <template v-if="$auth.$state.loggedIn && (userData.user.name === $auth.user.name)">
+                        <p>
+                            <n-link :to="{ name: 'setting-profile' }">
+                                プロフィールを編集
+                            </n-link>
+                        </p>
+                        <hr class="dropdown-divider">
+                    </template>
                     <template v-if="$isset(userData.user.description)">
                         <p>
                             {{ userData.user.description }}
@@ -52,9 +76,18 @@
                         </ul>
                     </div>
                     <hr class="dropdown-divider">
-                    <p>
-                        フォロー中のユーザー
-                    </p>
+                    <div>
+                        フォロー中のユーザー <b-tag rounded> {{ userData.user.follow_users.length }} </b-tag>
+                        <template v-if="userData.user.follow_users.length">
+                            <div class="columns users">
+                                <div class="column is-2" v-for="user in userData.user.follow_users">
+                                    <n-link :to="{ name: 'users-name', params: {name: user.name} }" id="user-data">
+                                        <img :src="user.thumb" alt="">
+                                    </n-link>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
                     <hr class="dropdown-divider">
                 </section>
             </div>
@@ -71,40 +104,66 @@
                                     </template>
                                 </span>
                             </template>
-                            <b-content>
-                                <section class="main-content border-radius">
-                                    <h1>投稿履歴</h1>
-                                    <hr class="dropdown-divider">
-                                    <template v-if="userData.reports.length" >
-                                        <section v-for="(report) in userData.reports" class="column is-12-mobile">
-                                            <UserData :user="report.user"/>
-                                            <h1>{{ $truncate(report.title, 30) }}</h1>
-                                            <div class="content">
-                                                <div class="review-content">
-                                                    <ReviewStars :report="report"/>
-                                                    <p class="review-text">{{ $truncate(report.content, 80) }}</p>
-                                                </div>
-                                                <template v-if="report.report_images !== undefined && report.report_images.length > 0">
-                                                    <img :src="report.report_images[0].path" alt="thumbnail" class="thumbnail">
-                                                </template>
-                                                <template v-else>
-                                                    <img src="http://placehold.jp/120x120.png" alt="thumbnail" class="thumbnail">
-                                                </template>
+                            <section class="main-content border-radius report">
+                                <h1>投稿履歴</h1>
+                                <hr class="dropdown-divider">
+                                <template v-if="userData.reports.length" >
+                                    <section v-for="(report) in userData.reports" class="column is-12-mobile">
+                                        <UserData :user="report.user"/>
+                                        <h1>{{ $truncate(report.title, 30) }}</h1>
+                                        <div class="content">
+                                            <div class="review-content">
+                                                <ReviewStars :report="report"/>
+                                                <p class="review-text">{{ $truncate(report.content, 80) }}</p>
                                             </div>
-                                            <div class="dropdown-divider"></div>
-                                        </section>
-                                    </template>
-                                    <template v-else>
-                                        <p>まだ投稿はありません。</p>
-                                    </template>
-                                </section>
-                            </b-content>
+                                            <template v-if="report.report_images !== undefined && report.report_images.length > 0">
+                                                <img :src="report.report_images[0].path" alt="thumbnail" class="thumbnail">
+                                            </template>
+                                            <template v-else>
+                                                <img src="http://placehold.jp/120x120.png" alt="thumbnail" class="thumbnail">
+                                            </template>
+                                        </div>
+                                        <div class="dropdown-divider"></div>
+                                    </section>
+                                </template>
+                                <template v-else>
+                                    <p>まだ投稿はありません。</p>
+                                </template>
+                            </section>
                         </b-tab-item>
                         <b-tab-item>
                             <template slot="header">
                                 <b-icon icon="source-pull"></b-icon>
-                                <span> フォロワー <b-tag rounded> 100 </b-tag> </span>
+                                <span> フォロワー <b-tag rounded> {{ userData.user.followers.length }} </b-tag> </span>
                             </template>
+                            <section class="main-content border-radius">
+                                <h1>フォロワー</h1>
+                                <hr class="dropdown-divider">
+                                <template v-if="userData.user.followers.length" >
+                                    <section v-for="(follower) in userData.user.followers" class="column is-12-mobile">
+                                        <div class="follow-user-data">
+                                            <n-link :to="{ name: 'users-name', params: {name: follower.name} }">
+                                                <div class="user-icon">
+                                                    <template v-if="follower.thumb !== null && follower.thumb !== undefined">
+                                                        <img :src="follower.thumb">
+                                                    </template>
+                                                    <template v-else>
+                                                        <img src="~assets/none_image.jpg">
+                                                    </template>
+                                                </div>
+                                                <div class="user-info">
+                                                    <h1>{{ follower.name }}</h1>
+                                                    <p>{{ follower.description }}</p>
+                                                </div>
+                                            </n-link>
+                                        </div>
+                                        <div class="dropdown-divider"></div>
+                                    </section>
+                                </template>
+                                <template v-else>
+                                    <p>まだフォロワーはいません。</p>
+                                </template>
+                            </section>
                         </b-tab-item>
                     </b-tabs>
                 </section>
@@ -119,9 +178,6 @@
 
   export default{
     watchQuery: ['page'],
-    middleware: [
-      'redirectIfGuest'
-    ],
     components: {
       Pagination,
       UserData,
@@ -130,16 +186,44 @@
     data() {
       return {
         userData: {},
+        currentFollowing: false,
+        sending: false
       }
     },
-    async asyncData({$axios, query, params}){
+    async asyncData({$axios, query, params, $auth, app}){
       const userData = await $axios.$get(`users/${params.name}`, {
         params: {
           page: query.page,
         }
       });
 
-      return {userData};
+      let currentFollowing = false;
+      if (app.$auth.$state.loggedIn) {
+        currentFollowing = await $axios.$get(`/follow_users/${userData.user.id}`);
+      }
+
+      return {userData, currentFollowing};
+    },
+    methods: {
+      async follow () {
+        if (this.sending) {
+          return
+        }
+        this.sending = true;
+        const data = { id: this.userData.user.id };
+        await this.$axios.$post('/follow_users', data);
+        this.currentFollowing = true;
+        this.sending = false;
+      },
+      async unFollow() {
+        if (this.sending) {
+          return
+        }
+        this.sending = true;
+        await this.$axios.$delete(`/follow_users/${this.userData.user.id}`);
+        this.currentFollowing = false;
+        this.sending = false;
+      }
     }
   }
 </script>
@@ -158,10 +242,13 @@
             border-radius: 8px
             padding: 15px 20px
             h1
-                padding: 10px 0 10px 0
                 font-size: 20px
                 font-weight: bold
                 line-height: 1.2
+
+        .report
+            h1
+                padding-bottom: 20px
 
         .review-content
             overflow: hidden
@@ -184,7 +271,7 @@
             h1
                 padding-top: 0
                 padding-bottom: 0
-            p, div
+            p, > div
                 margin-top: 10px
                 margin-bottom: 10px
                 font-size: 14px
@@ -256,4 +343,22 @@
             border-radius: 10px
             padding: 0
             margin-top: 10px
+    .users
+        margin-top: 4px
+        img
+            border-radius: 5px
+
+    .follow-user-data a
+        color: #000
+        display: flex
+        .user-icon
+            width: 80px
+            padding-right: 10px
+            img
+                border-radius: 5px
+        .user-info
+            width: calc(100% - 90px)
+        h1
+            padding-top: 0
+            padding-bottom: 10px;
 </style>

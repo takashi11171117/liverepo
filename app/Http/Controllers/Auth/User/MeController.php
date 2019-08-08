@@ -15,6 +15,7 @@ class MeController extends Controller
 
     public function action(Request $request)
     {
+        $user = $request->user();
         return new PrivateUserResource($request->user());
     }
 }

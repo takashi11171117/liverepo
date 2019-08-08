@@ -48,6 +48,24 @@ Route::group(['namespace' => 'Front'], function () {
     ]);
 });
 
+Route::group(['namespace' => 'Front', 'middleware' => ['assign.guard:api','jwt.auth']],function ()
+{
+    Route::post('follow_users', [
+        'as' => 'follow_users.store',
+        'uses' => 'FollowUserController@store'
+    ]);
+
+    Route::delete('follow_users/{id}', [
+        'as' => 'follow_users.destroy',
+        'uses' => 'FollowUserController@destroy'
+    ]);
+
+    Route::get('follow_users/{id}', [
+        'as' => 'follow_users.is_following',
+        'uses' => 'FollowUserController@isFollowing'
+    ]);
+});
+
 Route::group(['prefix' => 'setting', 'namespace' => 'Front', 'middleware' => ['assign.guard:api','jwt.auth']],function ()
 {
     // admin
