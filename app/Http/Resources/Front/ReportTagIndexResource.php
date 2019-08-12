@@ -4,7 +4,7 @@ namespace App\Http\Resources\Front;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ReportTagResource extends JsonResource
+class ReportTagIndexResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,13 +14,6 @@ class ReportTagResource extends JsonResource
      */
     public function toArray($request)
     {
-        $result = [
-            'id' => $this->id,
-            'name' => $this->name,
-        ];
-
-        $result['reports'] = ReportIndexResource::collection($this->reports()->get());
-
-        return $result;
+        return $this->name;
     }
 }

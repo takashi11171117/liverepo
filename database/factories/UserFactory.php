@@ -34,6 +34,7 @@ $factory->define(User::class, function (Faker $faker) {
         'remember_token' => Str::random(10),
         'birth' => $faker->dateTimeBetween('-80 years', '-20years')->format('Y-m-d'),
         'gender' => rand(0, 1),
+        'pref' => rand(1, 47),
         'show_mail_flg' => rand(0, 1),
         'user_name01' => $faker->firstName,
         'user_name02' => $faker->lastName,

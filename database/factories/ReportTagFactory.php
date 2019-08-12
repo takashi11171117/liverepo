@@ -8,7 +8,7 @@ use Illuminate\Http\UploadedFile;
 
 $factory->define(ReportTag::class, function (Faker $faker) {
     return [
-        'name' => $faker->name,
+        'name' => $faker->unique()->name,
         'taxonomy' => 'place',
     ];
 });

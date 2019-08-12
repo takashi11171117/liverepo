@@ -8,10 +8,9 @@
                     <ReviewStars :report="data"/>
 
                     <div class="category">
-                        <ul class="tags">
-                            <li>ヤング</li>
-                            <li>漫才</li>
-                        </ul>
+                        <template v-for="tagName in data.report_tags">
+                            <Tag :tagName="tagName"/>
+                        </template>
                     </div>
 
                     <div class="live-data">
@@ -22,8 +21,18 @@
                     </div>
 
                     <div class="like-area">
-                        <div class="like-button"><i class="far fa-thumbs-up"></i> 380</div>
-                        <div class="favorite-button"><i class="far fa-thumbs-up"></i></div>
+                        <Follow
+                                :eachData="data"
+                                :currentFollowing="currentFollowing"
+                                followType="follow_reports"
+                        >
+                            <template v-slot:follow>
+                                <i class="fas fa-check"></i>&nbsp;{{ parseInt(currentCountFollowers, 10) + 1 }}
+                            </template>
+                            <template v-slot:unfollow>
+                                <i class="far fa-thumbs-up"></i>&nbsp;{{ currentCountFollowers }}
+                            </template>
+                        </Follow>
                     </div>
 
                     <hr class="dropdown-divider" />
@@ -58,21 +67,38 @@
 <script>
   import UserData from '../../../components/front/UserData';
   import ReviewStars from '../../../components/front/ReviewStars';
+  import Follow from '../../../components/Follow';
+  import Tag from '../../../components/front/Tag';
 
   export default {
     data() {
       return {
         data: {},
+        currentFollowing: false,
+        currentCountFollowers: 0,
       }
     },
     components: {
       UserData,
       ReviewStars,
+      Follow,
+      Tag
     },
-    async asyncData({$axios, params}) {
+    async asyncData({$axios, params, app}) {
       let {data} = await $axios.$get(`/comedy/reports/${params.id}`);
 
-      return {data};
+      let currentFollowing = false;
+      if (app.$auth.$state.loggedIn) {
+        const tempFollow = await $axios.$get(`/follow_reports/${data.id}`);
+        currentFollowing = tempFollow.result
+      }
+
+      let currentCountFollowers = data.followers_count;
+      if(currentFollowing) {
+        currentCountFollowers -= 1;
+      }
+
+      return {data, currentCountFollowers};
     },
     methods: {
       isData() {
@@ -140,51 +166,9 @@
         margin-bottom: 10px
         margin-top: 10px
 
-    .tags li
-        display: inline-block
-        position: relative
-        padding: 0.4em 1.4em
-        margin-right: 10px
-        background: #fff
-        color: #000
-        border-top: solid 0.5px #000
-        border-left: solid 0.5px #000
-        border-bottom: solid 5px #000
-        border-right: solid 5px #000
-        font-size: 14px
-        font-weight: bold
-        &:before
-            content: " "
-            position: absolute
-            bottom: -5px
-            left: -1px
-            width: 0
-            height: 0
-            border-width: 0 6px 6px 0
-            border-style: solid
-            border-color: transparent
-            border-bottom-color: #FFF
-        &:after
-            content: " "
-            position: absolute
-            top: -1px
-            right: -5px
-            width: 0
-            height: 0
-            border-width: 0 6px 6px 0
-            border-style: solid
-            border-color: #FFF
-            border-bottom-color: transparent
-
     .like-area
         background-color: #f0f0f0
         padding: 20px
-        div
-            display: inline-block
-            background-color: #aaaaaa
-            color: white
-            padding: 12px
-            border-radius: 5px;
 
     #image-list
         display: flex

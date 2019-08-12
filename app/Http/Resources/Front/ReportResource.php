@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources\Front;
 
-use App\Http\Resources\Front\Re;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ReportResource extends JsonResource
@@ -20,9 +19,10 @@ class ReportResource extends JsonResource
             'title' => $this->title,
             'rating' => $this->rating,
             'content' => $this->content,
+            'followers_count' => $this->followers_count,
         ];
 
-        $report_tags = ReportTagResource::collection($this->report_tags);
+        $report_tags = ReportTagIndexResource::collection($this->report_tags);
         if (!$report_tags->isEmpty()) {
             $result['report_tags'] = $report_tags;
         }

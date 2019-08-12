@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Admin;
 
+use App\Http\Resources\Front\ReportTagIndexResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ReportResourse extends JsonResource
@@ -24,7 +25,7 @@ class ReportResourse extends JsonResource
             'updated_at' => $this->updated_at,
         ];
 
-        $report_tags = ReportTagResource::collection($this->report_tags);
+        $report_tags = ReportTagIndexResource::collection($this->report_tags);
         if (!$report_tags->isEmpty()) {
             $result['report_tags'] = $report_tags;
         }

@@ -58,7 +58,11 @@
         </div>
         <nav>
             <ul>
-                <li><a href="#">新着</a></li>
+                <li>
+                    <n-link :to="{name: 'comedy-report_tags'}">
+                    タグ一覧
+                    </n-link>
+                </li>
                 <li><a href="#">トレンド</a></li>
             </ul>
         </nav>

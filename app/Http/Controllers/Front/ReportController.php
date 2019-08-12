@@ -30,7 +30,9 @@ class ReportController extends Controller
      */
     public function show($id)
     {
-        $report = Report::with(['report_images', 'report_tags', 'user'])->find($id);
+        $report = Report::with(['report_images', 'report_tags', 'user'])
+                        ->withCount('followers')
+                        ->find($id);
 
         if($report == null) {
             return response()->json(['error' => 'レポートはありません。'], 404);

@@ -2,28 +2,28 @@
   <main class="main">
     <div class="columns is-mobile is-multiline">
       <div v-if="reports.data !== undefined" v-for="report in reports.data" class="column is-12-mobile is-6-tablet is-6-desktop">
-        <n-link :to="{name: 'comedy-reports-id', params: {id: report.id}}" :key="report.id" class="box-link">
           <section class="main-content border-radius">
             <template v-if="report.user !== null">
               <UserData :user="report.user"/>
             </template>
-            <h1>{{ $truncate(report.title, 30) }}</h1>
-            <div class="content">
-              <div class="review-content">
-                <ReviewStars :report="report"/>
-                <p class="review-text">{{ $truncate(report.content, 80) }}</p>
-              </div>
-              <template v-if="report.report_images !== undefined && report.report_images.length > 0">
-                <div class="thumbnail-box">
-                  <img :src="report.report_images[0].path" alt="thumbnail" class="thumbnail">
+            <n-link :to="{name: 'comedy-reports-id', params: {id: report.id}}" :key="report.id" class="box-link">
+              <h1>{{ $truncate(report.title, 30) }}</h1>
+              <div class="content">
+                <div class="review-content">
+                  <ReviewStars :report="report"/>
+                  <p class="review-text">{{ $truncate(report.content, 80) }}</p>
                 </div>
-              </template>
-              <template v-else>
-                <img src="http://placehold.jp/120x120.png" alt="thumbnail" class="thumbnail">
-              </template>
-            </div>
+                <template v-if="report.report_images !== undefined && report.report_images.length > 0">
+                  <div class="thumbnail-box">
+                    <img :src="report.report_images[0].path" alt="thumbnail" class="thumbnail">
+                  </div>
+                </template>
+                <template v-else>
+                  <img src="http://placehold.jp/120x120.png" alt="thumbnail" class="thumbnail">
+                </template>
+              </div>
+            </n-link>
           </section>
-        </n-link>
       </div>
     </div>
     <Pagination

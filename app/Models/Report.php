@@ -37,4 +37,10 @@ class Report extends Model
     public function user() {
         return $this->belongsTo(User::class);
     }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'follow_reports', 'report_id', 'user_id')
+                    ->using(FollowReport::class);
+    }
 }

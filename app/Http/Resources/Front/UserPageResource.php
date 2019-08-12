@@ -43,6 +43,10 @@ class UserPageResource extends JsonResource
             $args['followers'] = FollowerResource::collection($this->followers);
         }
 
+        if ($this->followReportTags !== null) {
+            $args['follow_report_tags'] = ReportTagIndexResource::collection($this->followReportTags);
+        }
+
         return $args;
     }
 }

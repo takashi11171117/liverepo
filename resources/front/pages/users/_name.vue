@@ -17,28 +17,11 @@
                         <template v-if="$isset(userData.user.user_name02)">{{ userData.user.user_name02 }}</template>
                     </template>
                     <p>{{ $calcAge(userData.user.birth) }} / {{ $data.genderOption[userData.user.gender] }} / {{ $data.prefsOption[userData.user.pref] }}</p>
-                    <template v-if="$auth.$state.loggedIn && (userData.user.name !== $auth.user.name)">
-                        <template v-if="currentFollowing">
-                            <template v-if="sending">
-                                <button class="button is-primary is-loading"></button>
-                            </template>
-                            <template v-else>
-                                <button @click="unFollow()" class="button is-primary">
-                                    フォロー中 -
-                                </button>
-                            </template>
-                        </template>
-                        <template v-else>
-                            <template v-if="sending">
-                                <button class="button is-primary is-loading"></button>
-                            </template>
-                            <template v-else>
-                                <button @click="follow()" class="button is-primary">
-                                    フォローする +
-                                </button>
-                            </template>
-                        </template>
-                    </template>
+                    <Follow
+                            :eachData="userData.user"
+                            :currentFollowing="currentFollowing"
+                            followType="follow_users"
+                    />
                     <hr class="dropdown-divider">
                     <template v-if="$isset(userData.user.email)">
                         <p>
@@ -66,14 +49,15 @@
                                 {{ userData.user.url }}
                             </a>
                         </p>
-                        <hr class="dropdown-divider">
+                        <hr class="dropdown-divider">ß
                     </template>
                     <div class="follow-tag">
-                        フォロー中のタグ
-                        <ul class="tags">
-                            <li>ヤング</li>
-                            <li>漫才</li>
-                        </ul>
+                        フォロー中のタグ <b-tag rounded> {{ userData.user.follow_report_tags.length }} </b-tag>
+                        <div class="report-tags">
+                            <template v-for="tagName in userData.user.follow_report_tags">
+                                <Tag :tagName="tagName"/>
+                            </template>
+                        </div>
                     </div>
                     <hr class="dropdown-divider">
                     <div>
@@ -99,9 +83,7 @@
                                 <b-icon icon="information-outline"></b-icon>
                                 <span>
                                     投稿履歴
-                                    <template v-if="userData.reports.length" >
-                                        <b-tag rounded> {{ userData.reports.length }} </b-tag>
-                                    </template>
+                                    <b-tag rounded> {{ userData.reports.length }} </b-tag>
                                 </span>
                             </template>
                             <section class="main-content border-radius report">
@@ -133,8 +115,48 @@
                         </b-tab-item>
                         <b-tab-item>
                             <template slot="header">
+                                <b-icon icon="information-outline"></b-icon>
+                                <span>
+                                    いいねしているレポート
+                                    <b-tag rounded> {{ userData.follow_reports.length }} </b-tag>
+                                </span>
+                            </template>
+                            <section class="main-content border-radius report">
+                                <h1>いいねしているレポート</h1>
+                                <hr class="dropdown-divider">
+                                <template v-if="userData.follow_reports.length" >
+                                    <section v-for="(report) in userData.follow_reports" class="column is-12-mobile">
+                                        <UserData :user="report.user"/>
+                                        <h1>{{ $truncate(report.title, 30) }}</h1>
+                                        <div class="content">
+                                            <div class="review-content">
+                                                <ReviewStars :report="report"/>
+                                                <p class="review-text">{{ $truncate(report.content, 80) }}</p>
+                                            </div>
+                                            <template v-if="report.report_images !== undefined && report.report_images.length > 0">
+                                                <img :src="report.report_images[0].path" alt="thumbnail" class="thumbnail">
+                                            </template>
+                                            <template v-else>
+                                                <img src="http://placehold.jp/120x120.png" alt="thumbnail" class="thumbnail">
+                                            </template>
+                                        </div>
+                                        <div class="dropdown-divider"></div>
+                                    </section>
+                                </template>
+                                <template v-else>
+                                    <p>まだ投稿はありません。</p>
+                                </template>
+                            </section>
+                        </b-tab-item>
+                        <b-tab-item>
+                            <template slot="header">
                                 <b-icon icon="source-pull"></b-icon>
-                                <span> フォロワー <b-tag rounded> {{ userData.user.followers.length }} </b-tag> </span>
+                                <span>
+                                    フォロワー
+                                    <b-tag rounded>
+                                        {{ userData.user.followers.length }}
+                                    </b-tag>
+                                </span>
                             </template>
                             <section class="main-content border-radius">
                                 <h1>フォロワー</h1>
@@ -175,6 +197,8 @@
   import Pagination from '../../components/Pagination';
   import UserData from '../../components/front/UserData';
   import ReviewStars from '../../components/front/ReviewStars';
+  import Tag from '../../components/front/Tag';
+  import Follow from '../../components/Follow';
 
   export default{
     watchQuery: ['page'],
@@ -182,12 +206,13 @@
       Pagination,
       UserData,
       ReviewStars,
+      Tag,
+      Follow
     },
     data() {
       return {
         userData: {},
         currentFollowing: false,
-        sending: false
       }
     },
     async asyncData({$axios, query, params, $auth, app}){
@@ -199,32 +224,12 @@
 
       let currentFollowing = false;
       if (app.$auth.$state.loggedIn) {
-        currentFollowing = await $axios.$get(`/follow_users/${userData.user.id}`);
+        const tempFollow = await $axios.$get(`/follow_users/${userData.user.id}`);
+        currentFollowing = tempFollow.result
       }
 
       return {userData, currentFollowing};
     },
-    methods: {
-      async follow () {
-        if (this.sending) {
-          return
-        }
-        this.sending = true;
-        const data = { id: this.userData.user.id };
-        await this.$axios.$post('/follow_users', data);
-        this.currentFollowing = true;
-        this.sending = false;
-      },
-      async unFollow() {
-        if (this.sending) {
-          return
-        }
-        this.sending = true;
-        await this.$axios.$delete(`/follow_users/${this.userData.user.id}`);
-        this.currentFollowing = false;
-        this.sending = false;
-      }
-    }
   }
 </script>
 <style lang="sass" scoped>
@@ -284,44 +289,9 @@
             margin-bottom: 10px
             img
                 border-radius: 5px
-        .tags
+        .report-tags
             margin-bottom: 10px
             margin-top: 10px
-        .tags li
-            display: inline-block
-            position: relative
-            padding: 0.2em 1.4em
-            margin-right: 10px
-            background: #fff
-            color: #000
-            border-top: solid 0.5px #000
-            border-left: solid 0.5px #000
-            border-bottom: solid 5px #000
-            border-right: solid 5px #000
-            font-size: 12px
-            font-weight: bold
-            &:before
-                content: " "
-                position: absolute
-                bottom: -5px
-                left: -1px
-                width: 0
-                height: 0
-                border-width: 0 6px 6px 0
-                border-style: solid
-                border-color: transparent
-                border-bottom-color: #FFF
-            &:after
-                content: " "
-                position: absolute
-                top: -1px
-                right: -5px
-                width: 0
-                height: 0
-                border-width: 0px 6px 6px 0px
-                border-style: solid
-                border-color: #FFF
-                border-bottom-color: transparent
 
         .content
             display: flex

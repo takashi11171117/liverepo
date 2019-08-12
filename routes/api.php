@@ -37,8 +37,20 @@ Route::group(['namespace' => 'Front'], function () {
 
         // tag
         Route::get('report_tags/tagify', [
-            'as' => 'comedy.report_tags.index',
+            'as' => 'comedy.report_tags.tagify',
             'uses' => 'ReportTagController@tagify'
+        ]);
+
+        // tag
+        Route::get('report_tags', [
+            'as' => 'comedy.report_tags.index',
+            'uses' => 'ReportTagController@index'
+        ]);
+
+        // tag
+        Route::get('report_tags/{name}', [
+            'as' => 'comedy.report_tags.show',
+            'uses' => 'ReportTagController@show'
         ]);
     });
 
@@ -63,6 +75,36 @@ Route::group(['namespace' => 'Front', 'middleware' => ['assign.guard:api','jwt.a
     Route::get('follow_users/{id}', [
         'as' => 'follow_users.is_following',
         'uses' => 'FollowUserController@isFollowing'
+    ]);
+
+    Route::post('follow_report_tags', [
+        'as' => 'follow_report_tags.store',
+        'uses' => 'FollowReportTagController@store'
+    ]);
+
+    Route::delete('follow_report_tags/{id}', [
+        'as' => 'follow_report_tags.destroy',
+        'uses' => 'FollowReportTagController@destroy'
+    ]);
+
+    Route::get('follow_report_tags/{id}', [
+        'as' => 'follow_report_tags.is_following',
+        'uses' => 'FollowReportTagController@isFollowing'
+    ]);
+
+    Route::post('follow_reports', [
+        'as' => 'follow_reports.store',
+        'uses' => 'FollowReportController@store'
+    ]);
+
+    Route::delete('follow_reports/{id}', [
+        'as' => 'follow_reports.destroy',
+        'uses' => 'FollowReportController@destroy'
+    ]);
+
+    Route::get('follow_reports/{id}', [
+        'as' => 'follow_reports.is_following',
+        'uses' => 'FollowReportController@isFollowing'
     ]);
 });
 

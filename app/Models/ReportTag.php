@@ -17,4 +17,10 @@ class ReportTag extends Model
     {
         return $this->belongsToMany(Report::class);
     }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'follow_report_tags', 'report_tag_id', 'user_id')
+                    ->using(FollowReportTag::class);
+    }
 }
