@@ -113,7 +113,7 @@
         status: '',
         rating: '',
         file: null,
-        opened_at: new Date(),
+        opened_at: null,
         error: {},
         place_tags: [],
         player_tags: [],
@@ -152,7 +152,9 @@
         let formData = new FormData;
         if (this.$isset(params.file)) {
           const blob = await this.$imageCompress(params.file);
-          const compressedFile = new File([blob], blob.name);
+          const compressedFile = new File([blob], params.file.name, {
+            type: params.file.type
+          });
           formData.append('images[]', compressedFile);
         }
         formData.append('title', params.title);

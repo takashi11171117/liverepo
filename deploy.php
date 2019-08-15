@@ -53,6 +53,7 @@ before('deploy:symlink', 'artisan:migrate');
 before('deploy:symlink', 'artisan:cache:clear');
 before('deploy:symlink', 'artisan:config:cache');
 after('deploy:update_code', 'yarn:install');
+after('deploy:update_code', 'yarn:build');
 
 before('deploy:shared','upload:env');
 task('upload:env', function () {
@@ -63,4 +64,13 @@ task('upload:env', function () {
         upload('.env.staging', '{{deploy_path}}/shared/.env');
     }
 })->desc('.envをアップロード');
+
+task('yarn:build', function () {
+    if (has('previous_release')) {
+        if (test('[ -d {{previous_release}}/node_modules ]')) {
+            run('cp -R {{previous_release}}/node_modules {{release_path}}');
+        }
+    }
+    run("export API_SERVER_URL=http://localhost/api; export API_CLIENT_URL=http://staging.liverepo.info/api; cd {{release_path}} && {{bin/yarn}} build");
+});
 
