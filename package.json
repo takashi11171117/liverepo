@@ -31,7 +31,6 @@
     "nuxt": "^2.4.0",
     "require-extension-hooks-babel": "^1.0.0-beta.1",
     "style-loader": "^0.23.1",
-    "sweetalert2": "^7.28.11",
     "universal-cookie": "^4.0.0",
     "v-calendar": "^0.9.7",
     "vue-image-lightbox": "^6.2.0",
@@ -64,8 +63,7 @@
     "require-extension-hooks-vue": "^2.0.0",
     "sass-loader": "^7.1.0",
     "selenium-server": "^3.141.59",
-    "sinon": "^7.3.1",
-    "swagger": "^0.7.5"
+    "sinon": "^7.3.1"
   },
   "ava": {
     "require": [
