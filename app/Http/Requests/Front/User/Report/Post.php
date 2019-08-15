@@ -28,7 +28,7 @@ class Post extends FormRequest
             'content' => 'required|max:40000',
             'status' => 'required',
             'rating' => 'required',
-            'images.*' => 'nullable|image|max:10000',
+            'images.*' => 'nullable|image|max:20000',
             'place_tags' => 'required',
             'player_tags' => 'required',
         ];

@@ -28,7 +28,7 @@ class Put extends FormRequest
             'content' => 'required|max:40000',
             'status' => 'required',
             'rating' => 'required',
-            'images.*' => 'image|max:10000',
+            'images.*' => 'image|max:20000',
             'tags' => 'required'
         ];
     }

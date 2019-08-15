@@ -32,9 +32,12 @@
         overflow: hidden
         color: #ffcc33
         word-wrap: normal
+        z-index: 10
 
     .star-rating-back
+        position: absolute
         color: #ccc
+        z-index: 1
 
     .review-star
         padding-bottom: 15px

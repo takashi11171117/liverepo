@@ -82,56 +82,47 @@
   }
 </script>
 <style lang="sass" scoped>
-    main
-        background-color: #f8d048
-        height: auto
-        color: #000
-        padding-top: 20px
+    .main-content
+        background-color: #fff
+        border-radius: 8px
+        padding: 15px 20px
+        h1
+            font-size: 20px
+            font-weight: bold
+            line-height: 1.2
+
+    .review-content
+        overflow: hidden
+        width: calc(100% - 120px)
+        display: flex
+        flex-direction: column
+
+    .review-text
+        padding-right: 10px
+        line-height: 150%
+        margin-bottom: 10px
+        font-size: 16px
+
+    .thumbnail-box
+        width: 120px
+
+    .content
+        display: flex
+
+    .side-content
         padding-bottom: 20px
-        padding-left: 20px
-        padding-right: 20px
-
-        .main-content
-            background-color: #fff
-            border-radius: 8px
-            padding: 15px 20px
-            h1
-                font-size: 20px
-                font-weight: bold
-                line-height: 1.2
-
-        .review-content
-            overflow: hidden
-            width: calc(100% - 120px)
-            display: flex
-            flex-direction: column
-
-        .review-text
-            padding-right: 10px
-            line-height: 150%
+        margin-bottom: 20px
+        text-align: left
+        h1
+            padding-top: 0
+            padding-bottom: 0
+        p, > div
+            margin-top: 10px
             margin-bottom: 10px
-            font-size: 16px
-
-        .thumbnail-box
-            width: 120px
-
-        .content
-            display: flex
-
-        .side-content
-            padding-bottom: 20px
+            font-size: 14px
+            line-height: 1.5
+        .follow-tag
             margin-bottom: 20px
-            text-align: left
-            h1
-                padding-top: 0
-                padding-bottom: 0
-            p, > div
-                margin-top: 10px
-                margin-bottom: 10px
-                font-size: 14px
-                line-height: 1.5
-            .follow-tag
-                margin-bottom: 20px
-            @media screen and (min-width: 768px)
-                width: 320px
+        @media screen and (min-width: 768px)
+            width: 320px
 </style>

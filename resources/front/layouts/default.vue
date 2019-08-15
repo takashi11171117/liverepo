@@ -1,7 +1,7 @@
 <template>
   <div class="site">
     <Header />
-    <div class="wrapper container">
+    <div class="wrapper">
       <nuxt class="site-content"/>
     </div>
     <Footer />
@@ -94,5 +94,6 @@
     width: 100%
     max-width: 100%
     margin-bottom: auto
+    position: relative
 </style>
 

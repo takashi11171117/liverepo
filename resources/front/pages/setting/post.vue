@@ -113,7 +113,7 @@
         status: '',
         rating: '',
         file: null,
-        opened_at: null,
+        opened_at: new Date(),
         error: {},
         place_tags: [],
         player_tags: [],
@@ -150,13 +150,15 @@
       },
       async addReport(params) {
         let formData = new FormData;
-        const blob = await this.$imageCompress(params.file);
-        const compressedFile = new File([blob], blob.name);
+        if (this.$isset(params.file)) {
+          const blob = await this.$imageCompress(params.file);
+          const compressedFile = new File([blob], blob.name);
+          formData.append('images[]', compressedFile);
+        }
         formData.append('title', params.title);
         formData.append('content', params.content);
         formData.append('status', params.status);
         formData.append('rating', params.rating);
-        formData.append('images[]', compressedFile);
         formData.append('place_tags', params.place_tags);
         formData.append('player_tags', params.player_tags);
         formData.append('other_tags', params.other_tags);

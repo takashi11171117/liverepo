@@ -97,10 +97,10 @@ class ReportStoreTest extends TestCase
              ->assertJsonValidationErrors(['images.0']);
     }
 
-    public function test_it_cat_not_upload_over_10000_file()
+    public function test_it_cat_not_upload_over_20000_file()
     {
         Storage::fake('s3');
-        $file = UploadedFile::fake()->image('dummy.jpg')->size(11000);
+        $file = UploadedFile::fake()->image('dummy.jpg')->size(21000);
 
         $admin = factory(Admin::class)->create();
 

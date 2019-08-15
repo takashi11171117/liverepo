@@ -57,10 +57,10 @@ class ReportStoreTest extends TestCase
              ]);
     }
 
-    public function test_it_cat_not_upload_over_10000_file()
+    public function test_it_cat_not_upload_over_20000_file()
     {
         Storage::fake('s3');
-        $file = UploadedFile::fake()->image('dummy.jpg')->size(11000);
+        $file = UploadedFile::fake()->image('dummy.jpg')->size(21000);
 
         $user = factory(User::class)->create();
 
@@ -68,7 +68,7 @@ class ReportStoreTest extends TestCase
             'image' => $file,
         ])
              ->assertJsonFragment([
-                 'image' => ["アイコンは10000 KB以下のファイルにしてください。"]
+                 'image' => ["アイコンは20000 KB以下のファイルにしてください。"]
              ]);
     }
 

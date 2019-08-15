@@ -1,7 +1,9 @@
 <template>
     <div class="columns">
         <aside class="column is-narrow-desktop is-narrow-tablet">
-            <vc-calendar></vc-calendar>
+            <no-ssr>
+                <vc-calendar></vc-calendar>
+            </no-ssr>
         </aside>
         <main class="column">
             <div class="columns is-mobile is-tablet is-multiline">
