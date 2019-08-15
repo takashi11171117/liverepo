@@ -1,7 +1,7 @@
 import Cookies from "universal-cookie";
 let cookies = null;
 
-export default ({ $axios, store, redirect }) => {
+export default ({ $axios, store, redirect, app }) => {
   $axios.defaults.baseURL = process.env.apiUrl;
   let arrUrl = [];
 
@@ -36,13 +36,13 @@ export default ({ $axios, store, redirect }) => {
     if (status === 404) {
       if (arrUrl[0] === 'admin') {
         redirect('/admin');
-      } else {
-        redirect('/');
       }
     }
 
     if (status === 401 && store.getters['check'] && arrUrl[0] === 'admin') {
       redirect('/admin/logout');
+    } else if (status === 401) {
+      app.$auth.logout();
     }
   })
 }

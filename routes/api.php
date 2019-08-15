@@ -106,6 +106,11 @@ Route::group(['namespace' => 'Front', 'middleware' => ['assign.guard:api','jwt.a
         'as' => 'follow_reports.is_following',
         'uses' => 'FollowReportController@isFollowing'
     ]);
+
+    Route::post('report_comments', [
+        'as' => 'report_comments.store',
+        'uses' => 'ReportCommentController@store'
+    ]);
 });
 
 Route::group(['prefix' => 'setting', 'namespace' => 'Front', 'middleware' => ['assign.guard:api','jwt.auth']],function ()

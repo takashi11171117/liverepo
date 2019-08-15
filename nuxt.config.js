@@ -56,13 +56,20 @@ export default {
     '~plugins/util',
     '~plugins/preview-input',
     {
-      src: '~/plugins/vue-lightbox-pluign.js',
-      ssr: false
+      src: '~/plugins/v-calender',
+      mode: 'client'
     },
-
+    {
+      src: '~/plugins/vue-lightbox-pluign.js',
+      mode: 'client'
+    },
     {
       src: '~/plugins/vue-tags-input.js',
-      ssr: false
+      mode: 'client'
+    },
+    {
+      src: '~/plugins/compress.js',
+      mode: 'client'
     },
   ],
 
@@ -89,8 +96,8 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
-    '@nuxtjs/axios',
     '@nuxtjs/auth',
+    '@nuxtjs/axios',
     '@nuxtjs/bulma',
     '@nuxtjs/font-awesome',
   ],

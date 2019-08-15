@@ -1,7 +1,9 @@
 <template>
   <div class="site">
     <Header />
-    <nuxt class="site-content"/>
+    <div class="wrapper container">
+      <nuxt class="site-content"/>
+    </div>
     <Footer />
   </div>
 </template>
@@ -17,6 +19,7 @@
   }
 </script>
 <style lang="sass">
+  /* リセット */
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   a, abbr, acronym, address, big, cite, code,
@@ -65,25 +68,15 @@
   *, *:before, *:after
     box-sizing: border-box
 
+  /* footer　固定用 */
   .site
     display: flex
     min-height: 100vh
     flex-direction: column
 
-  .site-content
-    flex: 1
-
   img
     width: 100%
     height: auto
-
-  .info--error
-    margin-bottom: 10px
-    text-align: left
-    color: red
-    font-weight: bold
-    margin-top: 10px
-    font-size: 12px
 
   a:hover
       opacity: .8
@@ -92,5 +85,14 @@
     border-color: #000
     right: 1.125em
     z-index: 4
+
+  .wrapper
+    height: auto
+    color: #000
+    padding: 20px
+    margin: 0 auto
+    width: 100%
+    max-width: 100%
+    margin-bottom: auto
 </style>
 

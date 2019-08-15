@@ -32,6 +32,11 @@ class ReportResource extends JsonResource
             $result['report_images'] = $report_images;
         }
 
+        $report_comments = ReportCommentResource::collection($this->report_comments);
+        if (!$report_comments->isEmpty()) {
+            $result['report_comments'] = $report_comments;
+        }
+
         $result['user'] = new UserResource($this->user);
 
         return $result;

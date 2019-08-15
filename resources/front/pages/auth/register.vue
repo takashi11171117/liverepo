@@ -143,4 +143,7 @@
     .kiyaku
         margin-bottom: 10px
         margin-top: 20px
+    .section
+        background-color: #fff
+        border-radius: 10px
 </style>

@@ -7,6 +7,7 @@ $blue: #72d0eb;
 // Add pink and its invert
 $pink: #ffb3b3;
 $pink-invert: #fff;
+$yellow: #f8d048;
 
 // 3. Set the derived variables
 // Use the new pink as the primary color
@@ -22,3 +23,7 @@ $primary-invert: $pink-invert;
 
 $navbar-background-color: #FFD83D;
 $navbar-item-hover-background-color: #fff000;
+
+body {
+  background-color: $yellow;
+}

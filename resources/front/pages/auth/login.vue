@@ -87,3 +87,9 @@
     }
   }
 </script>
+
+<style lang="sass" scoped>
+    .section
+        background-color: #fff
+        border-radius: 10px
+</style>

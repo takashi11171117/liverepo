@@ -63,7 +63,6 @@
                     タグ一覧
                     </n-link>
                 </li>
-                <li><a href="#">トレンド</a></li>
             </ul>
         </nav>
     </header>

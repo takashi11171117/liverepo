@@ -1,5 +1,5 @@
 <template>
-    <div class="user-data">
+    <div class="user-data" v-if="user !== null">
         <n-link :to="{ name: 'users-name', params: {name: user.name} }" id="user-data">
             <div class="user-icon">
                 <template v-if="user.thumb !== null && user.thumb !== undefined">

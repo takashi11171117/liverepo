@@ -1,79 +1,81 @@
 <template>
-    <div class="form">
-        <h1>レポート投稿</h1>
-        <TextInput
-                label="タイトル"
-                name="title"
-                v-model="title"
-                placeholder="タイトルを入力"
-                :error="error"
-        />
+    <div class="section">
+        <div class="form">
+            <h1>レポート投稿</h1>
+            <TextInput
+                    label="タイトル"
+                    name="title"
+                    v-model="title"
+                    placeholder="タイトルを入力"
+                    :error="error"
+            />
 
-        <TextInput
-                label="本文"
-                name="content"
-                v-model="content"
-                placeholder="本文を入力"
-                :error="error"
-                type="textarea"
-        />
+            <TextInput
+                    label="本文"
+                    name="content"
+                    v-model="content"
+                    placeholder="本文を入力"
+                    :error="error"
+                    type="textarea"
+            />
 
-        <SelectInput
-                label="ステータス"
-                name="status"
-                v-model="status"
-                :error="error"
-                :options="$data.reportStatus"
-        />
+            <SelectInput
+                    label="ステータス"
+                    name="status"
+                    v-model="status"
+                    :error="error"
+                    :options="$data.reportStatus"
+            />
 
-        <SelectInput
-                label="評価"
-                name="rating"
-                v-model="rating"
-                :error="error"
-                :options="$data.reportRating"
-        />
+            <SelectInput
+                    label="評価"
+                    name="rating"
+                    v-model="rating"
+                    :error="error"
+                    :options="$data.reportRating"
+            />
 
-        <TagifyInput
-                label="開催場所"
-                name="place_tags"
-                :error="error"
-                :report_tags="place_tags"
-                :onUpdate="newTags => place_tags = newTags"
-        />
+            <TagifyInput
+                    label="開催場所"
+                    name="place_tags"
+                    :error="error"
+                    :report_tags="place_tags"
+                    :onUpdate="newTags => place_tags = newTags"
+            />
 
-        <TagifyInput
-                label="出演者"
-                name="player_tags"
-                :error="error"
-                :report_tags="player_tags"
-                :onUpdate="newTags => player_tags = newTags"
-        />
+            <TagifyInput
+                    label="出演者"
+                    name="player_tags"
+                    :error="error"
+                    :report_tags="player_tags"
+                    :onUpdate="newTags => player_tags = newTags"
+            />
 
-        <TagifyInput
-                label="タグ"
-                name="other_tags"
-                :error="error"
-                :report_tags="other_tags"
-                :onUpdate="newTags => other_tags = newTags"
-        />
+            <TagifyInput
+                    label="タグ"
+                    name="other_tags"
+                    :error="error"
+                    :report_tags="other_tags"
+                    :onUpdate="newTags => other_tags = newTags"
+            />
 
-        <DateInput
-                label="開催日時"
-                name="opened_at"
-                v-model="opened_at"
-                :error="error"
-        />
+            <DateInput
+                    label="開催日時"
+                    name="opened_at"
+                    v-model="opened_at"
+                    :error="error"
+            />
 
-        <ImageInput
-                label="画像1"
-                v-model="file"
-                name="images.0"
-                :error="error"
-        />
+            <ImageInput
+                    label="画像1"
+                    v-model="file"
+                    name="images.0"
+                    :error="error"
+            />
 
-        <div class="buttons">
-            <button id="submit" @click="onSubmit()" class="button is-primary">保存する</button>
+            <div class="buttons">
+                <button id="submit" @click="onSubmit()" class="button is-primary">保存する</button>
+            </div>
         </div>
     </div>
 </template>
@@ -148,11 +150,13 @@
       },
       async addReport(params) {
         let formData = new FormData;
+        const blob = await this.$imageCompress(params.file);
+        const compressedFile = new File([blob], blob.name);
         formData.append('title', params.title);
         formData.append('content', params.content);
         formData.append('status', params.status);
         formData.append('rating', params.rating);
-        formData.append('images[]', params.file);
+        formData.append('images[]', compressedFile);
         formData.append('place_tags', params.place_tags);
         formData.append('player_tags', params.player_tags);
         formData.append('other_tags', params.other_tags);
@@ -172,12 +176,14 @@
 
 <style scoped lang="sass">
     .form
-        margin-top: 30px
-        margin-bottom: 100px
         margin-left: 20px
         margin-right: 20px
         h1
             font-size: 28px
             font-weight: bold
             margin-bottom: 20px
+
+    .section
+        background-color: #fff
+        border-radius: 10px
 </style>

@@ -1,87 +1,85 @@
 <template>
-    <main class="main">
-        <section class="columns is-multiline">
-            <div class="column is-narrow-desktop is-narrow-tablet side-content">
-                <section class="main-content">
-                    <p>
-                        <n-link :to="{ name: 'setting-profile' }">
-                            プロフィールを編集
-                        </n-link>
-                    </p>
-                    <hr class="dropdown-divider">
-                </section>
-            </div>
-            <div class="column">
-                <section class="main-content border-radius">
-                    <h1>プロフィール編集</h1>
-                    <TextInput
-                            name="user_name01"
-                            v-model="user_name01"
-                            placeholder="姓"
-                            :error="error"
-                    />
+    <div class="columns">
+        <aside class="column is-narrow-desktop is-narrow-tablet">
+            <section class="main-content">
+                <p>
+                    <n-link :to="{ name: 'setting-profile' }">
+                        プロフィールを編集
+                    </n-link>
+                </p>
+                <hr class="dropdown-divider">
+            </section>
+        </aside>
+        <main class="column">
+            <section class="main-content border-radius">
+                <h1>プロフィール編集</h1>
+                <TextInput
+                        name="user_name01"
+                        v-model="user_name01"
+                        placeholder="姓"
+                        :error="error"
+                />
 
-                    <TextInput
-                            name="user_name02"
-                            v-model="user_name02"
-                            placeholder="名"
-                            :error="error"
-                    />
+                <TextInput
+                        name="user_name02"
+                        v-model="user_name02"
+                        placeholder="名"
+                        :error="error"
+                />
 
-                    <TextInput
-                            label="紹介文"
-                            name="description"
-                            type="textarea"
-                            v-model="description"
-                            placeholder="紹介文"
-                            :error="error"
-                    />
+                <TextInput
+                        label="紹介文"
+                        name="description"
+                        type="textarea"
+                        v-model="description"
+                        placeholder="紹介文"
+                        :error="error"
+                />
 
-                    <RadioInput
-                            name="show_mail_flg"
-                            label="メールの表示"
-                            v-model="show_mail_flg"
-                            :error="error"
-                            :options="{0: '表示しない', 1: '表示する'}"
-                    />
+                <RadioInput
+                        name="show_mail_flg"
+                        label="メールの表示"
+                        v-model="show_mail_flg"
+                        :error="error"
+                        :options="{0: '表示しない', 1: '表示する'}"
+                />
 
-                    <TextInput
-                            label="URL"
-                            name="url"
-                            v-model="url"
-                            placeholder="URL"
-                            :error="error"
-                    />
+                <TextInput
+                        label="URL"
+                        name="url"
+                        v-model="url"
+                        placeholder="URL"
+                        :error="error"
+                />
 
-                    <SelectInput
-                            name="gender"
-                            label="性別"
-                            v-model="gender"
-                            :error="error"
-                            :options="$data.genderOption"
-                    />
+                <SelectInput
+                        name="gender"
+                        label="性別"
+                        v-model="gender"
+                        :error="error"
+                        :options="$data.genderOption"
+                />
 
-                    <DateInput
-                            label="生年月日"
-                            name="birth"
-                            v-model="birth"
-                            :error="error"
-                    />
+                <DateInput
+                        label="生年月日"
+                        name="birth"
+                        v-model="birth"
+                        :error="error"
+                />
 
-                    <ImageInput
-                            label="アイコン"
-                            v-model="file"
-                            name="image"
-                            :error="error"
-                    />
+                <ImageInput
+                        label="アイコン"
+                        v-model="file"
+                        name="image"
+                        :error="error"
+                />
 
-                    <div class="buttons">
-                        <button id="submit" @click="onSubmit()" class="button is-primary">保存する</button>
-                    </div>
-                </section>
-            </div>
-        </section>
-    </main>
+                <div class="buttons">
+                    <button id="submit" @click="onSubmit()" class="button is-primary">保存する</button>
+                </div>
+            </section>
+        </main>
+    </div>
 </template>
 
 <script>
@@ -155,7 +153,9 @@
         }
 
         if (this.$isset(file)) {
-          formData.append('image', file);
+          const blob = await this.$imageCompress(file);
+          const compressedFile = new File([blob], blob.name);
+          formData.append('image', compressedFile);
         }
 
         formData.append('user_name01', user_name01);
@@ -180,15 +180,6 @@
 </script>
 
 <style scoped lang="sass">
-    main
-        background-color: #f8d048
-        height: auto
-        color: #000
-        padding-top: 20px
-        padding-bottom: 20px
-        padding-left: 20px
-        padding-right: 20px
-
     .main-content
         background-color: #fff
         border-radius: 8px
