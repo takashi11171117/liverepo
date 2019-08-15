@@ -1,0 +1,19 @@
+{
+    "builders": [
+      {
+        "type": "digitalocean",
+        "ssh_username": "root",
+        "api_token": "{{user 'api_token'}}",
+        "image": "ubuntu-18-04-x64",
+        "region": "sgp1",
+        "size": "512mb",
+        "snapshot_name": "packer-sample{{timestamp}}"
+      }
+    ],
+    "provisioners": [
+        {
+            "type": "ansible",
+            "playbook_file": "../ansible/Playbook.yml"
+        }
+    ]
+  }
