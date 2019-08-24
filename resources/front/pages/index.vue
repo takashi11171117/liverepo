@@ -1,9 +1,9 @@
 <template>
     <div class="columns">
-        <aside class="column is-narrow-desktop is-narrow-tablet">
-            <no-ssr>
-                <vc-calendar></vc-calendar>
-            </no-ssr>
+        <aside
+                class="column is-narrow-desktop is-narrow-tablet"
+        >
+            <Calendar />
         </aside>
         <main class="column">
             <div class="columns is-mobile is-tablet is-multiline">
@@ -23,12 +23,14 @@
 <script>
   import Pagination from '../components/Pagination';
   import ReportIndexCard from '../components/front/ReportIndexCard';
+  import Calendar from '../components/front/Calendar';
 
   export default {
     watchQuery: ['page', 'per_page'],
     components: {
       Pagination,
       ReportIndexCard,
+      Calendar
     },
     data() {
       return {
@@ -43,6 +45,6 @@
         }
       });
       return {reports};
-    }
+    },
   }
 </script>
