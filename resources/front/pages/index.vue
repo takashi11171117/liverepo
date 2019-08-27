@@ -38,7 +38,7 @@
       }
     },
     async asyncData({$axios, query}) {
-      const reports = await $axios.$get('/', {
+      const reports = await $axios.$get('/comedy/reports', {
         params: {
           page: query.page,
           per_page: query.per_page,

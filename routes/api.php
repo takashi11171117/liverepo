@@ -27,7 +27,7 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 Route::group(['namespace' => 'Front'], function () {
-    Route::get("/", "ReportController@index");
+    Route::get("comedy/reports", "ReportController@index");
 
     Route::group(['prefix' => 'comedy'], function() {
         Route::get('reports/{id}', [
