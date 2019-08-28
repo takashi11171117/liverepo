@@ -30,6 +30,20 @@ class ReportController extends Controller
         return ReportIndexResource::collection($reports);
     }
 
+    public function isExistingReportByDate(Request $request)
+    {
+        $month = $request->get('month');
+
+        $a = Report::select(DB::raw("count(*) as count, strftime('%Y-%m-%d', published_at) as formatted_published_at"))
+                ->status(config('const.PUBLISH'))
+                ->whereRaw("strftime('%Y-%m', published_at) = :month", ['month' => $month])
+                ->groupBy('formatted_published_at')
+                ->orderBy('formatted_published_at', 'desc')
+                ->get();
+
+        return response()->json($a, 200);
+    }
+
     public function getReportTagsWithReportsByDate(Request $request)
     {
         $date = $request->get('date');

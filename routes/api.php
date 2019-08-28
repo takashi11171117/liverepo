@@ -30,6 +30,8 @@ Route::group(['namespace' => 'Front'], function () {
     Route::group(['prefix' => 'comedy'], function() {
         Route::get("reports", "ReportController@index");
 
+        Route::get("is_reports_by_date", "ReportController@isExistingReportByDate");
+
         Route::get("reports_by_date", "ReportController@getReportTagsWithReportsByDate");
 
         Route::get('reports/{id}', [

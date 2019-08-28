@@ -12,7 +12,7 @@ $factory->define(Report::class, function (Faker $faker) {
         'content' => $faker->realText(3000),
         'status'  => rand(0, 2),
         'rating'  => rand(1, 5),
-        'published_at' => $faker->dateTimeBetween('-2months', '-1months')->format('Y-m-d'),
-        'opened_at' => $faker->dateTimeBetween('-3months', '-2months')->format('Y-m-d')
+        'published_at' => $faker->dateTimeBetween('-2months', '-1months'),
+        'opened_at' => $faker->dateTimeBetween('-3months', '-2months')
     ];
 });

@@ -19,6 +19,10 @@ class Report extends Model
         'title', 'content', 'status', 'rating',
     ];
 
+    protected $dates = [
+        'published_at',
+    ];
+
     public function scopeStatus(Builder $builder, $value)
     {
         $builder->where('status', $value);
@@ -47,5 +51,10 @@ class Report extends Model
     {
         return $this->belongsToMany(User::class, 'follow_reports', 'report_id', 'user_id')
                     ->using(FollowReport::class);
+    }
+
+    public function getPublisedAtAttribute()
+    {
+        return $this->published_at;
     }
 }
