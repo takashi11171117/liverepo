@@ -27,9 +27,11 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 Route::group(['namespace' => 'Front'], function () {
-    Route::get("comedy/reports", "ReportController@index");
-
     Route::group(['prefix' => 'comedy'], function() {
+        Route::get("reports", "ReportController@index");
+
+        Route::get("reports_by_date", "ReportController@getReportTagsWithReportsByDate");
+
         Route::get('reports/{id}', [
             'as'   => 'comedy.reports.show',
             'uses' => 'ReportController@show'
