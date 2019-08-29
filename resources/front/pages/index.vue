@@ -21,6 +21,7 @@
     </div>
 </template>
 <script>
+  import { mapActions } from 'vuex';
   import Pagination from '../components/Pagination';
   import ReportIndexCard from '../components/front/ReportIndexCard';
   import Calendar from '../components/front/Calendar';
@@ -36,6 +37,11 @@
       return {
         reports: {},
       }
+    },
+    async fetch ({store}) {
+      const today = new Date();
+      const month = ("0" + (today.getMonth() + 1)).slice(-2);
+      await store.dispatch('calendar/fetchAttributes', {month: `${today.getFullYear()}-${month}`});
     },
     async asyncData({$axios, query}) {
       const reports = await $axios.$get('/comedy/reports', {
