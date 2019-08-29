@@ -6,146 +6,38 @@
                     @dayclick="dayClicked"
                     :attributes="attributes"
             >
-                <div
-                        slot="todoRow"
-                        slot-scope="{ customData }"
-                        class="todo-row">
-                    <div class="todo-content">
-                        <input
-                                class="todo-input"
-                                v-if="customData.id === editId"
-                                v-model="customData.description"
-                                @keyup.enter="editId = 0"
-                                v-focus-select />
-                        <span v-else>
-                                  <span
-                                          :class='[
-                                      "todo-description",
-                                      { complete: customData.isComplete }]'
-                                          @click="toggleTodoComplete(customData)">
-                                    {{ customData.description }}
-                                  </span>
-                                </span>
-                    </div>
-                    <a @click.prevent="toggleTodoEdit(customData)">
-                        <b-icon
-                                v-if="editId !== customData.id"
-                                icon="pencil"
-                                type="is-info"
-                                size="is-small">
-                        </b-icon>
-                        <b-icon v-else
-                                icon="check"
-                                type="is-success"
-                                size="is-small">
-                        </b-icon>
-                    </a>
-                    <a
-                            @click.prevent="deleteTodo(customData)"
-                            v-if="!editId || editId !== customData.id"
-                            class="delete-todo">
-                        <b-icon
-                                icon="trash"
-                                type="is-danger"
-                                size="is-small">
-                        </b-icon>
-                    </a>
-                </div>
             </vc-calendar>
         </no-ssr>
     </div>
 </template>
 <script>
+  import { mapGetters, mapActions } from 'vuex';
+
   export default {
     data() {
       return {
         editId: 0,
         direction: '1',
-        todos: [
-          {
-            id: 1,
-            description: 'Take Noah to',
-            isComplete: false,
-            dates: new Date(2019, 7, 15),
-          },
-          {
-            id: 2,
-            description: 'Take Noah to',
-            dates: new Date(2019, 7, 14),
-          },
-          {
-            id: 3,
-            description: 'Take Noah to',
-            dates: new Date(2019, 7, 13),
-          },
-          {
-            id: 4,
-            description: 'Take Noah to',
-            dates: new Date(2019, 7, 12),
-          },
-          {
-            id: 5,
-            description: 'Take Noah to',
-            dates: new Date(2019, 7, 11),
-          },
-          {
-            id: 6,
-            description: 'Take Noah to',
-            dates: new Date(2019, 7, 16),
-          },
-          {
-            id: 7,
-            description: 'Take Noah to',
-            dates: new Date(2019, 7, 17),
-          }
-        ],
       }
     },
     computed: {
-      attributes() {
-        return [
-          // Today attribute
-          {
-            contentStyle: {
-              fontWeight: '700',
-              color: '#66b3cc',
-            },
-            dates: new Date(),
-          },
-          // Todo attributes
-          ...this.todos.map(todo => ({
-            key: todo.id,
-            dates: todo.dates,
-            customData: todo,
-            order: todo.id,
-            dot: {
-              backgroundColor: '#ff8080',
-              opacity: todo.isComplete ? 0.3 : 1,
-            },
-            popover: {
-              slot: 'todoRow',
-              visibility: 'focus',
-            }
-          }))
-        ];
-      }
+      ...mapGetters(
+        {
+          attributes: 'calendar/attributes',
+        }
+      )
     },
     methods: {
-      pageChange(obj) {
-        console.log(obj);
+      async pageChange(obj) {
+        const month = ("0"+(obj.month)).slice(-2);
+        await this.fetchAttributes({month: `${obj.year}-${month}`});
       },
       dayClicked (day) {
         this.direction = day.weekday
       },
-      toggleTodoComplete(todo) {
-        todo.isComplete = !todo.isComplete;
-      },
-      toggleTodoEdit(todo) {
-        this.editId = (this.editId === todo.id) ? 0 : todo.id;
-      },
-      deleteTodo(todo) {
-        this.todos = this.todos.filter(t => t !== todo);
-      }
+      ...mapActions('calendar', [
+        'fetchAttributes',
+      ]),
     }
   }
 </script>

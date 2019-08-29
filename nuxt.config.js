@@ -56,7 +56,7 @@ export default {
     '~plugins/util',
     '~plugins/preview-input',
     {
-      src: '~/plugins/v-calender',
+      src: '~/plugins/v-calendar',
       mode: 'client'
     },
     {
