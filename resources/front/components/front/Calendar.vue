@@ -33,7 +33,14 @@
         await this.fetchAttributes({month: `${obj.year}-${month}`});
       },
       dayClicked (day) {
-        this.direction = day.weekday
+        const month = ("0"+(day.month)).slice(-2);
+        const formattedDay = ("0"+(day.day)).slice(-2);
+        this.$router.replace({
+          name: 'comedy-reports-date-date',
+          params: {
+            date: `${day.year}-${month}-${formattedDay}`
+          }
+        });
       },
       ...mapActions('calendar', [
         'fetchAttributes',
