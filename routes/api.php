@@ -26,6 +26,12 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('admin', 'Auth\Admin\LoginController@action');
 });
 
+Route::group(['prefix' => 'oauth', 'namespace' => 'OAuth'], function () {
+    Route::group(['prefix' => 'twitter'], function() {
+        Route::get('redirect', 'TwitterController@redirect');
+    });
+});
+
 Route::group(['namespace' => 'Front'], function () {
     Route::group(['prefix' => 'comedy'], function() {
         Route::get("reports", "ReportController@index");
