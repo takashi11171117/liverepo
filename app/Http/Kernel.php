@@ -29,9 +29,13 @@ class Kernel extends HttpKernel
      */
     protected $middlewareGroups = [
         'api' => [
-            \Illuminate\Session\Middleware\StartSession::class,
             'throttle:60,1',
             'bindings',
+        ],
+        'session' => [
+            \Illuminate\Cookie\Middleware\EncryptCookies::class,
+            \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
         ],
     ];
 

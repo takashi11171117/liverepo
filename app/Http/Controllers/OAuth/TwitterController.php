@@ -3,12 +3,40 @@
 namespace App\Http\Controllers\Oauth;
 
 use App\Http\Controllers\Controller;
-use Laravel\Socialite\Facades\Socialite;
+use App\Services\SocialiteService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class TwitterController extends Controller {
-    public function redirect() {
-        $url = Socialite::driver('twitter')->redirect()->getTargetUrl();
-
-        return response()->json(['redirect_url' => $url]);
+    /**
+     * @var SocialiteService
+     */
+    protected $socialiteService;
+    /**
+     * @param  SocialiteService  $socialiteHandler
+     * @return void
+     */
+    public function __construct(SocialiteService $socialiteService)
+    {
+        $this->middleware('session');
+        $this->socialiteService = $socialiteService;
+    }
+    /**
+     * @return JsonResponse
+     */
+    public function redirect(): JsonResponse
+    {
+        return response()->json([
+            'redirect_url' => $this->socialiteService->getRedirectToTwitterUrl(),
+        ]);
+    }
+    /**
+     * @return JsonResponse
+     */
+    public function callback(Request $request): JsonResponse
+    {
+        $oauth_token = $request->get('oauth_token');
+        $oauth_verifier = $request->get('oauth_verifier');
+        return $this->socialiteService->handleTwitterCallback($oauth_token, $oauth_verifier);
     }
 }

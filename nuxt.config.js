@@ -2,6 +2,7 @@ export default {
   srcDir: 'resources/front',
 
   axios: {
+    credentials: true,
     logLevel: 'debug',
   },
   router: {

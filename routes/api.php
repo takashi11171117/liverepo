@@ -29,6 +29,7 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group(['prefix' => 'oauth', 'namespace' => 'OAuth'], function () {
     Route::group(['prefix' => 'twitter'], function() {
         Route::get('redirect', 'TwitterController@redirect');
+        Route::get('callback', 'TwitterController@callback');
     });
 });
 
