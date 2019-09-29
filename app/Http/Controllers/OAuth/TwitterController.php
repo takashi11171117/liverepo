@@ -33,10 +33,8 @@ class TwitterController extends Controller {
     /**
      * @return JsonResponse
      */
-    public function callback(Request $request): JsonResponse
+    public function callback(): JsonResponse
     {
-        $oauth_token = $request->get('oauth_token');
-        $oauth_verifier = $request->get('oauth_verifier');
-        return $this->socialiteService->handleTwitterCallback($oauth_token, $oauth_verifier);
+        return $this->socialiteService->handleTwitterCallback();
     }
 }

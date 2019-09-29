@@ -9,6 +9,7 @@ use InvalidArgumentException;
 use App\Exceptions\EmailAlreadyExistsException;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\One\User as SocialiteOneUser;
+use JWTAuth;
 
 class SocialiteService{
     /**
@@ -23,10 +24,10 @@ class SocialiteService{
     /**
      * @return JsonResponse
      */
-    public function handleTwitterCallback($oauth_token, $oauth_verifier): JsonResponse
+    public function handleTwitterCallback(): JsonResponse
     {
         try {
-            return response()->json($this->getCredentialsByTwitter($oauth_token, $oauth_verifier));
+            return response()->json($this->getCredentialsByTwitter());
         } catch (InvalidArgumentException $e) {
             return $this->errorJsonResponse('Twitterでの認証に失敗しました。');
         } catch (EmailAlreadyExistsException $e) {
@@ -40,17 +41,19 @@ class SocialiteService{
      * @return array
      * @throws EmailAlreadyExistsException
      */
-    protected function getCredentialsByTwitter($oauth_token, $oauth_verifier): array
+    protected function getCredentialsByTwitter(): array
     {
-        $twitterUser = Socialite::driver('twitter')->userFromTokenAndSecret($oauth_token, $oauth_verifier);
+        $twitterUser = Socialite::driver('twitter')->user();
         $socialAccount = SocialAccount::firstOrNew([
             'provider'   => 'twitter',
             'account_id' => $twitterUser->getId(),
         ]);
         $user = $this->resolveUser($socialAccount, $twitterUser);
+
+        $apiAccessToken = JWTAuth::fromUser($user);
         return [
-            'user'         => $user,
-            'access_token' => $user->createToken(null, ['*'])->accessToken,
+            'token' => $apiAccessToken,
+            'user' => $user,
         ];
     }
 
@@ -72,7 +75,7 @@ class SocialiteService{
             'name'         => $twitterUser->getName(),
             'email'        => $twitterUser->getEmail(),
             'password'     => null,
-            // 'twitter_id'   => $twitterUser->getNickName(),
+            'twitter_id'   => $twitterUser->getNickName(),
         ]);
         $socialAccount->setAttribute('user_id', $createdUser->id);
         $socialAccount->save();

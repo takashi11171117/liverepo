@@ -10,6 +10,11 @@
                 </div>
                 <div class="nav-search">
                     <i class="fas fa-search fa-2x"></i>
+                    <div class="nav-new-user">
+                        <n-link :to="{ name: 'oauth-twitter-redirect' }" class="button">
+                            ツイッターログイン
+                        </n-link>
+                    </div>
                 </div>
                 <template v-if="!$auth.loggedIn">
                     <div class="nav-new-user">

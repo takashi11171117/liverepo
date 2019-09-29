@@ -83,13 +83,14 @@ export default {
             method: 'post',
             propertyName: 'meta.token'
           },
+          logout: false,
           user: {
             url: 'auth/me',
             method: 'get',
             propertyName: 'data'
           }
         }
-      }
+      },
     }
   },
 

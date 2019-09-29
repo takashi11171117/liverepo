@@ -25,21 +25,18 @@
       }
     },
 
-    methods: mapActions('oauth', ['setOauthInfo']),
-
     async mounted () {
-      try {
-        const callbackData = await this.$axios.$get(
-            '/oauth/twitter/callback',
-            { params: this.$route.query }
-          );
+      const callbackData = await this.$axios.$get(
+          '/oauth/twitter/callback',
+          { params: this.$route.query }
+        ).catch(err => {
+          this.failedMessage = err.message
+        });
 
-        this.setOauthInfo(callbackData.access_token, callbackData.user);
+      this.$auth.setToken('local', `Bearer ${callbackData.token}`);
+      this.$auth.setUser(callbackData.user);
 
-        this.$router.replace('/')
-      } catch (error) {
-        this.failedMessage = error.message
-      }
+      await this.$router.push('/', undefined, () => { location.href = '/' });
     }
   }
 </script>
