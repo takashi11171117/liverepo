@@ -17,6 +17,8 @@ class CreateUserSocialAccountsTable extends Migration
             $table->unsignedInteger('user_id');
             $table->string('provider');
             $table->string('account_id');
+            $table->string('access_token');
+            $table->string('access_token_secret');
             $table->unique(['provider', 'account_id']);
             $table->timestamps();
             $table->foreign('user_id')

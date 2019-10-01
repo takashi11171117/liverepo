@@ -36,7 +36,7 @@
       this.$auth.setToken('local', `Bearer ${callbackData.token}`);
       this.$auth.setUser(callbackData.user);
 
-      await this.$router.push('/', undefined, () => { location.href = '/' });
+      this.$router.push('/', undefined, () => { location.href = '/' });
     }
   }
 </script>

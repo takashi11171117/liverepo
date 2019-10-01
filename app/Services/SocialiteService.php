@@ -47,6 +47,8 @@ class SocialiteService{
         $socialAccount = SocialAccount::firstOrNew([
             'provider'   => 'twitter',
             'account_id' => $twitterUser->getId(),
+            'access_token' => $twitterUser->token,
+            'access_token_secret' => $twitterUser->tokenSecret,
         ]);
         $user = $this->resolveUser($socialAccount, $twitterUser);
 
@@ -75,7 +77,6 @@ class SocialiteService{
             'name'         => $twitterUser->getName(),
             'email'        => $twitterUser->getEmail(),
             'password'     => null,
-            'twitter_id'   => $twitterUser->getNickName(),
         ]);
         $socialAccount->setAttribute('user_id', $createdUser->id);
         $socialAccount->save();

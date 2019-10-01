@@ -37,6 +37,12 @@
                             から。
                         </p>
                     </form>
+                    <hr class="is-divider">
+                        <p>お持ちのアカウントで登録/ログイン</p>
+                        <n-link :to="{ name: 'oauth-twitter-redirect' }" class="button twitter">
+                            <i class="fab fa-twitter"></i>ツイッターでログイン/新規登録
+                        </n-link>
+                    <hr class="is-divider">
                 </div>
             </div>
         </div>
@@ -90,6 +96,9 @@
 
 <style lang="sass" scoped>
     .section
-        background-color: #fff
+        background-color: white
         border-radius: 10px
+    .twitter
+        background-color: #00A3E2
+        color: white
 </style>
