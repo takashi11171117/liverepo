@@ -6,26 +6,25 @@ use App\Http\Resources\Front\ReportResource;
 use App\Http\Resources\Front\ReportIndexResource;
 use App\Http\Resources\Front\ReportTagResource;
 use App\Models\ReportTag;
-use App\Scoping\Scopes\ReportDateScope;
+use App\Repositories\Contracts\ReportRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Report;
 use DB;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ReportController extends Controller
 {
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-     */
-    public function index(Request $request)
+    protected $reports;
+
+    public function __construct(ReportRepository $reports)
     {
-        $reports = Report::withScopes($this->scopes())
-                         ->with([
-                            'report_images',
-                        ])->orderBy('published_at', 'desc')
-                        ->status(config('const.PUBLISH'))
-                        ->paginate(20);
+        $this->reports = $reports;
+    }
+
+    public function index() : AnonymousResourceCollection
+    {
+        $reports = $this->reports->paginate(20);
 
         return ReportIndexResource::collection($reports);
     }
