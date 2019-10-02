@@ -2,25 +2,27 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Events\FrontReportPostEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Front\User\Report\Post as ReportPost;
 use App\Http\Requests\Front\User\Profile\Post as ProfilePost;
 use App\Http\Resources\Front\UserReportIndexResource;
-use App\Http\Resources\Front\UserReportResource;
-use App\Models\Report;
 use App\Models\User;
-use App\Services\ReportService;
-use DB;
+use App\Repositories\Contracts\ReportRepository;
+use App\Services\ImageService;
 use Illuminate\Http\Request;
 use Storage;
 
 class SettingController extends Controller
 {
-    protected $reportService;
+    protected $reports;
 
-    public function __construct(ReportService $report_service)
+    protected $image_service;
+
+    public function __construct(ReportRepository $reports, ImageService $image_service)
     {
-        $this->reportService = $report_service;
+        $this->reports       = $reports;
+        $this->image_service = $image_service;
     }
 
     public function index($user_id)
@@ -31,49 +33,14 @@ class SettingController extends Controller
     }
 
     /**
-     * @return mixed
      * @throws \Throwable
      */
-    public function post(ReportPost $request, $user_id)
+    public function post(ReportPost $request, $user_id): void
     {
         $params = $request->all();
-        $report = new Report();
         $images = $request->file('images');
-        $temp_place_tags = explode(',', $request->get('place_tags'));
-        $temp_player_tags = explode(',', $request->get('player_tags'));
-        $temp_other_tags = explode(',', $request->get('other_tags'));
 
-        DB::transaction(function () use ($report, $params, $temp_place_tags, $temp_player_tags, $temp_other_tags, $images, $user_id) {
-            $report->user()->associate(User::find($user_id));
-
-            $report->fill($params)->save();
-
-            // タグの登録
-            $this->reportService->syncReportTag($report, $temp_place_tags,  'place');
-            $this->reportService->syncReportTag($report, $temp_player_tags, 'player');
-            $this->reportService->syncReportTag($report, $temp_other_tags, 'other');
-
-            // 画像の登録
-            $disk = Storage::disk('s3');
-
-            $file = $images[0];
-            $extension = $images[0]->getClientOriginalExtension();
-            $filename = "{$report->id}_01.$extension";
-
-            $image = \Image::make($file)
-                           ->resize(1024, null, function ($constraint) {
-                               $constraint->aspectRatio();
-                           });
-            $disk->put('report_images/' . $filename, (string) $image->encode());
-
-            $image = \Image::make($file)
-                           ->fit(300, 300);
-            $disk->put('report_images/thumb-' . $filename, (string) $image->encode());
-
-            $report->report_images()->create(['path'=> $filename]);
-        });
-
-        return new UserReportResource($report);
+        event(new FrontReportPostEvent($params, $request, $images, $user_id));
     }
 
     /**
@@ -83,7 +50,7 @@ class SettingController extends Controller
     public function profile(ProfilePost $request)
     {
         $user_id = $request->get('user_id');
-        $user = User::find($user_id);
+        $user    = User::find($user_id);
 
         $args = $request->only([
             'user_name01',

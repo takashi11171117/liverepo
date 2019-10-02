@@ -6,21 +6,20 @@ use App\Http\Requests\Admin\Report\Post;
 use App\Http\Requests\Admin\Report\Put;
 use App\Http\Resources\Admin\ReportIndexResourse;
 use App\Http\Resources\Admin\ReportResourse;
-use App\Scoping\Scopes\ReportSearchScope;
+use App\Repositories\Contracts\ReportRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Report;
-use App\Services\ReportService;
 use Storage;
 use DB;
 
 class ReportController extends Controller
 {
-    protected $reportService;
+    protected $reports;
 
-    public function __construct(ReportService $report_service)
+    public function __construct(ReportRepository $reports)
     {
-        $this->reportService = $report_service;
+        $this->reports = $reports;
     }
 
     /**
@@ -34,8 +33,7 @@ class ReportController extends Controller
             $perPage = (int) $request->input('per_page');
         }
 
-        $reports = Report::withScopes($this->scopes())
-                       ->paginate($perPage);
+        $reports = $this->reports->paginate($perPage);
 
         return ReportIndexResourse::collection($reports);
     }
@@ -47,19 +45,19 @@ class ReportController extends Controller
     public function store(Post $request)
     {
         $params = $request->all();
-        $report = new Report;
         $images = $request->file('images');
         $temp_place_tags = explode(',', $request->get('place_tags'));
         $temp_player_tags = explode(',', $request->get('player_tags'));
         $temp_other_tags = explode(',', $request->get('other_tags'));
 
-        DB::transaction(function () use ($report, $params, $temp_place_tags, $temp_player_tags, $temp_other_tags, $images) {
+        DB::transaction(function () use ($params, $temp_place_tags, $temp_player_tags, $temp_other_tags, $images) {
+            $report = new Report;
             $report->fill($params)->save();
 
             // タグの登録
-            $this->reportService->syncReportTag($report, $temp_place_tags, 'place');
-            $this->reportService->syncReportTag($report, $temp_player_tags, 'player');
-            $this->reportService->syncReportTag($report, $temp_other_tags, 'other');
+            $this->reports->syncReportTag($report, $temp_place_tags, 'place');
+            $this->reports->syncReportTag($report, $temp_player_tags, 'player');
+            $this->reports->syncReportTag($report, $temp_other_tags, 'other');
 
             // 画像の登録
             $disk = Storage::disk('s3');
@@ -80,8 +78,6 @@ class ReportController extends Controller
 
             $report->report_images()->create(['path'=> $filename]);
         });
-
-        return new ReportResourse($report);
     }
 
     /**
@@ -185,12 +181,5 @@ class ReportController extends Controller
         }
 
         return redirect()->route('admin.reports.index', $args, 301);
-    }
-
-    protected function scopes()
-    {
-        return [
-            's' => new ReportSearchScope()
-        ];
     }
 }

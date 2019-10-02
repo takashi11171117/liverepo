@@ -37,7 +37,7 @@
       await store.dispatch('calendar/fetchAttributes', {month: `${today.getFullYear()}-${month}`});
     },
     async asyncData({$axios, params}) {
-      let {data} = await $axios.$get(`/comedy/reports_by_date/?date=${params.date}`);
+      let {data} = await $axios.$get(`/comedy/reports/date/${params.date}`);
 
       return {tags: data};
     },

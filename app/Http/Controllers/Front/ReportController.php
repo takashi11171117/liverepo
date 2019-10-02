@@ -5,12 +5,9 @@ namespace App\Http\Controllers\Front;
 use App\Http\Resources\Front\ReportResource;
 use App\Http\Resources\Front\ReportIndexResource;
 use App\Http\Resources\Front\ReportTagResource;
-use App\Models\ReportTag;
 use App\Repositories\Contracts\ReportRepository;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Models\Report;
-use DB;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ReportController extends Controller
@@ -29,67 +26,24 @@ class ReportController extends Controller
         return ReportIndexResource::collection($reports);
     }
 
-    public function isExistingReportByDate(Request $request)
+    public function findListByMonth(string $month) : JsonResponse
     {
-        $month = $request->get('month');
+        $reports = $this->reports->findListByMonth($month);
 
-        $reportDates = Report::select(DB::raw("count(*) as count, strftime('%Y-%m-%d', published_at) as formatted_published_at"))
-                ->status(config('const.PUBLISH'))
-                ->whereRaw("strftime('%Y-%m', published_at) = :month", ['month' => $month])
-                ->groupBy('formatted_published_at')
-                ->orderBy('formatted_published_at', 'desc')
-                ->get();
-
-        return response()->json($reportDates, 200);
+        return response()->json($reports, 200);
     }
 
-    public function getReportTagsWithReportsByDate(Request $request)
+    public function findListByDate(string $date) : AnonymousResourceCollection
     {
-        $date = $request->get('date');
+        $reports = $this->reports->findListByDate($date);
 
-        $temp_tags = DB::select('SELECT rt.id FROM reports rp
-          INNER JOIN report_report_tag rrt
-          ON rp.id = rrt.report_id
-          INNER JOIN report_tags rt
-          ON rrt.report_tag_id = rt.id
-          WHERE published_at LIKE ?
-          AND rt.taxonomy = "place"
-          GROUP BY rt.id', ["%$date%"]);
-
-        $tags = [];
-        foreach($temp_tags as $tag) {
-            $tags[] = $tag->id;
-        }
-
-        $report_tags = ReportTag::with([
-            'reports',
-        ])->whereIn('id', $tags)
-        ->get();
-
-        return ReportTagResource::collection($report_tags);
+        return ReportTagResource::collection($reports);
     }
 
-    /**
-     * @param $id
-     * @return ReportResource
-     */
-    public function show(int $id)
+    public function show(int $id) : ReportResource
     {
-        $report = Report::with(['report_images', 'report_tags', 'user', 'report_comments'])
-                        ->withCount('followers')
-                        ->find($id);
-
-        if($report === null) {
-            return response()->json(['error' => 'レポートはありません。'], 404);
-        }
+        $report = $this->reports->find($id);
 
         return new ReportResource($report);
-    }
-
-    protected function scopes()
-    {
-        return [
-            'date' => new ReportDateScope()
-        ];
     }
 }

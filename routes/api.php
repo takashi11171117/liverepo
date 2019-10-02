@@ -35,16 +35,12 @@ Route::group(['prefix' => 'oauth', 'namespace' => 'OAuth'], function () {
 
 Route::group(['namespace' => 'Front'], function () {
     Route::group(['prefix' => 'comedy'], function() {
-        Route::get("reports", "ReportController@index");
-
-        Route::get("is_reports_by_date", "ReportController@isExistingReportByDate");
-
-        Route::get("reports_by_date", "ReportController@getReportTagsWithReportsByDate");
-
-        Route::get('reports/{id}', [
-            'as'   => 'comedy.reports.show',
-            'uses' => 'ReportController@show'
-        ]);
+        Route::group(['prefix' => 'reports'], function() {
+            Route::get("/", "ReportController@index");
+            Route::get("month/{month}", "ReportController@findListByMonth");
+            Route::get("{date}", "ReportController@findListByDate");
+            Route::get('{id}', 'ReportController@show');
+        });
 
         // tag
         Route::get('report_tags/tagify', [
@@ -126,7 +122,6 @@ Route::group(['namespace' => 'Front', 'middleware' => ['assign.guard:api','jwt.a
 
 Route::group(['prefix' => 'setting', 'namespace' => 'Front', 'middleware' => ['assign.guard:api','jwt.auth']],function ()
 {
-    // admin
     Route::get('report/{user_id}', [
         'as'   => 'setting.report',
         'uses' => 'SettingController@index'

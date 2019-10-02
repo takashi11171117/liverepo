@@ -36,11 +36,7 @@ export const mutations = {
 
 export const actions = {
   async fetchAttributes({ commit }, query) {
-    const res = await this.$axios.$get('comedy/is_reports_by_date', {
-      params: {
-        month: query.month,
-      }
-    });
+    const res = await this.$axios.$get(`comedy/reports/month/${query.month}`);
     commit('UPDATE_ATTRIBUTES', {reportDates: res});
   },
 };

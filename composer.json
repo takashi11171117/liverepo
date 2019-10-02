@@ -19,6 +19,7 @@
         "laravel/socialite": "^4.1",
         "laravel/tinker": "^1.0",
         "league/flysystem-aws-s3-v3": "^1.0",
+        "reactivex/rxphp": "^2.0",
         "tymon/jwt-auth": "1.0.*",
         "vlucas/phpdotenv": "^3.3"
     },
