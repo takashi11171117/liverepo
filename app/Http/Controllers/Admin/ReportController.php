@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\FrontReportPostEvent;
 use App\Http\Requests\Admin\Report\Post;
 use App\Http\Requests\Admin\Report\Put;
 use App\Http\Resources\Admin\ReportIndexResourse;
@@ -10,8 +11,7 @@ use App\Repositories\Contracts\ReportRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Report;
-use Storage;
-use DB;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ReportController extends Controller
 {
@@ -24,9 +24,8 @@ class ReportController extends Controller
 
     /**
      * @param Request $request
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index(Request $request)
+    public function index(Request $request): AnonymousResourceCollection
     {
         $perPage = 20;
         if ($request->input('per_page') !== null) {
@@ -39,45 +38,11 @@ class ReportController extends Controller
     }
 
     /**
-     * @return mixed
      * @throws \Throwable
      */
-    public function store(Post $request)
+    public function store(Post $request): void
     {
-        $params = $request->all();
-        $images = $request->file('images');
-        $temp_place_tags = explode(',', $request->get('place_tags'));
-        $temp_player_tags = explode(',', $request->get('player_tags'));
-        $temp_other_tags = explode(',', $request->get('other_tags'));
-
-        DB::transaction(function () use ($params, $temp_place_tags, $temp_player_tags, $temp_other_tags, $images) {
-            $report = new Report;
-            $report->fill($params)->save();
-
-            // タグの登録
-            $this->reports->syncReportTag($report, $temp_place_tags, 'place');
-            $this->reports->syncReportTag($report, $temp_player_tags, 'player');
-            $this->reports->syncReportTag($report, $temp_other_tags, 'other');
-
-            // 画像の登録
-            $disk = Storage::disk('s3');
-
-            $file = $images[0];
-            $extension = $images[0]->getClientOriginalExtension();
-            $filename = "{$report->id}_01.$extension";
-
-            $image = \Image::make($file)
-                           ->resize(1024, null, function ($constraint) {
-                               $constraint->aspectRatio();
-                           });
-            $disk->put('report_images/' . $filename, (string) $image->encode());
-
-            $image = \Image::make($file)
-                           ->fit(300, 300);
-            $disk->put('report_images/thumb-' . $filename, (string) $image->encode());
-
-            $report->report_images()->create(['path'=> $filename]);
-        });
+        event(new FrontReportPostEvent($request));
     }
 
     /**
@@ -86,66 +51,17 @@ class ReportController extends Controller
      */
     public function show($id)
     {
-        $report = Report::with(['report_images', 'report_tags'])->find($id);
-
-        if($report == null) {
-            return response()->json(['error' => 'レポートはありません。'], 404);
-        }
+        $report = $this->reports->findWithRelations($id);
 
         return new ReportResourse($report);
     }
 
     /**
-     * @param Request $request
-     * @param $id
-     * @return mixed
      * @throws \Throwable
      */
-    public function update(Put $request, $id)
+    public function update(Put $request, int $id): void
     {
-        $params = $request->all();
-        $report = Report::find($id);
-
-        if($report == null) {
-            return response()->json(['error' => 'レポートはありません。'], 404);
-        }
-
-        $images = $request->file('images');
-        $temp_tags = explode(',', $request->get('tags'));
-        $tags = array_map(function($tag) {
-            return ['name' => $tag, 'taxonomy' => 'place'];
-        }, $temp_tags);
-
-        DB::transaction(function () use ($report, $params, $tags, $images) {
-            // 普通のパラメーター
-            $report->fill($params)->save();
-
-            // タグの登録
-            $report->report_tags()->createMany($tags);
-
-
-            // 画像の登録
-
-            if ($images !== null) {
-                $disk = Storage::disk('s3');
-
-                $file      = $images[0];
-                $extension = $images[0]->getClientOriginalExtension();
-                $filename  = $report->id . '_01' . ".$extension";
-                $image = \Image::make($file)
-                           ->resize(1024, null, function ($constraint) {
-                               $constraint->aspectRatio();
-                           });
-                $disk->put('report_images/' . $filename, (string)$image->encode());
-                $image = \Image::make($file)
-                               ->fit(300, 300);
-                $disk->put('report_images/thumb-' . $filename, (string)$image->encode());
-
-                $report->report_images()->create(['path' => $filename]);
-            }
-        });
-
-        return new ReportResourse($report);
+        event(new FrontReportPostEvent($request, $id));
     }
 
     /**

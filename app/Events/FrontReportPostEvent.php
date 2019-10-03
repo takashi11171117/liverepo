@@ -3,6 +3,7 @@
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Http\Request;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -14,19 +15,17 @@ class FrontReportPostEvent
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $params, $request, $images, $user_id;
+    public $request;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct($params, $request, $images, $user_id)
+    public function __construct(Request $request, int $id)
     {
-        $this->params = $params;
         $this->request = $request;
-        $this->images = $images;
-        $this->user_id = $user_id;
+        $this->id = $id;
     }
 
     /**

@@ -3,9 +3,10 @@
 namespace App\Listeners;
 
 use App\Events\FrontReportPostEvent;
-use App\Models\User;
+use App\Models\Report;
 use App\Repositories\Contracts\ReportRepository;
 use App\Services\ImageService;
+use Illuminate\Http\Request;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use DB;
@@ -19,65 +20,77 @@ class FrontReportPostListener
 
     protected $image_service;
 
+    /**
+     * FrontReportPostListener constructor.
+     * @param ReportRepository $reports
+     * @param ImageService $image_service
+     * @throws \Exception
+     */
     public function __construct(ReportRepository $reports, ImageService $image_service)
     {
         $this->reports       = $reports;
         $this->image_service = $image_service;
+
+        $immediateScheduler = new ImmediateScheduler();
+        Scheduler::setDefaultFactory(function () use ($immediateScheduler) {
+            return $immediateScheduler;
+        });
     }
 
     /**
      * @param FrontReportPostEvent $event
      * @throws \Throwable
      */
-    public function handle(FrontReportPostEvent $event)
+    public function handle(FrontReportPostEvent $event, int $id = 0)
     {
-        $params = $event->params;
         $request = $event->request;
-        $images = $event->images;
-        $user_id = $event->user_id;
 
-        DB::transaction(function () use ($params, $request, $images, $user_id) {
-            $user   = User::find($user_id);
-            $report = $this->reports->save($user, $params);
+        DB::transaction(function () use ($request, $id) {
+            $params = $request->all();
+            $images = $request->file('images');
 
-            // タグの登録
-            $immediateScheduler = new ImmediateScheduler();
-            Scheduler::setDefaultFactory(function () use ($immediateScheduler) {
-                return $immediateScheduler;
-            });
+            $report = $this->reports->save(\Auth::user(), $params, $id);
 
-            Observable::fromArray(['place_tags', 'player_tags', 'other_tags'])
-                      ->map(function ($value) use ($request) {
-                          return array_map(
-                              function ($v) use ($value) {
-                                  return [
-                                      'taxonomy' => str_replace('_tags', '', $value),
-                                      'name'     => $v
-                                  ];
-                              },
-                              explode(',', $request->get($value))
-                          );
-                      })
-                      ->filter(function ($value) {
-                          return $value[0]['name'] !== '';
-                      })
-                      ->reduce(function ($x, $y) {
-                          return array_merge($x, $y);
-                      })
-                      ->subscribe(
-                          function ($tags) {
-                              $this->reports->syncReportTag($report, $tags);
-                          },
-                          function (\Exception $ex) {
-                          },
-                          function () {
-                          });
-
-            // 画像の登録
-            if (!empty($images)) {
-                $filename = $this->image_service->createReportImage($report, $images[0]);
-                $this->reports->createImages($report, $filename);
-            }
+            $this->registerTags($request, $report);
+            $this->registerImages($report, $images);
         });
+    }
+
+    private function registerTags(Request $request, Report $report)
+    {
+        Observable::fromArray(['place_tags', 'player_tags', 'other_tags'])
+                  ->map(function ($value) use ($request) {
+                      return array_map(
+                          function ($v) use ($value) {
+                              return [
+                                  'taxonomy' => str_replace('_tags', '', $value),
+                                  'name'     => $v
+                              ];
+                          },
+                          explode(',', $request->get($value))
+                      );
+                  })
+                  ->filter(function ($value) {
+                      return $value[0]['name'] !== '';
+                  })
+                  ->reduce(function ($x, $y) {
+                      return array_merge($x, $y);
+                  })
+                  ->subscribe(
+                      function ($tags) use ($report) {
+                          $this->reports->syncReportTag($report, $tags);
+                      },
+                      function (\Exception $ex) {
+                      },
+                      function () {
+                      });
+    }
+
+    private function registerImages(Report $report, $images)
+    {
+        if (!empty($images)) {
+            $filename = $this->image_service->createReportImage($report, $images[0]);
+            $this->reports->createImages($report, $filename);
+        }
     }
 }

@@ -165,7 +165,7 @@
         formData.append('player_tags', params.player_tags);
         formData.append('other_tags', params.other_tags);
         await this.$axios.$post(
-          `setting/report/${this.$auth.user.id}`,
+          `comedy/reports`,
           formData,
           {
             headers: {

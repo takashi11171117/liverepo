@@ -9,6 +9,8 @@ use App\Repositories\Contracts\ReportRepository;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use App\Events\FrontReportPostEvent;
+use App\Http\Requests\Front\Report\Post;
 
 class ReportController extends Controller
 {
@@ -42,8 +44,16 @@ class ReportController extends Controller
 
     public function show(int $id) : ReportResource
     {
-        $report = $this->reports->find($id);
+        $report = $this->reports->findWithRelations($id);
 
         return new ReportResource($report);
+    }
+
+    /**
+     * @throws \Throwable
+     */
+    public function post(Post $request): void
+    {
+        event(new FrontReportPostEvent($request));
     }
 }

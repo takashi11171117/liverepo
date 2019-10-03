@@ -40,6 +40,7 @@ Route::group(['namespace' => 'Front'], function () {
             Route::get("month/{month}", "ReportController@findListByMonth");
             Route::get("{date}", "ReportController@findListByDate");
             Route::get('{id}', 'ReportController@show');
+            Route::post('/', 'ReportController@post');
         });
 
         // tag
@@ -125,11 +126,6 @@ Route::group(['prefix' => 'setting', 'namespace' => 'Front', 'middleware' => ['a
     Route::get('report/{user_id}', [
         'as'   => 'setting.report',
         'uses' => 'SettingController@index'
-    ]);
-
-    Route::post('report/{user_id}', [
-        'as' => 'setting.report.store',
-        'uses' => 'SettingController@post'
     ]);
 
     Route::post('profile', [

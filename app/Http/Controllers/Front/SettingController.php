@@ -33,17 +33,6 @@ class SettingController extends Controller
     }
 
     /**
-     * @throws \Throwable
-     */
-    public function post(ReportPost $request, $user_id): void
-    {
-        $params = $request->all();
-        $images = $request->file('images');
-
-        event(new FrontReportPostEvent($params, $request, $images, $user_id));
-    }
-
-    /**
      * @param Request $request
      * @param $id
      */

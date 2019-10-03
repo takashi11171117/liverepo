@@ -20,7 +20,7 @@ class EloquentReportRepository extends RepositoryAbstract implements ReportRepos
         return Report::class;
     }
 
-    public function find(int $id)
+    public function findWithRelations(int $id)
     {
         $model = $this->entity->with(['report_images', 'report_tags', 'user', 'report_comments'])
                               ->withCount('followers')
@@ -81,12 +81,16 @@ class EloquentReportRepository extends RepositoryAbstract implements ReportRepos
                         ->get();
     }
 
-    public function save(User $user, array $properties)
+    public function save(User $user, array $properties, int $id)
     {
-        $report = new Report();
-        $report->user()->associate($user)->fill($properties)->save();
+        $model = $this->entity->firstOrNew(['id' => $id])
+                              ->user()
+                              ->associate($user)
+                              ->fill($properties);
 
-        return $report;
+        $id === 0 ? $model->save() : $model->update();
+
+        return $model;
     }
 
     public function syncReportTag(Report $report, array $tags): void
@@ -100,6 +104,6 @@ class EloquentReportRepository extends RepositoryAbstract implements ReportRepos
 
     public function createImages(Report $report, string $path): void
     {
-        $report->report_images()->create(['path'=> $path]);
+        $report->report_images()->create(['path' => $path]);
     }
 }
