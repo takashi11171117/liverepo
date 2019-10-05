@@ -55,9 +55,9 @@ Route::group(['namespace' => 'Front'], function () {
 
 Route::group(['namespace' => 'Front', 'middleware' => ['assign.guard:api','jwt.auth']],function ()
 {
+    Route::get('follow_users/{id}', 'FollowUserController@show');
     Route::post('follow_users', 'FollowUserController@store');
     Route::delete('follow_users/{id}', 'FollowUserController@destroy');
-    Route::get('follow_users/{id}', 'FollowUserController@isFollowing');
 
     Route::post('follow_report_tags', 'FollowReportTagController@store');
     Route::delete('follow_report_tags/{id}', 'FollowReportTagController@destroy');

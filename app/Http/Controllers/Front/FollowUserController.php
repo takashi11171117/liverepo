@@ -2,35 +2,43 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Models\FollowUser;
-use App\Models\User;
+use App\Repositories\Contracts\FollowUserRepository;
+use App\Repositories\Contracts\UserRepository;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class FollowUserController extends Controller
 {
-    public function store(Request $request)
+    protected $follow_users, $users;
+
+    public function __construct(FollowUserRepository $follow_users, UserRepository $users)
     {
-        $followedUser = User::findOrFail($request->input('id'));
-        FollowUser::firstOrCreate([
+        $this->follow_users = $follow_users;
+        $this->users = $users;
+    }
+
+    public function show(int $id): JsonResponse
+    {
+        return response()->json(
+            ['result' => $this->follow_users->find($id)]
+        );
+    }
+
+    public function store(Request $request): void
+    {
+        $params = [
             'user_id' => \Auth::id(),
-            'followed_user_id' => $followedUser->id,
-        ]);
-        return response()->json(['result' => true]);
+            'followed_user_id' => ($this->users->find(
+                (int) $request->input('id') ?? 0
+            ))->id
+        ];
+
+        $this->follow_users->create($params);
     }
 
-    public function destroy($id)
+    public function destroy(int $id): void
     {
-        $followedUser = User::findOrFail($id);
-        $user = \Auth::user();
-        $user->followUsers()->detach($followedUser->id);
-        return response()->json(['result' => true]);
-    }
-
-    public function isFollowing($id)
-    {
-        $user = \Auth::user();
-        $follow = $user->followUsers()->where('followed_user_id', $id)->first(['id']);
-        return response()->json(['result' => (boolean) $follow]);
+        $this->follow_users->detach($id);
     }
 }
