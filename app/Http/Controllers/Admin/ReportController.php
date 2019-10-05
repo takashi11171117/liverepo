@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Report;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Rx\Observable;
 
 class ReportController extends Controller
 {
@@ -29,7 +30,7 @@ class ReportController extends Controller
     {
         $perPage = 20;
         if ($request->input('per_page') !== null) {
-            $perPage = (int) $request->input('per_page');
+            $perPage = (int)$request->input('per_page');
         }
 
         $reports = $this->reports->paginate($perPage);
@@ -67,35 +68,24 @@ class ReportController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $id)
     {
-        $report = Report::find($id);
+        $this->reports->delete($id);
 
-        if($report == null) {
-            return response()->json(['error' => 'レポートはありません。'], 404);
-        }
-
-        $report->delete();
-
-        $args = [];
-
-        $query = $request->query();
-
-        if (array_key_exists('page', $query)) {
-            $args['page'] = $request->page;
-        }
-
-        if (array_key_exists('per_page', $query)) {
-            $args['per_page'] = $request->per_page;
-        }
-
-        if (array_key_exists('s', $query)) {
-            $args['s'] = $request->s;
-        }
-
-        return redirect()->route('admin.reports.index', $args, 301);
+        Observable::fromArray(['page', 'per_page', 's'])
+                  ->filter(function ($value) use ($request) {
+                      return array_key_exists($value, $request->query());
+                  })
+                  ->map(function ($value) use ($request) {
+                      return $request[$value];
+                  })
+                  ->toArray()
+                  ->subscribe(
+                      function ($params) {
+                          return redirect()->route('admin.reports.index', $params, 301);
+                      });
     }
 }

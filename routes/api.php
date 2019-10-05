@@ -163,26 +163,11 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['ass
         'as'   => 'admin.reports.index',
         'uses' => 'ReportController@index'
     ]);
-    Route::post('reports', [
-        'as' => 'admin.reports.store',
-        'uses' => 'ReportController@store'
-    ]);
-    Route::get('reports/{id}', [
-        'as' => 'admin.reports.show',
-        'uses' => 'ReportController@show'
-    ]);
-    Route::put('reports/{id}', [
-        'as' => 'admin.reports.update',
-        'uses' => 'ReportController@update'
-    ]);
-    Route::delete('reports/{id}', [
-        'as' => 'admin.reports.destroy',
-        'uses' => 'ReportController@destroy'
-    ]);
+    Route::post('reports', 'ReportController@store');
+    Route::get('reports/{id}', 'ReportController@show');
+    Route::put('reports/{id}','ReportController@update');
+    Route::delete('reports/{id}', 'ReportController@destroy');
 
     // tag
-    Route::get('report_tags/tagify', [
-        'as' => 'admin.report_tags.index',
-        'uses' => 'ReportTagController@tagify'
-    ]);
+    Route::get('report_tags/tagify', 'ReportTagController@tagify');
 });

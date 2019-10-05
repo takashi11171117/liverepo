@@ -24,6 +24,8 @@ class CreateReportCommentsTable extends Migration
                   ->references('id')
                   ->on('reports')
                   ->onDelete('cascade');
+
+            $table->softDeletes();
         });
     }
 

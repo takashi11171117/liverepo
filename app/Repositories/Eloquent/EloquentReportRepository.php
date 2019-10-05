@@ -24,7 +24,7 @@ class EloquentReportRepository extends RepositoryAbstract implements ReportRepos
     {
         $model = $this->entity->with(['report_images', 'report_tags', 'user', 'report_comments'])
                               ->withCount('followers')
-                              ->status(config('const.PUBLISH'))
+                              ->status((config('const.REPORT_STATUS'))['publish'])
                               ->find($id);
 
         if (!$model) {
@@ -45,14 +45,14 @@ class EloquentReportRepository extends RepositoryAbstract implements ReportRepos
             ])
             ->with(['report_images'])
             ->orderBy('published_at', 'desc')
-            ->status(config('const.PUBLISH'))
+            ->status((config('const.REPORT_STATUS'))['publish'])
             ->paginate($perPage);
     }
 
     public function findListByMonth(string $month)
     {
         return $this->entity->select(DB::raw("count(*) as count, strftime('%Y-%m-%d', published_at) as formatted_published_at"))
-                            ->status(config('const.PUBLISH'))
+                            ->status((config('const.REPORT_STATUS'))['publish'])
                             ->whereRaw("strftime('%Y-%m', published_at) = :month", ['month' => $month])
                             ->groupBy('formatted_published_at')
                             ->orderBy('formatted_published_at', 'desc')
@@ -91,6 +91,25 @@ class EloquentReportRepository extends RepositoryAbstract implements ReportRepos
         $id === 0 ? $model->save() : $model->update();
 
         return $model;
+    }
+
+    public function draft(int $id)
+    {
+        $model = $this->find($id);
+        $params = array(
+            'status' => (config('const.REPORT_STATUS'))['draft']
+        );
+        return $model->fill($params)->save();
+    }
+
+    public function delete(int $id)
+    {
+        $model = $this->find($id);
+        $params = array(
+            'status' => (config('const.REPORT_STATUS'))['trash']
+        );
+        $model->fill($params)->save();
+        return $model->delete();
     }
 
     public function syncReportTag(Report $report, array $tags): void

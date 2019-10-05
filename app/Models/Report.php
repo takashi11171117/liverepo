@@ -5,10 +5,11 @@ namespace App\Models;
 use App\Models\Traits\CanBeScoped;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Report extends Model
 {
-    use CanBeScoped;
+    use CanBeScoped, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -20,7 +21,7 @@ class Report extends Model
     ];
 
     protected $dates = [
-        'published_at',
+        'published_at', 'deleted_at'
     ];
 
     public function scopeStatus(Builder $builder, $value)

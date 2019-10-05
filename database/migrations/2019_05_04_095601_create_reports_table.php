@@ -19,6 +19,7 @@ class CreateReportsTable extends Migration
             $table->longText('content');
             $table->smallInteger('status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

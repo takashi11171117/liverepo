@@ -4,14 +4,17 @@ namespace App\Models;
 
 use App\Models\Traits\CanBeScoped;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ReportTag extends Model
 {
-    use CanBeScoped;
+    use CanBeScoped, SoftDeletes;
 
     protected $fillable = [
         'name', 'taxonomy',
     ];
+
+    protected $dates = ['deleted_at'];
 
     public function reports()
     {

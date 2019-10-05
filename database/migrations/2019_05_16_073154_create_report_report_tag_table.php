@@ -22,6 +22,7 @@ class CreateReportReportTagTable extends Migration
             $table->foreign('report_tag_id')->references('id')->on('report_tags')->onDelete('cascade');
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

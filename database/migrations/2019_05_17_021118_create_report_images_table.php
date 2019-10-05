@@ -20,6 +20,7 @@ class CreateReportImagesTable extends Migration
             $table->timestamps();
 
             $table->foreign('report_id')->references('id')->on('reports')->onDelete('cascade');
+            $table->softDeletes();
         });
     }
 

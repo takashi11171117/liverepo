@@ -20,7 +20,8 @@ class CreateReportTagsTable extends Migration
             $table->timestamps();
 
             $table->unique(['name', 'taxonomy']);
-        });
+
+            $table->softDeletes();});
     }
 
     /**

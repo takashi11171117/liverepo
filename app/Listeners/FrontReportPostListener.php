@@ -11,8 +11,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use DB;
 use Rx\Observable;
-use Rx\Scheduler;
-use Rx\Scheduler\ImmediateScheduler;
 
 class FrontReportPostListener
 {
@@ -30,11 +28,6 @@ class FrontReportPostListener
     {
         $this->reports       = $reports;
         $this->image_service = $image_service;
-
-        $immediateScheduler = new ImmediateScheduler();
-        Scheduler::setDefaultFactory(function () use ($immediateScheduler) {
-            return $immediateScheduler;
-        });
     }
 
     /**

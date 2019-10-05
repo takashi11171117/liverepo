@@ -22,7 +22,7 @@ class FrontReportPostEvent
      *
      * @return void
      */
-    public function __construct(Request $request, int $id)
+    public function __construct(Request $request, int $id = 0)
     {
         $this->request = $request;
         $this->id = $id;

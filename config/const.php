@@ -1,7 +1,9 @@
 <?php
 return [
     'IMAGE_URL' => '//liverepotest.s3.ap-northeast-1.amazonaws.com/',
-    'PUBLISH' => 1,
-    'DLAFT' => 0,
-    'TRASH' => 2,
+    'REPORT_STATUS' => [
+        'publish' => 1,
+        'draft' => 0,
+        'trash' => 2,
+    ],
 ];
