@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Events\FrontReportPostEvent;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Front\User\Report\Post as ReportPost;
 use App\Http\Requests\Front\User\Profile\Post as ProfilePost;
-use App\Http\Resources\Front\UserReportIndexResource;
 use App\Models\User;
 use App\Repositories\Contracts\ReportRepository;
 use App\Services\ImageService;
@@ -23,13 +20,6 @@ class SettingController extends Controller
     {
         $this->reports       = $reports;
         $this->image_service = $image_service;
-    }
-
-    public function index($user_id)
-    {
-        $reports = User::find($user_id)->reports()->paginate(10);
-
-        return UserReportIndexResource::collection($reports);
     }
 
     /**

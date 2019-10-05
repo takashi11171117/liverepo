@@ -50,72 +50,28 @@ Route::group(['namespace' => 'Front'], function () {
         });
     });
 
-    Route::get('users/{name}', [
-        'as' => 'users.index',
-        'uses' => 'UserController@index'
-    ]);
+    Route::get('users/{name}', 'UserController@index');
 });
 
 Route::group(['namespace' => 'Front', 'middleware' => ['assign.guard:api','jwt.auth']],function ()
 {
-    Route::post('follow_users', [
-        'as' => 'follow_users.store',
-        'uses' => 'FollowUserController@store'
-    ]);
+    Route::post('follow_users', 'FollowUserController@store');
+    Route::delete('follow_users/{id}', 'FollowUserController@destroy');
+    Route::get('follow_users/{id}', 'FollowUserController@isFollowing');
 
-    Route::delete('follow_users/{id}', [
-        'as' => 'follow_users.destroy',
-        'uses' => 'FollowUserController@destroy'
-    ]);
+    Route::post('follow_report_tags', 'FollowReportTagController@store');
+    Route::delete('follow_report_tags/{id}', 'FollowReportTagController@destroy');
+    Route::get('follow_report_tags/{id}', 'FollowReportTagController@isFollowing');
 
-    Route::get('follow_users/{id}', [
-        'as' => 'follow_users.is_following',
-        'uses' => 'FollowUserController@isFollowing'
-    ]);
+    Route::post('follow_reports', 'FollowReportController@store');
+    Route::delete('follow_reports/{id}', 'FollowReportController@destroy');
+    Route::get('follow_reports/{id}', 'FollowReportController@isFollowing');
 
-    Route::post('follow_report_tags', [
-        'as' => 'follow_report_tags.store',
-        'uses' => 'FollowReportTagController@store'
-    ]);
-
-    Route::delete('follow_report_tags/{id}', [
-        'as' => 'follow_report_tags.destroy',
-        'uses' => 'FollowReportTagController@destroy'
-    ]);
-
-    Route::get('follow_report_tags/{id}', [
-        'as' => 'follow_report_tags.is_following',
-        'uses' => 'FollowReportTagController@isFollowing'
-    ]);
-
-    Route::post('follow_reports', [
-        'as' => 'follow_reports.store',
-        'uses' => 'FollowReportController@store'
-    ]);
-
-    Route::delete('follow_reports/{id}', [
-        'as' => 'follow_reports.destroy',
-        'uses' => 'FollowReportController@destroy'
-    ]);
-
-    Route::get('follow_reports/{id}', [
-        'as' => 'follow_reports.is_following',
-        'uses' => 'FollowReportController@isFollowing'
-    ]);
-
-    Route::post('report_comments', [
-        'as' => 'report_comments.store',
-        'uses' => 'ReportCommentController@store'
-    ]);
+    Route::post('report_comments', 'ReportCommentController@store');
 });
 
 Route::group(['prefix' => 'setting', 'namespace' => 'Front', 'middleware' => ['assign.guard:api','jwt.auth']],function ()
 {
-    Route::get('report/{user_id}', [
-        'as'   => 'setting.report',
-        'uses' => 'SettingController@index'
-    ]);
-
     Route::post('profile', [
         'as' => 'users.profile',
         'uses' => 'SettingController@profile'
