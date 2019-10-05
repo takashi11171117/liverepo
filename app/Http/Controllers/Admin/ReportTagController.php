@@ -3,24 +3,23 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Resources\Admin\ReportTagResource;
-use App\Models\ReportTag;
-use App\Scoping\Scopes\ReportTagSearchScope;
+use App\Repositories\Contracts\ReportTagRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ReportTagController extends Controller
 {
-    public function tagify(Request $request)
-    {
-        $tags = ReportTag::withScopes($this->scopes())->limit(10)->get();
+    protected $report_tags;
 
-        return ReportTagResource::collection($tags);
+    public function __construct(ReportTagRepository $report_tags)
+    {
+        $this->report_tags = $report_tags;
     }
 
-    protected function scopes()
+    public function tagify(Request $request)
     {
-        return [
-            'tag' => new ReportTagSearchScope()
-        ];
+        return ReportTagResource::collection(
+            $this->report_tags->tagify()
+        );
     }
 }

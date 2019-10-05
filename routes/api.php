@@ -137,32 +137,14 @@ Route::group(['prefix' => 'setting', 'namespace' => 'Front', 'middleware' => ['a
 Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['assign.guard:admins','jwt.auth']],function ()
 {
     // admin
-    Route::get('admins', [
-        'as'   => 'admin.admins.index',
-        'uses' => 'AdminController@index'
-    ]);
-    Route::post('admins', [
-        'as' => 'admin.admins.store',
-        'uses' => 'AdminController@store'
-    ]);
-    Route::get('admins/{id}', [
-        'as' => 'admin.admins.show',
-        'uses' => 'AdminController@show'
-    ]);
-    Route::put('admins/{id}', [
-        'as' => 'admin.admins.update',
-        'uses' => 'AdminController@update'
-    ]);
-    Route::delete('admins/{id}', [
-        'as' => 'admin.admin.destroy',
-        'uses' => 'AdminController@destroy'
-    ]);
+    Route::get('admins', 'AdminController@index');
+    Route::post('admins', 'AdminController@store');
+    Route::get('admins/{id}', 'AdminController@show');
+    Route::put('admins/{id}', 'AdminController@update');
+    Route::delete('admins/{id}', 'AdminController@destroy');
 
     // report
-    Route::get('reports', [
-        'as'   => 'admin.reports.index',
-        'uses' => 'ReportController@index'
-    ]);
+    Route::get('reports', 'ReportController@index');
     Route::post('reports', 'ReportController@store');
     Route::get('reports/{id}', 'ReportController@show');
     Route::put('reports/{id}','ReportController@update');

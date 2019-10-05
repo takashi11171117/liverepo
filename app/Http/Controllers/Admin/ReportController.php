@@ -10,9 +10,7 @@ use App\Http\Resources\Admin\ReportResourse;
 use App\Repositories\Contracts\ReportRepository;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Report;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Rx\Observable;
 
 class ReportController extends Controller
 {
@@ -28,14 +26,11 @@ class ReportController extends Controller
      */
     public function index(Request $request): AnonymousResourceCollection
     {
-        $perPage = 20;
-        if ($request->input('per_page') !== null) {
-            $perPage = (int)$request->input('per_page');
-        }
-
-        $reports = $this->reports->paginate($perPage);
-
-        return ReportIndexResourse::collection($reports);
+        return ReportIndexResourse::collection(
+            $this->reports->paginate(
+                $request->input('per_page') ?? 20
+            )
+        );
     }
 
     /**
@@ -46,15 +41,9 @@ class ReportController extends Controller
         event(new FrontReportPostEvent($request));
     }
 
-    /**
-     * @param $id
-     * @return ReportResourse
-     */
-    public function show($id)
+    public function show(int $id): ReportResourse
     {
-        $report = $this->reports->findWithRelations($id);
-
-        return new ReportResourse($report);
+        return new ReportResourse($this->reports->findWithRelations($id));
     }
 
     /**
@@ -65,27 +54,8 @@ class ReportController extends Controller
         event(new FrontReportPostEvent($request, $id));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Request $request, $id)
+    public function destroy(int $id): void
     {
         $this->reports->delete($id);
-
-        Observable::fromArray(['page', 'per_page', 's'])
-                  ->filter(function ($value) use ($request) {
-                      return array_key_exists($value, $request->query());
-                  })
-                  ->map(function ($value) use ($request) {
-                      return $request[$value];
-                  })
-                  ->toArray()
-                  ->subscribe(
-                      function ($params) {
-                          return redirect()->route('admin.reports.index', $params, 301);
-                      });
     }
 }

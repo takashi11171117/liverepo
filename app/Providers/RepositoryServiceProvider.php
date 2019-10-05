@@ -3,11 +3,11 @@
 namespace App\Providers;
 
 use App\Repositories\Contracts\{
-    ReportRepository
+    AdminRepository, ReportRepository, ReportTagRepository
 };
 
 use App\Repositories\Eloquent\{
-    EloquentReportRepository
+    EloquentAdminRepository, EloquentReportRepository, EloquentReportTagRepository
 };
 
 use Illuminate\Support\ServiceProvider;
@@ -22,6 +22,8 @@ class RepositoryServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->bind(ReportRepository::class, EloquentReportRepository::class);
+        $this->app->bind(AdminRepository::class, EloquentAdminRepository::class);
+        $this->app->bind(ReportTagRepository::class, EloquentReportTagRepository::class);
     }
 
     /**
