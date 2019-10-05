@@ -25,7 +25,6 @@ class Post extends FormRequest
     public function rules(Request $request)
     {
         $args = [
-            'user_id' => 'required|numeric',
             'user_name01' => 'nullable|max:255',
             'user_name02' => 'nullable|max:255',
             'image' => 'nullable|image|max:20000',

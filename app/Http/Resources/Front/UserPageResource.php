@@ -15,7 +15,7 @@ class UserPageResource extends JsonResource
      */
     public function toArray($request)
     {
-        $args = [
+        $array = [
             'id'     => $this->id,
             'name'   => $this->name,
             'gender' => $this->gender,
@@ -24,29 +24,22 @@ class UserPageResource extends JsonResource
         ];
 
         if ($this->image_path !== null) {
-            $args['src'] = config('const.IMAGE_URL') . 'profile_images/' . $this->image_path;
-        }
-
-        if ($this->image_path !== null) {
-            $args['thumb'] = config('const.IMAGE_URL') . 'profile_images/thumb-' . $this->image_path;
-        }
-
-        if ($this->image_path !== null) {
-            $args['thumb'] = config('const.IMAGE_URL') . 'profile_images/thumb-' . $this->image_path;
+            $array['src'] = config('const.IMAGE_URL') . 'profile_images/' . $this->image_path;
+            $array['thumb'] = config('const.IMAGE_URL') . 'profile_images/thumb-' . $this->image_path;
         }
 
         if ($this->followUsers !== null) {
-            $args['follow_users'] = FollowUserResource::collection($this->followUsers);
+            $array['follow_users'] = FollowUserResource::collection($this->followUsers);
         }
 
         if ($this->followers !== null) {
-            $args['followers'] = FollowerResource::collection($this->followers);
+            $array['followers'] = FollowerResource::collection($this->followers);
         }
 
         if ($this->followReportTags !== null) {
-            $args['follow_report_tags'] = ReportTagIndexResource::collection($this->followReportTags);
+            $array['follow_report_tags'] = ReportTagIndexResource::collection($this->followReportTags);
         }
 
-        return $args;
+        return $array;
     }
 }

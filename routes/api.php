@@ -13,8 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', function()
-{
+Route::get('/', function () {
     return "Hello!! This is liverepo's api";
 });
 
@@ -27,34 +26,37 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 Route::group(['prefix' => 'oauth', 'namespace' => 'OAuth'], function () {
-    Route::group(['prefix' => 'twitter'], function() {
+    Route::group(['prefix' => 'twitter'], function () {
         Route::get('redirect', 'TwitterController@redirect');
         Route::get('callback', 'TwitterController@callback');
     });
 });
 
+Route::group(['namespace' => 'Front', 'middleware' => ['assign.guard:api', 'jwt.auth']], function () {
+    Route::post('comedy/reports', 'ReportController@post');
+    Route::post('users/profile', 'UserController@profile');
+});
+
 Route::group(['namespace' => 'Front'], function () {
-    Route::group(['prefix' => 'comedy'], function() {
-        Route::group(['prefix' => 'reports'], function() {
+    Route::group(['prefix' => 'comedy'], function () {
+        Route::group(['prefix' => 'reports'], function () {
             Route::get('/', 'ReportController@index');
-            Route::post('/', 'ReportController@post');
             Route::get('month/{month}', 'ReportController@findListByMonth');
             Route::get('{date}', 'ReportController@findListByDate');
             Route::get('{id}', 'ReportController@show');
         });
 
-        Route::group(['prefix' => 'report_tags'], function() {
+        Route::group(['prefix' => 'report_tags'], function () {
             Route::get('/', 'ReportTagController@index');
             Route::get('tagify', 'ReportTagController@tagify');
             Route::get('{name}', 'ReportTagController@show');
         });
     });
 
-    Route::get('users/{name}', 'UserController@index');
+    Route::get('users/{name}', 'UserController@show');
 });
 
-Route::group(['namespace' => 'Front', 'middleware' => ['assign.guard:api','jwt.auth']],function ()
-{
+Route::group(['namespace' => 'Front', 'middleware' => ['assign.guard:api', 'jwt.auth']], function () {
     Route::get('follow_users/{id}', 'FollowUserController@show');
     Route::post('follow_users', 'FollowUserController@store');
     Route::delete('follow_users/{id}', 'FollowUserController@destroy');
@@ -70,16 +72,7 @@ Route::group(['namespace' => 'Front', 'middleware' => ['assign.guard:api','jwt.a
     Route::post('report_comments', 'ReportCommentController@store');
 });
 
-Route::group(['prefix' => 'setting', 'namespace' => 'Front', 'middleware' => ['assign.guard:api','jwt.auth']],function ()
-{
-    Route::post('profile', [
-        'as' => 'users.profile',
-        'uses' => 'SettingController@profile'
-    ]);
-});
-
-Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['assign.guard:admins','jwt.auth']],function ()
-{
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['assign.guard:admins', 'jwt.auth']], function () {
     // admin
     Route::get('admins', 'AdminController@index');
     Route::post('admins', 'AdminController@store');
@@ -91,7 +84,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['ass
     Route::get('reports', 'ReportController@index');
     Route::post('reports', 'ReportController@store');
     Route::get('reports/{id}', 'ReportController@show');
-    Route::put('reports/{id}','ReportController@update');
+    Route::put('reports/{id}', 'ReportController@update');
     Route::delete('reports/{id}', 'ReportController@destroy');
 
     // tag
