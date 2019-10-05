@@ -21,7 +21,7 @@ class EloquentFollowUserRepository extends RepositoryAbstract implements FollowU
                                         ->first(['id']);
     }
 
-    public function detach(int $id)
+    public function detach(int $id): void
     {
         (\Auth::user())->followUsers()->detach(
             (User::findOrFail($id))->id

@@ -3,34 +3,46 @@
 namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
-use App\Models\FollowReport;
-use App\Models\Report;
+use App\Repositories\Contracts\FollowReportRepository;
+use App\Repositories\Contracts\ReportRepository;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class FollowReportController extends Controller
 {
-    public function store(Request $request)
+    protected $follow_reports, $reports;
+
+    public function __construct(FollowReportRepository $follow_reports, ReportRepository $reports)
     {
-        $followedReport = Report::findOrFail($request->input('id'));
-        FollowReport::firstOrCreate([
+        $this->follow_reports = $follow_reports;
+        $this->reports = $reports;
+    }
+
+    public function show(int $id): JsonResponse
+    {
+        return response()->json(
+            ['result' => $this->follow_reports->find($id)]
+        );
+    }
+
+    public function store(Request $request): JsonResponse
+    {
+        $params = [
             'user_id' => \Auth::id(),
-            'report_id' => $followedReport->id,
-        ]);
+            'report_id' => ($this->reports->find(
+                (int) $request->input('id') ?? 0
+            ))->id
+        ];
+
+        $this->follow_reports->create($params);
+
         return response()->json(['result' => true]);
     }
 
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
-        $followedReport = Report::findOrFail($id);
-        $user = \Auth::user();
-        $user->followReports()->detach($followedReport->id);
-        return response()->json(['result' => true]);
-    }
+        $this->follow_reports->detach($id);
 
-    public function isFollowing($id)
-    {
-        $user = \Auth::user();
-        $follow = $user->followReports()->where('report_id', $id)->first(['id']);
-        return response()->json(['result' => (boolean) $follow]);
+        return response()->json(['result' => true]);
     }
 }

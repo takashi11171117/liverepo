@@ -2,35 +2,47 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Models\FollowReportTag;
-use App\Models\ReportTag;
+use App\Repositories\Contracts\FollowReportTagRepository;
+use App\Repositories\Contracts\ReportTagRepository;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class FollowReportTagController extends Controller
 {
-    public function store(Request $request)
+    protected $follow_report_tags, $report_tags;
+
+    public function __construct(FollowReportTagRepository $follow_report_tags, ReportTagRepository $report_tags)
     {
-        $followedReportTag = ReportTag::findOrFail($request->input('id'));
-        FollowReportTag::firstOrCreate([
+        $this->follow_report_tags = $follow_report_tags;
+        $this->report_tags = $report_tags;
+    }
+
+    public function show(int $id): JsonResponse
+    {
+        return response()->json(
+            ['result' => $this->follow_report_tags->find($id)]
+        );
+    }
+
+    public function store(Request $request): JsonResponse
+    {
+        $params = [
             'user_id' => \Auth::id(),
-            'report_tag_id' => $followedReportTag->id,
-        ]);
+            'report_tag_id' => ($this->report_tags->find(
+                (int) $request->input('id') ?? 0
+            ))->id
+        ];
+
+        $this->follow_report_tags->create($params);
+
         return response()->json(['result' => true]);
     }
 
-    public function destroy($id)
+    public function destroy($id): JsonResponse
     {
-        $followedReportTag = ReportTag::findOrFail($id);
-        $user = \Auth::user();
-        $user->followReportTags()->detach($followedReportTag->id);
-        return response()->json(['result' => true]);
-    }
+        $this->follow_report_tags->detach($id);
 
-    public function isFollowing($id)
-    {
-        $user = \Auth::user();
-        $follow = $user->followReportTags()->where('report_tag_id', $id)->first(['id']);
-        return response()->json(['result' => (boolean) $follow]);
+        return response()->json(['result' => true]);
     }
 }

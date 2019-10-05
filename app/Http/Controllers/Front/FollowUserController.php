@@ -25,7 +25,7 @@ class FollowUserController extends Controller
         );
     }
 
-    public function store(Request $request): void
+    public function store(Request $request): JsonResponse
     {
         $params = [
             'user_id' => \Auth::id(),
@@ -35,10 +35,14 @@ class FollowUserController extends Controller
         ];
 
         $this->follow_users->create($params);
+
+        return response()->json(['result' => true]);
     }
 
-    public function destroy(int $id): void
+    public function destroy(int $id): JsonResponse
     {
         $this->follow_users->detach($id);
+
+        return response()->json(['result' => true]);
     }
 }
