@@ -2,45 +2,39 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Http\Resources\Front\ReportResource;
 use App\Http\Resources\Front\ReportTagIndexResource;
+use App\Repositories\Contracts\ReportTagRepository;
 use App\Http\Resources\Front\ReportTagResource;
-use App\Models\ReportTag;
-use App\Scoping\Scopes\ReportTagSearchScope;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ReportTagController extends Controller
 {
+    protected $report_tags;
+
+    public function __construct(ReportTagRepository $report_tags)
+    {
+        $this->report_tags = $report_tags;
+    }
+
     public function index()
     {
-        $tags = ReportTag::paginate(100);
-
-        return ReportTagIndexResource::collection($tags);
+        return ReportTagIndexResource::collection(
+            $this->report_tags->paginate(100)
+        );
     }
 
-    /**
-     * @param $id
-     * @return ReportTagResource
-     */
-    public function show(string $name)
+    public function show(string $name): ReportTagResource
     {
-        $report_tag  = ReportTag::where('name', $name)->firstOrFail();
-
-        return new ReportTagResource($report_tag);
+        return new ReportTagResource(
+            $this->report_tags->findWhereFirst('name', $name)
+        );
     }
 
-    public function tagify(Request $request)
+    public function tagify()
     {
-        $tags = ReportTag::withScopes($this->scopes())->limit(10)->get();
-
-        return ReportTagIndexResource::collection($tags);
-    }
-
-    protected function scopes()
-    {
-        return [
-            'tag' => new ReportTagSearchScope()
-        ];
+        // TODO
+        return ReportTagResource::collection(
+            $this->report_tags->tagify()
+        );
     }
 }

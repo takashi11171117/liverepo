@@ -36,30 +36,18 @@ Route::group(['prefix' => 'oauth', 'namespace' => 'OAuth'], function () {
 Route::group(['namespace' => 'Front'], function () {
     Route::group(['prefix' => 'comedy'], function() {
         Route::group(['prefix' => 'reports'], function() {
-            Route::get("/", "ReportController@index");
-            Route::get("month/{month}", "ReportController@findListByMonth");
-            Route::get("{date}", "ReportController@findListByDate");
-            Route::get('{id}', 'ReportController@show');
+            Route::get('/', 'ReportController@index');
             Route::post('/', 'ReportController@post');
+            Route::get('month/{month}', 'ReportController@findListByMonth');
+            Route::get('{date}', 'ReportController@findListByDate');
+            Route::get('{id}', 'ReportController@show');
         });
 
-        // tag
-        Route::get('report_tags/tagify', [
-            'as' => 'comedy.report_tags.tagify',
-            'uses' => 'ReportTagController@tagify'
-        ]);
-
-        // tag
-        Route::get('report_tags', [
-            'as' => 'comedy.report_tags.index',
-            'uses' => 'ReportTagController@index'
-        ]);
-
-        // tag
-        Route::get('report_tags/{name}', [
-            'as' => 'comedy.report_tags.show',
-            'uses' => 'ReportTagController@show'
-        ]);
+        Route::group(['prefix' => 'report_tags'], function() {
+            Route::get('/', 'ReportTagController@index');
+            Route::get('tagify', 'ReportTagController@tagify');
+            Route::get('{name}', 'ReportTagController@show');
+        });
     });
 
     Route::get('users/{name}', [

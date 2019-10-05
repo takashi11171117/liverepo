@@ -16,7 +16,7 @@ class ReportTagController extends Controller
         $this->report_tags = $report_tags;
     }
 
-    public function tagify(Request $request)
+    public function tagify()
     {
         return ReportTagResource::collection(
             $this->report_tags->tagify()
