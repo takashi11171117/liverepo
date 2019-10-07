@@ -1,31 +1,38 @@
-import { Configuration } from "@nuxt/types"
+import { Configuration } from '@nuxt/types'
 
 const config: Configuration = {
-  mode: "universal",
+  mode: 'universal',
   /*
    ** Headers of the page
    */
   head: {
-    title: process.env.npm_package_name || "",
+    title: process.env.npm_package_name || '',
     meta: [
-      { charset: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { charset: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       {
-        hid: "description",
-        name: "description",
-        content: process.env.npm_package_description || ""
+        hid: 'description',
+        name: 'description',
+        content: process.env.npm_package_description || ''
       }
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
   /*
    ** Customize the progress-bar color
    */
-  loading: { color: "#fff" },
+  loading: { color: '#fff' },
+
+  env: {
+    apiServerUrl: process.env.API_SERVER_URL || 'http://localhost:8000',
+    apiClientUrl: process.env.API_CLIENT_URL || 'http://localhost:8000',
+    appName: process.env.APP_NAME || 'Lumen-Nuxt',
+    imageUrl: process.env.IMAGE_URL || 'https://liverepotest.s3.ap-northeast-1.amazonaws.com/'
+  },
   /*
    ** Global CSS
    */
-  css: ["normalize.css"],
+  css: ['normalize.css'],
   /*
    ** Plugins to load before mounting the App
    */
@@ -35,18 +42,18 @@ const config: Configuration = {
    */
   buildModules: [
     // Doc: https://github.com/nuxt-community/eslint-module
-    "@nuxtjs/eslint-module",
-    "@nuxt/typescript-build"
+    '@nuxtjs/eslint-module',
+    '@nuxt/typescript-build'
   ],
   /*
    ** Nuxt.js modules
    */
   modules: [
     // Doc: https://buefy.github.io/#/documentation
-    "nuxt-buefy",
+    'nuxt-buefy',
     // Doc: https://axios.nuxtjs.org/usage
-    "@nuxtjs/axios",
-    "@nuxtjs/pwa"
+    '@nuxtjs/axios',
+    '@nuxtjs/pwa'
   ],
   /*
    ** Axios module configuration
@@ -57,15 +64,15 @@ const config: Configuration = {
    ** Build configuration
    */
   build: {
-    extend(config: any, ctx: any) {
+    extend (config: any, ctx: any) {
       if (ctx.isDev && ctx.isClient) {
         if (!config.module) {
           return
         } // undefinedの場合、pushせずにreturnするように追加
         config.module.rules.push({
-          enforce: "pre",
+          enforce: 'pre',
           test: /\.(js|vue)$/,
-          loader: "eslint-loader",
+          loader: 'eslint-loader',
           exclude: /(node_modules)/
         })
       }
