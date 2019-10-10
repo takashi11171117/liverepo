@@ -9,12 +9,12 @@ import { Component, Vue, Prop } from 'nuxt-property-decorator'
 
 @Component({})
 export default class ReportImages extends Vue {
-    @Prop({ default: [] })
-    images!: any[]
+    @Prop({})
+    images!: {path: string}[]
 }
 </script>
 
 <style lang="sass" scoped>
-    .thumbnail-box
-        width: 120px
+.thumbnail-box
+    width: 120px
 </style>

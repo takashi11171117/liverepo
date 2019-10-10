@@ -2,7 +2,9 @@
   <div class="columns">
     <aside
       class="column is-narrow-desktop is-narrow-tablet"
-    />
+    >
+      <ReportCalendar />
+    </aside>
     <main class="column">
       <div v-if="$isset(reports.data)" class="columns is-mobile is-tablet is-multiline">
         <div
@@ -19,17 +21,25 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import { ReportStore } from '@/store'
+import { ReportStore, CalendarStore } from '@/store'
 import ReportIndexCard from '@/components/front/ReportIndexCard.vue'
+import ReportCalendar from '@/components/front/ReportCalendar.vue'
 
 @Component({
   components: {
-    ReportIndexCard
+    ReportIndexCard,
+    ReportCalendar
   }
 })
 export default class Index extends Vue {
   get reports (): Object {
     return ReportStore.getReports
+  }
+
+  async fetch () {
+    const today = new Date()
+    const month = ('0' + (today.getMonth() + 1)).slice(-2)
+    await CalendarStore.fetchAttributes(`${today.getFullYear()}-${month}`)
   }
 
   async asyncData (): Promise<void> {

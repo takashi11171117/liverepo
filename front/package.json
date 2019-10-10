@@ -21,6 +21,7 @@
     "nuxt": "^2.0.0",
     "nuxt-buefy": "^0.3.2",
     "nuxt-property-decorator": "^2.4.0",
+    "v-calendar": "^0.9.7",
     "vue-property-decorator": "^8.2.2",
     "vuex-module-decorators": "^0.10.1"
   },

@@ -28,25 +28,25 @@ export default class UserData extends Vue {
 }
 </script>
 <style lang="sass" scoped>
-    .user-data
-        display: flex
-        .user-data div
-            line-height: 30px
-            font-size: 14px
-            margin-bottom: 15px
-        .user-icon
-            width: 30px
-            height: 30px
-            margin-right: 10px
-            img
-                border-radius: 5px
-        .user-profile
-            color: #888
-        #user-data
-            display: flex
-            color: #000
-            .user-name
-                margin-right: 10px
-                font-weight: bold
-                text-decoration: underline
+.user-data
+    display: flex
+.user-data div
+    line-height: 3rem
+    font-size: 1.4rem
+    margin-bottom: 1.5rem
+.user-icon
+    width: 30px
+    height: 30px
+    margin-right: 10px
+    img
+        border-radius: 5px
+.user-profile
+    color: #888
+#user-data
+    display: flex
+    color: #000
+    .user-name
+        margin-right: 10px
+        font-weight: bold
+        text-decoration: underline
 </style>

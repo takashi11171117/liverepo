@@ -14,7 +14,7 @@ export default class Report extends VuexModule {
     this.reports = reports
   }
 
-  @Action
+  @Action({ rawError: true })
   async loadReports () {
     const reports = await axios.get('http://localhost:8000/comedy/reports', {
       params: {

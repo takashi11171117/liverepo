@@ -32,12 +32,19 @@ const config: Configuration = {
   /*
    ** Global CSS
    */
-  css: ['normalize.css'],
+  css: [
+    'normalize.css',
+    '~assets/bulma_main.sass'
+  ],
   /*
    ** Plugins to load before mounting the App
    */
   plugins: [
-    '~plugins/util'
+    '~plugins/util',
+    {
+      src: '~/plugins/v-calendar',
+      mode: 'client'
+    }
   ],
   /*
    ** Nuxt.js dev-modules
