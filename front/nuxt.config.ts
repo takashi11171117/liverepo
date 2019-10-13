@@ -41,6 +41,8 @@ const config: Configuration = {
    */
   plugins: [
     '~plugins/util',
+    '~plugins/axios',
+    '~plugins/store',
     {
       src: '~/plugins/v-calendar',
       mode: 'client'

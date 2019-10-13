@@ -1,5 +1,6 @@
 import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators'
-import axios from 'axios'
+import { NuxtAxiosInstance } from '@nuxtjs/axios'
+import injectAxios from '@/src/vuex'
 
 const today = {
   contentStyle: {
@@ -10,8 +11,9 @@ const today = {
 }
 
 @Module({ stateFactory: true, namespaced: true, name: 'services/calendar' })
-export default class Calendar extends VuexModule {
+export default class Calendar extends VuexModule implements injectAxios {
   attributes: Array<any> = [today]
+  $axios!: NuxtAxiosInstance
 
   get getAttributes (): Array<any> {
     return this.attributes
@@ -38,8 +40,8 @@ export default class Calendar extends VuexModule {
 
   @Action({ rawError: true })
   async fetchAttributes (month: string) {
-    const res = await axios.get(`http://localhost:8000/comedy/reports/month/${month}`)
+    const res = await this.$axios.$get(`/comedy/reports/month/${month}`)
 
-    this.updateAttributes(res.data)
+    this.updateAttributes(res)
   }
 }
