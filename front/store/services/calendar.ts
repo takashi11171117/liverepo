@@ -38,7 +38,6 @@ export default class Calendar extends VuexModule {
 
   @Action({ rawError: true })
   async fetchAttributes (month: string) {
-    console.log(month)
     const res = await axios.get(`http://localhost:8000/comedy/reports/month/${month}`)
 
     this.updateAttributes(res.data)

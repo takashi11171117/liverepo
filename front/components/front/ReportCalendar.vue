@@ -20,7 +20,6 @@ export default class ReportCalendar extends Vue {
   public direction = '1'
 
   get attributes (): Object {
-    console.log(CalendarStore.getAttributes)
     return CalendarStore.getAttributes
   }
 

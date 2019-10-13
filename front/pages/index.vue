@@ -1,8 +1,6 @@
 <template>
   <div class="columns">
-    <aside
-      class="column is-narrow-desktop is-narrow-tablet"
-    >
+    <aside class="column is-narrow-desktop is-narrow-tablet">
       <ReportCalendar />
     </aside>
     <main class="column">
@@ -15,21 +13,30 @@
           <ReportIndexCard :report="report" />
         </div>
       </div>
+      <Pagination
+        v-if="reports.data !== undefined && Object.keys(reports.data).length > 0"
+        current_path="/"
+        :pagination="reports.meta"
+      />
     </main>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import { Context } from '@nuxt/types'
 import { ReportStore, CalendarStore } from '@/store'
 import ReportIndexCard from '@/components/front/ReportIndexCard.vue'
 import ReportCalendar from '@/components/front/ReportCalendar.vue'
+import Pagination from '@/components/Pagination.vue'
 
 @Component({
   components: {
     ReportIndexCard,
-    ReportCalendar
-  }
+    ReportCalendar,
+    Pagination
+  },
+  watchQuery: ['page', 'per_page']
 })
 export default class Index extends Vue {
   get reports (): Object {
@@ -42,8 +49,11 @@ export default class Index extends Vue {
     await CalendarStore.fetchAttributes(`${today.getFullYear()}-${month}`)
   }
 
-  async asyncData (): Promise<void> {
-    await ReportStore.loadReports()
+  async asyncData (this: void, ctx: Context): Promise<void> {
+    await ReportStore.loadReports({
+      page: ctx.app.context.query.page,
+      per_page: ctx.app.context.query.per_page
+    })
   }
 }
 </script>

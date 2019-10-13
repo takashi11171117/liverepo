@@ -15,11 +15,11 @@ export default class Report extends VuexModule {
   }
 
   @Action({ rawError: true })
-  async loadReports () {
+  async loadReports (params: {page: number, per_page: number} = {page: 1, per_page: 20}) {
     const reports = await axios.get('http://localhost:8000/comedy/reports', {
       params: {
-        page: 1,
-        per_page: 10
+        page: params.page,
+        per_page: params.per_page
       }
     })
 
