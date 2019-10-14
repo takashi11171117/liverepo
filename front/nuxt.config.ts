@@ -52,7 +52,6 @@ const config: Configuration = {
    ** Nuxt.js dev-modules
    */
   buildModules: [
-    // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
     '@nuxt/typescript-build'
   ],
@@ -60,10 +59,9 @@ const config: Configuration = {
    ** Nuxt.js modules
    */
   modules: [
-    // Doc: https://buefy.github.io/#/documentation
     'nuxt-buefy',
-    // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/auth',
     '@nuxtjs/pwa'
   ],
   /*
@@ -95,6 +93,25 @@ const config: Configuration = {
   },
   sassOptions: {
     indentedSyntax: true
+  },
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: 'auth/login',
+            method: 'post',
+            propertyName: 'meta.token'
+          },
+          logout: false,
+          user: {
+            url: 'auth/me',
+            method: 'get',
+            propertyName: 'data'
+          }
+        }
+      }
+    }
   }
 }
 

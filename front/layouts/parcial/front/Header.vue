@@ -13,6 +13,52 @@
         <div class="nav-search">
           <i class="fas fa-search fa-2x" />
         </div>
+        <template v-if="!$auth.loggedIn">
+          <div class="nav-new-user">
+            <n-link id="new-user" :to="{ name: 'auth-register' }" class="button">
+              会員登録
+            </n-link>
+          </div>
+          <div class="nav-login">
+            <n-link id="login" :to="{ name: 'auth-login' }" class="button">
+              ログイン
+            </n-link>
+          </div>
+        </template>
+
+        <template v-if="$auth.loggedIn">
+          <div class="nav-post-report">
+            <n-link id="post-report" :to="{ name: 'setting-post' }" class="button">
+              投稿する
+            </n-link>
+          </div>
+          <div class="user-menu">
+            <b-dropdown position="is-bottom-left" aria-role="menu">
+              <a
+                slot="trigger"
+                class="dropdown-button"
+                role="button"
+              >
+                <b-icon icon="menu-down" />
+              </a>
+
+              <b-dropdown-item aria-role="menu-item" has-link>
+                <n-link id="mypage" :to="{ name: 'users-name', params: {name: $auth.user.name} }">
+                  マイページ
+                </n-link>
+              </b-dropdown-item>
+              <b-dropdown-item aria-role="menu-item" has-link>
+                <n-link id="account" :to="{ name: 'setting-profile' }">
+                  アカウント設定
+                </n-link>
+              </b-dropdown-item>
+              <hr class="dropdown-divider">
+              <b-dropdown-item aria-role="menu-item" @click="$auth.logout()">
+                ログアウト
+              </b-dropdown-item>
+            </b-dropdown>
+          </div>
+        </template>
       </div>
     </div>
     <nav>
