@@ -69,16 +69,16 @@ export default class Login extends Vue {
   error: Object = {}
 
   async signin () {
-    await this.$auth.loginWith('local', {
+    await (this as any).$auth.loginWith('local', {
       data: this.form
     })
       .then(() => {
-        if (this.$route.query.redirect) {
-          this.$router.replace(this.$route.query.redirect)
+        if ((this as any).$route.query.redirect) {
+          (this as any).$router.replace((this as any).$route.query.redirect)
           return
         }
 
-        this.$router.replace({
+        (this as any).$router.replace({
           name: 'index'
         })
       })

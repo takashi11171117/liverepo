@@ -92,7 +92,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import Moment from 'moment'
 import TextInput from '@/components/form/TextInput.vue'
 import SelectInput from '@/components/form/SelectInput.vue'
 import DateInput from '@/components/form/DateInput.vue'
@@ -104,7 +103,7 @@ type From = {
   password_confirmation: string
   gender: string
   pref: string
-  birth: Date | null
+  birth: Date
 }
 
 @Component({
@@ -122,24 +121,23 @@ export default class Register extends Vue {
     password_confirmation: '',
     gender: '',
     pref: '',
-    birth: null
+    birth: new Date()
   }
 
   error: Object = {}
 
   async register () {
-    console.log(this.form)
     const newForm = Object.assign({}, this.form)
-    if (this.$isset(this.form.birth)) {
-      newForm.birth = Moment(this.form.birth).format('YYYY-MM-DD hh:mm:ss')
+    if ((this as any).$isset(this.form.birth)) {
+      newForm.birth = this.form.birth
     }
-    await this.$axios.$post('/auth/register', newForm)
+    await (this as any).$axios.$post('/auth/register', newForm)
       .then(() => {
-        this.$router.replace({
+        (this as any).$router.replace({
           name: 'auth-login'
         })
       })
-      .catch((error) => {
+      .catch((error: any) => {
         this.error = error.response.data.errors
       })
   }

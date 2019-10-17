@@ -58,11 +58,11 @@ export default class Pagination extends Vue {
       isNext: this.pagination.current_page !== this.pagination.last_page,
       isFirst: this.pagination.current_page > 2,
       isLast: this.pagination.current_page < this.pagination.last_page - 1,
-      firstLinkQuery: { page: 1, per_page: this.pagination.per_page, s: this.$route.query.s },
-      previousLinkQuery: { page: this.pagination.current_page - 1, per_page: this.pagination.per_page, s: this.$route.query.s },
-      nextLinkQuery: { page: this.pagination.current_page + 1, per_page: this.pagination.per_page, s: this.$route.query.s },
-      lastLinkQuery: { page: this.pagination.last_page, per_page: this.pagination.per_page, s: this.$route.query.s },
-      currentLinkQuery: { page: this.pagination.current_page, per_page: this.pagination.per_page, s: this.$route.query.s }
+      firstLinkQuery: { page: 1, per_page: this.pagination.per_page, s: (this as any).$route.query.s },
+      previousLinkQuery: { page: this.pagination.current_page - 1, per_page: this.pagination.per_page, s: (this as any).$route.query.s },
+      nextLinkQuery: { page: this.pagination.current_page + 1, per_page: this.pagination.per_page, s: (this as any).$route.query.s },
+      lastLinkQuery: { page: this.pagination.last_page, per_page: this.pagination.per_page, s: (this as any).$route.query.s },
+      currentLinkQuery: { page: this.pagination.current_page, per_page: this.pagination.per_page, s: (this as any).$route.query.s }
     }
   }
 }
