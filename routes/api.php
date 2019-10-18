@@ -54,6 +54,7 @@ Route::group(['namespace' => 'Front'], function () {
     });
 
     Route::get('users/{name}', 'UserController@show');
+    Route::get('users/{name}/reports', 'ReportController@findListByUser');
 });
 
 Route::group(['namespace' => 'Front', 'middleware' => ['assign.guard:api', 'jwt.auth']], function () {

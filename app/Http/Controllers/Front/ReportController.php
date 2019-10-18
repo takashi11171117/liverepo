@@ -28,6 +28,13 @@ class ReportController extends Controller
         return ReportIndexResource::collection($reports);
     }
 
+    public function findListByUser(string $name) : AnonymousResourceCollection
+    {
+        $reports = $this->reports->paginateByUser($name, 20);
+
+        return ReportIndexResource::collection($reports);
+    }
+
     public function findListByMonth(string $month) : JsonResponse
     {
         $reports = $this->reports->findListByMonth($month);

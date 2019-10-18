@@ -49,6 +49,16 @@ class EloquentReportRepository extends RepositoryAbstract implements ReportRepos
             ->paginate($perPage);
     }
 
+    public function paginateByUser(string $user_name, int $perPage = 10)
+    {
+        return $this->entity
+            ->with(['report_images', 'users'])
+            ->where('user_name', $user_name)
+            ->orderBy('published_at', 'desc')
+            ->status((config('const.REPORT_STATUS'))['publish'])
+            ->paginate($perPage);
+    }
+
     public function findListByMonth(string $month)
     {
         return $this->entity->select(DB::raw("count(*) as count, strftime('%Y-%m-%d', published_at) as formatted_published_at"))

@@ -1,6 +1,4 @@
 import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators'
-import { NuxtAxiosInstance } from '@nuxtjs/axios'
-import injectAxios from '@/src/vuex'
 
 const today = {
   contentStyle: {
@@ -11,9 +9,8 @@ const today = {
 }
 
 @Module({ stateFactory: true, namespaced: true, name: 'services/calendar' })
-export default class Calendar extends VuexModule implements injectAxios {
+export default class Calendar extends VuexModule {
   attributes: Array<any> = [today]
-  $axios!: NuxtAxiosInstance
 
   get getAttributes (): Array<any> {
     return this.attributes

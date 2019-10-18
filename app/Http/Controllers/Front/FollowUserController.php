@@ -21,7 +21,7 @@ class FollowUserController extends Controller
     public function show(int $id): JsonResponse
     {
         return response()->json(
-            ['result' => $this->follow_users->find($id)]
+            ['data' => $this->follow_users->find($id)]
         );
     }
 

@@ -27,7 +27,8 @@
       "@types/node",
       "@nuxt/types",
       "@types/universal-cookie",
-      "@/src/types/v-calendar"
+      "@/src/types/v-calendar",
+      "@/src/types/vuex"
     ]
   },
   "exclude": [
