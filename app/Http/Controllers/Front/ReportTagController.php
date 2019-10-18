@@ -6,6 +6,7 @@ use App\Http\Resources\Front\ReportTagIndexResource;
 use App\Repositories\Contracts\ReportTagRepository;
 use App\Http\Resources\Front\ReportTagResource;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ReportTagController extends Controller
 {
@@ -30,7 +31,7 @@ class ReportTagController extends Controller
         );
     }
 
-    public function tagify()
+    public function tagify(): AnonymousResourceCollection
     {
         // TODO
         return ReportTagResource::collection(

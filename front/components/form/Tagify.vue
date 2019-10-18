@@ -3,7 +3,7 @@
     <vue-tags-input
       v-model="tag"
       :tags="tags"
-      :autocomplete-items="autocomplete_tags"
+      :autocomplete-items="autocompleteTags"
       placeholder="タグを入力"
       @tags-changed="update"
     />
@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from 'nuxt-property-decorator'
-import { Context } from '@nuxt/types'
+import { ReportTagStore } from '@/store'
 
 @Component({})
 export default class Tagify extends Vue {
@@ -21,7 +21,7 @@ export default class Tagify extends Vue {
 
   tag: string = ''
   tags: Array<string> = []
-  autocomplete_tags: Array<string> = []
+  autocompleteTags: Array<string> = []
   debounce: number | undefined = undefined
 
   get innerTags (): Array<string> {
@@ -33,20 +33,20 @@ export default class Tagify extends Vue {
   }
 
   update (newTags: Array<string>) {
-    this.autocomplete_tags = []
+    this.autocompleteTags = []
     this.innerTags = newTags
     this.onUpdate(newTags)
   }
 
   @Watch('tag')
-  initItems (ctx: Context) {
+  initItems () {
     if (this.tag.length < 2) { return }
 
     window.clearTimeout(this.debounce)
-    this.debounce = window.setTimeout(() => {
-      ctx.app.$axios.$get(`/comedy/report_tags/tagify?tag=${this.tag}`).then(({ data }) => {
-        this.autocomplete_tags = data.map((name: string) => {
-          return { text: name }
+    this.debounce = window.setTimeout(async () => {
+      await ReportTagStore.loadTagify(this.tag).then(({ data }) => {
+        this.autocompleteTags = data.map((tag: {name: string}) => {
+          return { text: tag.name }
         })
       }).catch(e => console.warn(e))
     }, 600)

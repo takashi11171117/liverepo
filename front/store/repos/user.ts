@@ -41,4 +41,17 @@ export default class User extends VuexModule {
 
     this.setUser(user.data)
   }
+
+  @Action({ rawError: true })
+  async updateUserProfile (form: Object) {
+    await this.$axios.$post(
+      '/users/profile',
+      form,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    )
+  }
 }

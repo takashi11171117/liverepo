@@ -75,6 +75,7 @@
     <hr class="dropdown-divider">
   </section>
 </template>
+
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
 import { FollowUserStore } from '@/store'
@@ -105,29 +106,30 @@ export default class SideUserPage extends Vue {
   }
 }
 </script>
+
 <style lang="sass" scoped>
-    .main-content
-        background-color: #fff
-        border-radius: 8px
-        padding: 15px 20px
-        h1
-            font-size: 20px
-            font-weight: bold
-            line-height: 1.2
-        p, > div
-            margin-top: 10px
-            margin-bottom: 10px
-            font-size: 14px
-            line-height: 1.5
-        .follow-tag
-            margin-bottom: 20px
+.main-content
+    background-color: #fff
+    border-radius: 8px
+    padding: 15px 20px
+    h1
+        font-size: 20px
+        font-weight: bold
+        line-height: 1.2
+    p, > div
+        margin-top: 10px
+        margin-bottom: 10px
+        font-size: 14px
+        line-height: 1.5
+    .follow-tag
+        margin-bottom: 20px
 
-        .report-tags
-            margin-bottom: 10px
-            margin-top: 10px
+    .report-tags
+        margin-bottom: 10px
+        margin-top: 10px
 
-        .users
-            margin-top: 4px
-            img
-                border-radius: 5px
+    .users
+        margin-top: 4px
+        img
+            border-radius: 5px
 </style>

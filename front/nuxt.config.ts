@@ -46,6 +46,14 @@ const config: Configuration = {
     {
       src: '~/plugins/v-calendar',
       mode: 'client'
+    },
+    {
+      src: '~/plugins/vue-tags-input',
+      mode: 'client'
+    },
+    {
+      src: '~/plugins/preview-input',
+      mode: 'client'
     }
   ],
   /*

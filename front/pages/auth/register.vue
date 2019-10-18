@@ -96,7 +96,7 @@ import TextInput from '@/components/form/TextInput.vue'
 import SelectInput from '@/components/form/SelectInput.vue'
 import DateInput from '@/components/form/DateInput.vue'
 
-type From = {
+type Form = {
   name: string
   email: string
   password: string
@@ -114,7 +114,7 @@ type From = {
   }
 })
 export default class Register extends Vue {
-  form: From = {
+  form: Form = {
     name: '',
     email: '',
     password: '',

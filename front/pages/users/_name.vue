@@ -90,26 +90,26 @@ export default class User extends Vue {
     background-color: #fff
     border-radius: 8px
     padding: 15px 20px
-    h1
-        font-size: 20px
-        font-weight: bold
-        line-height: 1.2
+h1
+    font-size: 20px
+    font-weight: bold
+    line-height: 1.2
 
-    .side-content
-        @media screen and (min-width: 768px)
-            width: 320px
+.side-content
+    @media screen and (min-width: 768px)
+        width: 320px
 
-    .content
-        display: flex
+.content
+    display: flex
 
-    .b-tabs
-        border-radius: 10px
+.b-tabs
+    border-radius: 10px
 
-    .tab /deep/ .is-boxed
-        margin-bottom: 0
+.tab /deep/ .is-boxed
+    margin-bottom: 0
 
-    .tab /deep/ .tab-content
-        border-radius: 10px
-        padding: 0
-        margin-top: 10px
+.tab /deep/ .tab-content
+    border-radius: 10px
+    padding: 0
+    margin-top: 10px
 </style>

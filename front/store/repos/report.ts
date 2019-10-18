@@ -36,4 +36,17 @@ export default class Report extends VuexModule {
 
     this.setReports(reports)
   }
+
+  @Action({ rawError: true })
+  async updateReport (form: Object) {
+    await this.$axios.$post(
+      'comedy/reports',
+      form,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    )
+  }
 }

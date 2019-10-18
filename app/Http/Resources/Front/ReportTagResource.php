@@ -19,8 +19,6 @@ class ReportTagResource extends JsonResource
             'name' => $this->name,
         ];
 
-        $result['reports'] = ReportIndexResource::collection($this->reports()->get());
-
         return $result;
     }
 }
