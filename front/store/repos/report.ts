@@ -83,6 +83,18 @@ export default class Report extends VuexModule {
   }
 
   @Action({ rawError: true })
+  async loadReportsByFollower (name: string, params: {page: number, per_page: number} = { page: 1, per_page: 20 }) {
+    const reports = await this.$axios.$get(`/users/${encodeURI(name)}/follow_reports`, {
+      params: {
+        page: params.page,
+        per_page: params.per_page
+      }
+    })
+
+    this.setReports(reports)
+  }
+
+  @Action({ rawError: true })
   async loadReportsByReportTag (name: string, params: {page: number, per_page: number} = { page: 1, per_page: 20 }) {
     const reports = await this.$axios.$get(`/comedy/report_tags/${encodeURI(name)}/reports`, {
       params: {

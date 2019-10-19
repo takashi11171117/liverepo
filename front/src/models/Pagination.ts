@@ -1,4 +1,4 @@
-export default interface Pagination {
+interface PaginationMeta {
   current_page: number,
   from: number,
   last_page: number,
@@ -7,3 +7,12 @@ export default interface Pagination {
   to: number,
   total: number
 }
+
+interface PaginationLinks {
+  first: string,
+  last: string,
+  prev: string,
+  next: string,
+}
+
+export { PaginationMeta, PaginationLinks }

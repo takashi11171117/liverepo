@@ -14,6 +14,16 @@ class EloquentUserRepository extends RepositoryAbstract implements UserRepositor
         return User::class;
     }
 
+    public function paginateByUser(string $user_name, int $perPage = 10)
+    {
+        return $this->entity
+            ->with(['followUsers'])
+            ->whereHas('followUsers', function ($query) use ($user_name) {
+                $query->where('name', $user_name);
+            })
+            ->paginate($perPage);
+    }
+
     public function findWhereFirst(string $column, string $value)
     {
         $model = $this->entity

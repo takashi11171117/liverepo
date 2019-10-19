@@ -13,25 +13,18 @@
                   投稿履歴
                 </n-link>
               </b-button>
-              <b-button>いいねした記事</b-button>
-              <b-button>フォロワー</b-button>
+              <b-button>
+                <n-link :to="{ name: 'users-name-follow_reports', params: {name: user.name} }">
+                  いいねした記事
+                </n-link>
+              </b-button>
+              <b-button>
+                <n-link :to="{ name: 'users-name-followers', params: {name: user.name} }">
+                  フォロワー
+                </n-link>
+              </b-button>
             </div>
-            <section class="main-content border-radius report">
-              <h1>投稿履歴</h1>
-              <hr class="dropdown-divider">
-              <div v-if="reports !== undefined && Object.keys(reports.data).length > 0">
-                <div v-for="report in reports.data" :key="report.id" class="column is-12-mobile">
-                  <UserReportCard :report="report" />
-                </div>
-                <Pagination
-                  :current_path="`/users/${user.name}`"
-                  :pagination="reports.meta"
-                />
-              </div>
-              <template v-else>
-                <p>まだ投稿はありません。</p>
-              </template>
-            </section>
+            <nuxt-child :user="user" />
           </section>
         </div>
       </div>
@@ -72,7 +65,7 @@ export default class User extends Vue {
     return ReportStore.getReports
   }
 
-  async asyncData (this: void, ctx: nowContext): Promise<void> {
+  async fetch (this: void, ctx: nowContext): Promise<void> {
     await UserStore.loadUser(ctx.params.name)
     await ReportStore.loadReportsByUser(
       ctx.params.name,

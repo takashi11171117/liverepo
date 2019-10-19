@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Front\UserPageResource;
 use App\Http\Requests\Front\User\Profile\Post as ProfilePost;
+use App\Http\Resources\Front\UserResource;
 use App\Repositories\Contracts\UserRepository;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class UserController extends Controller
 {
@@ -26,6 +28,13 @@ class UserController extends Controller
         return new UserPageResource(
             $this->users->findWhereFirst('name', $name)
         );
+    }
+
+    public function findListByUser(string $name) : AnonymousResourceCollection
+    {
+        $users = $this->users->paginateByUser($name, 20);
+
+        return UserResource::collection($users);
     }
 
     /**

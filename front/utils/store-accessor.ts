@@ -8,6 +8,7 @@ import FollowUser from '@/store/repos/follow_user'
 import FollowReport from '@/store/repos/follow_report'
 import FollowReportTag from '@/store/repos/follow_report_tag'
 import Calendar from '@/store/services/calendar'
+import Oauth from '@/store/services/oauth'
 
 /* eslint import/no-mutable-exports: 0 */
 let ReportStore: Report
@@ -15,6 +16,7 @@ let ReportTagStore: ReportTag
 let ReportCommentStore: ReportComment
 let UserStore: User
 let CalendarStore: Calendar
+let OauthStore: Oauth
 let FollowUserStore: FollowUser
 let FollowReportStore: FollowReport
 let FollowReportTagStore: FollowReportTag
@@ -24,6 +26,7 @@ function initialiseStores (store: Store<any>): void {
   ReportTagStore = getModule(ReportTag, store)
   ReportCommentStore = getModule(ReportComment, store)
   CalendarStore = getModule(Calendar, store)
+  OauthStore = getModule(Oauth, store)
   UserStore = getModule(User, store)
   FollowUserStore = getModule(FollowUser, store)
   FollowReportStore = getModule(FollowReport, store)
@@ -35,6 +38,7 @@ export {
   ReportStore,
   ReportTagStore,
   CalendarStore,
+  OauthStore,
   UserStore,
   FollowUserStore,
   FollowReportStore,

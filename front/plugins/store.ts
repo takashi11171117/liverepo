@@ -7,11 +7,13 @@ import FollowUser from '@/store/repos/follow_user'
 import FollowReportTag from '@/store/repos/follow_report_tag'
 import FollowReport from '@/store/repos/follow_report'
 import Calendar from '@/store/services/calendar'
+import Oauth from '@/store/services/oauth'
 
 export default (ctx: any) => {
   [
     Report,
     Calendar,
+    Oauth,
     User,
     FollowUser,
     ReportTag,

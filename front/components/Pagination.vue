@@ -42,7 +42,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
-import PaginationModel from '@/src/models/Pagination'
+import { PaginationMeta } from '@/src/models/Pagination'
 
 @Component({})
 export default class Pagination extends Vue {
@@ -50,7 +50,7 @@ export default class Pagination extends Vue {
   current_path!: string
 
   @Prop({ default: {} })
-  pagination!: PaginationModel
+  pagination!: PaginationMeta
 
   get PgData (): Object {
     return {

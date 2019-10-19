@@ -53,7 +53,9 @@ class EloquentReportRepository extends RepositoryAbstract implements ReportRepos
     {
         return $this->entity
             ->with(['report_images', 'user'])
-            ->where('user_name', $user_name)
+            ->whereHas('user', function ($query) use ($user_name) {
+                $query->where('name', $user_name);
+            })
             ->orderBy('published_at', 'desc')
             ->status((config('const.REPORT_STATUS'))['publish'])
             ->paginate($perPage);
@@ -66,6 +68,18 @@ class EloquentReportRepository extends RepositoryAbstract implements ReportRepos
                 $query->where('name', $name);
             }])
             ->whereHas('report_tags', function ($query) use ($name) {
+                $query->where('name', $name);
+            })
+            ->orderBy('published_at', 'desc')
+            ->status((config('const.REPORT_STATUS'))['publish'])
+            ->paginate($perPage);
+    }
+
+    public function paginateByFollowers(string $name, int $perPage = 10)
+    {
+        return $this->entity
+            ->with(['report_images', 'user', 'followers'])
+            ->whereHas('followers', function ($query) use ($name) {
                 $query->where('name', $name);
             })
             ->orderBy('published_at', 'desc')

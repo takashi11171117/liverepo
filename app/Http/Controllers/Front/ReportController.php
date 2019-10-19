@@ -35,6 +35,13 @@ class ReportController extends Controller
         return ReportIndexResource::collection($reports);
     }
 
+    public function findListByFollowers(string $name) : AnonymousResourceCollection
+    {
+        $reports = $this->reports->paginateByFollowers($name, 20);
+
+        return ReportIndexResource::collection($reports);
+    }
+
     public function findListByReportTag(string $name) : AnonymousResourceCollection
     {
         $reports = $this->reports->paginateByReportTag($name, 20);

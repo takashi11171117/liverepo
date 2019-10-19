@@ -99,7 +99,7 @@ export default class SideUserPage extends Vue {
     return FollowUserStore.getFollowUsers
   }
 
-  async created () {
+  async mounted () {
     if ((this as any).$auth.$state.loggedIn) {
       await FollowUserStore.loadFollowUsers(this.user.id)
     }
