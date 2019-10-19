@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Resources\Front\ReportResource;
 use App\Http\Resources\Front\ReportIndexResource;
-use App\Http\Resources\Front\ReportTagResource;
+use App\Http\Resources\Front\ReportTagWithReportResource;
 use App\Repositories\Contracts\ReportRepository;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
@@ -35,6 +35,13 @@ class ReportController extends Controller
         return ReportIndexResource::collection($reports);
     }
 
+    public function findListByReportTag(string $name) : AnonymousResourceCollection
+    {
+        $reports = $this->reports->paginateByReportTag($name, 20);
+
+        return ReportIndexResource::collection($reports);
+    }
+
     public function findListByMonth(string $month) : JsonResponse
     {
         $reports = $this->reports->findListByMonth($month);
@@ -46,7 +53,7 @@ class ReportController extends Controller
     {
         $reports = $this->reports->findListByDate($date);
 
-        return ReportTagResource::collection($reports);
+        return ReportTagWithReportResource::collection($reports);
     }
 
     public function show(int $id) : ReportResource

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <template v-if="isFollow">
+    <template v-if="following">
       <template v-if="sending">
         <button class="button is-primary is-loading" />
       </template>
@@ -53,11 +53,11 @@ export default class Tag extends Vue {
     if (this.sending) {
       return
     }
-    this.sending = true
+    this.sending = !this.sending
     const data = { id: this.eachData.id }
     await _this.$axios.$post(`/${this.followType}`, data)
     this.following = true
-    this.sending = false
+    this.sending = !this.sending
   }
 
   async unFollow () {
@@ -71,10 +71,10 @@ export default class Tag extends Vue {
     if (this.sending) {
       return
     }
-    this.sending = true
+    this.sending = !this.sending
     await _this.$axios.$delete(`/${this.followType}/${this.eachData.id}`)
     this.following = false
-    this.sending = false
+    this.sending = !this.sending
   }
 }
 </script>

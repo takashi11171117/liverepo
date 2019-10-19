@@ -12,7 +12,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import { Context } from '@nuxt/types'
 import { CalendarStore } from '@/store'
 
 @Component({})
@@ -23,15 +22,18 @@ export default class ReportCalendar extends Vue {
     return CalendarStore.getAttributes
   }
 
-  public pageChange = async (obj: {year: number, month: number}) => {
+  async pageChange (obj: {year: number, month: number}) {
     const month = ('0' + (obj.month)).slice(-2)
+
     await CalendarStore.fetchAttributes(`${obj.year}-${month}`)
   }
 
-  public dayClicked = (day: {year: number, month: number, day: number}, ctx: Context) => {
-    const month = ('0' + (day.month)).slice(-2)
-    const formattedDay = ('0' + (day.day)).slice(-2)
-    ctx.app.$router.replace({
+  dayClicked (day: {year: number, month: number, day: number}) {
+    const month = ('0' + day.month).slice(-2)
+    const formattedDay = ('0' + day.day).slice(-2)
+    const _this = (this as any)
+
+    _this.$router.replace({
       name: 'comedy-reports-date-date',
       params: {
         date: `${day.year}-${month}-${formattedDay}`

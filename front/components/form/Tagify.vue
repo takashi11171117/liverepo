@@ -48,6 +48,7 @@ export default class Tagify extends Vue {
         this.autocompleteTags = data.map((tag: {name: string}) => {
           return { text: tag.name }
         })
+      // eslint-disable-next-line
       }).catch(e => console.warn(e))
     }, 600)
   }

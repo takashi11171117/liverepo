@@ -21,7 +21,7 @@ class FollowReportController extends Controller
     public function show(int $id): JsonResponse
     {
         return response()->json(
-            ['result' => $this->follow_reports->find($id)]
+            ['data' => $this->follow_reports->find($id)]
         );
     }
 

@@ -657,6 +657,13 @@
     js-levenshtein "^1.1.3"
     semver "^5.5.0"
 
+"@babel/runtime@^7.5.5":
+  version "7.6.3"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.6.3.tgz#935122c74c73d2240cafd32ddb5fc2a6cd35cf1f"
+  integrity sha512-kq6anf9JGjW8Nt5rYfEuGRaEAaH1mkv3Bbu6rYvLOpPh/RusSJXuKPEAoZ7L7gybZkchE8+NV5g9vKF4AGAtsA==
+  dependencies:
+    regenerator-runtime "^0.13.2"
+
 "@babel/runtime@^7.6.2":
   version "7.6.2"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.6.2.tgz#c3d6e41b304ef10dcf13777a33e7694ec4a9a6dd"
@@ -1863,6 +1870,16 @@ acorn-walk@^6.0.1, acorn-walk@^6.1.1:
   resolved "https://registry.yarnpkg.com/acorn-walk/-/acorn-walk-6.2.0.tgz#123cb8f3b84c2171f1f7fb252615b1c78a6b1a8c"
   integrity sha512-7evsyfH1cLOCdAzZAd43Cic04yKydNx0cF+7tiA19p1XnLLPU4dpCQOqpjqwokFe//vS0QqfqqjCS2JkiIs0cA==
 
+acorn@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-3.3.0.tgz#45e37fb39e8da3f25baee3ff5369e2bb5f22017a"
+  integrity sha1-ReN/s56No/JbruP/U2niu18iAXo=
+
+acorn@^4.0.1:
+  version "4.0.13"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-4.0.13.tgz#105495ae5361d697bd195c825192e1ad7f253787"
+  integrity sha1-EFSVrlNh1pe9GVyCUZLhrX8lN4c=
+
 acorn@^5.5.3:
   version "5.7.3"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.7.3.tgz#67aa231bf8812974b85235a96771eb6bd07ea279"
@@ -2439,7 +2456,7 @@ browser-process-hrtime@^0.1.2:
   resolved "https://registry.yarnpkg.com/browser-process-hrtime/-/browser-process-hrtime-0.1.3.tgz#616f00faef1df7ec1b5bf9cfe2bdc3170f26c7b4"
   integrity sha512-bRFnI4NnjO6cnyLmOV/7PVoDEMJChlcfN0z4s1YMBY989/SvlfMI1lgCnkFUs53e9gQF+w7qu7XdllSTiSl8Aw==
 
-browser-resolve@^1.11.3:
+browser-resolve@^1.11.0, browser-resolve@^1.11.3:
   version "1.11.3"
   resolved "https://registry.yarnpkg.com/browser-resolve/-/browser-resolve-1.11.3.tgz#9b7cbb3d0f510e4cb86bdbd796124d28b5890af6"
   integrity sha512-exDi1BYWB/6raKHmDTCicQfTkqwN5fioMFV4j8BsfMU4R2DK/QfZfK7kOVkmWCNANf0snkBzqGqAJBao9gZMdQ==
@@ -2558,6 +2575,11 @@ buffer@^4.3.0:
     base64-js "^1.0.2"
     ieee754 "^1.1.4"
     isarray "^1.0.0"
+
+builtin-modules@^1.1.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/builtin-modules/-/builtin-modules-1.1.1.tgz#270f076c5a72c02f5b65a47df94c5fe3a278892f"
+  integrity sha1-Jw8HbFpywC9bZaR9+Uxf46J4iS8=
 
 builtin-status-codes@^3.0.0:
   version "3.0.0"
@@ -4180,6 +4202,21 @@ estraverse@^4.0.0, estraverse@^4.1.0, estraverse@^4.1.1, estraverse@^4.2.0:
   resolved "https://registry.yarnpkg.com/estraverse/-/estraverse-4.3.0.tgz#398ad3f3c5a24948be7725e83d11a7de28cdbd1d"
   integrity sha512-39nnKffWz8xN1BU/2c79n9nB9HDzo0niYUqx6xyqUnyoAnQyyWpOTdZEeiCch8BBu515t4wp9ZmgVfVhn9EBpw==
 
+estree-walker@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-0.2.1.tgz#bdafe8095383d8414d5dc2ecf4c9173b6db9412e"
+  integrity sha1-va/oCVOD2EFNXcLs9MkXO225QS4=
+
+estree-walker@^0.3.0:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-0.3.1.tgz#e6b1a51cf7292524e7237c312e5fe6660c1ce1aa"
+  integrity sha1-5rGlHPcpJSTnI3wxLl/mZgwc4ao=
+
+estree-walker@^0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-0.6.1.tgz#53049143f40c6eb918b23671d1fe3219f3a1b362"
+  integrity sha512-SqmZANLWS0mnatqbSfRP5g8OXZC12Fgg1IwNtLsyHDzJizORW4khDfjPqJZsemPWBB2uqykUah5YpQ6epsqC/w==
+
 esutils@^2.0.2:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/esutils/-/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
@@ -4841,6 +4878,11 @@ hable@^2.3.2:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/hable/-/hable-2.3.2.tgz#7867ffec0b67e63136937613d9a0bc646ac9d7fe"
   integrity sha512-qJ9WoXl/15LNlG1KeAuBjCNGStUb+MCQ5biPxOmwRyESH8CSWwZB4xEnzCduuQ3I/mlgui28t8/oMAGT1Rpb2g==
+
+hammerjs@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/hammerjs/-/hammerjs-2.0.8.tgz#04ef77862cff2bb79d30f7692095930222bf60f1"
+  integrity sha1-BO93hiz/K7edMPdpIJWTAiK/YPE=
 
 handlebars@^4.1.2:
   version "4.4.2"
@@ -6475,6 +6517,20 @@ lru-cache@^5.1.1:
   dependencies:
     yallist "^3.0.2"
 
+magic-string@^0.16.0:
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.16.0.tgz#970ebb0da7193301285fb1aa650f39bdd81eb45a"
+  integrity sha1-lw67DacZMwEoX7GqZQ85vdgetFo=
+  dependencies:
+    vlq "^0.2.1"
+
+magic-string@^0.19.0:
+  version "0.19.1"
+  resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.19.1.tgz#14d768013caf2ec8fdea16a49af82fc377e75201"
+  integrity sha1-FNdoATyvLsj96hakmvgvw3fnUgE=
+  dependencies:
+    vlq "^0.2.1"
+
 make-dir@^1.0.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/make-dir/-/make-dir-1.3.0.tgz#79c1033b80515bd6d24ec9933e860ca75ee27f0c"
@@ -6688,7 +6744,7 @@ minimalistic-crypto-utils@^1.0.0, minimalistic-crypto-utils@^1.0.1:
   resolved "https://registry.yarnpkg.com/minimalistic-crypto-utils/-/minimalistic-crypto-utils-1.0.1.tgz#f6c00c1c0b082246e5c4d99dfb8c7c083b2b582a"
   integrity sha1-9sAMHAsIIkblxNmd+4x8CDsrWCo=
 
-minimatch@^3.0.4, minimatch@~3.0.2:
+minimatch@^3.0.2, minimatch@^3.0.4, minimatch@~3.0.2:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.0.4.tgz#5166e286457f03306064be5497e8dbb0c3d32083"
   integrity sha512-yJHVQEhyqPLUTgt9B83PXu6W3rx4MvvHvSUvToogpwoGDOUQ+yDrR0HRot+yOCdCO7u4hX3pWft6kWBBcqh0UA==
@@ -8872,7 +8928,7 @@ resolve@1.1.7:
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.1.7.tgz#203114d82ad2c5ed9e8e0411b3932875e889e97b"
   integrity sha1-IDEU2CrSxe2ejgQRs5ModeiJ6Xs=
 
-resolve@1.x, resolve@^1.1.7, resolve@^1.10.0, resolve@^1.10.1, resolve@^1.11.0, resolve@^1.12.0, resolve@^1.2.0, resolve@^1.3.2, resolve@^1.5.0, resolve@^1.8.1:
+resolve@1.x, resolve@^1.1.6, resolve@^1.1.7, resolve@^1.10.0, resolve@^1.10.1, resolve@^1.11.0, resolve@^1.12.0, resolve@^1.2.0, resolve@^1.3.2, resolve@^1.5.0, resolve@^1.8.1:
   version "1.12.0"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.12.0.tgz#3fc644a35c84a48554609ff26ec52b66fa577df6"
   integrity sha512-B/dOmuoAik5bKcD6s6nXDCjzUKnaDvdkRyAk6rsmsKLipWj4797iothd7jmmUhWTfinVMU+wc56rYKsit2Qy4w==
@@ -8933,6 +8989,50 @@ ripemd160@^2.0.0, ripemd160@^2.0.1:
   dependencies:
     hash-base "^3.0.0"
     inherits "^2.0.1"
+
+rollup-plugin-cleanup@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-cleanup/-/rollup-plugin-cleanup-0.1.4.tgz#9fed3ab4300988a882d63de3321e410cdafc6331"
+  integrity sha1-n+06tDAJiKiC1j3jMh5BDNr8YzE=
+  dependencies:
+    acorn "^3.3.0"
+    magic-string "^0.16.0"
+    rollup-pluginutils "^1.5.2"
+
+rollup-plugin-commonjs@^7.0.0:
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-commonjs/-/rollup-plugin-commonjs-7.1.0.tgz#c3a772c2e4a5fa13507f5c578b66cc13b0cb8a79"
+  integrity sha1-w6dywuSl+hNQf1xXi2bME7DLink=
+  dependencies:
+    acorn "^4.0.1"
+    estree-walker "^0.3.0"
+    magic-string "^0.19.0"
+    resolve "^1.1.7"
+    rollup-pluginutils "^2.0.1"
+
+rollup-plugin-node-resolve@^2.0.0:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-node-resolve/-/rollup-plugin-node-resolve-2.1.1.tgz#cbb783b0d15b02794d58915350b2f0d902b8ddc8"
+  integrity sha1-y7eDsNFbAnlNWJFTULLw2QK43cg=
+  dependencies:
+    browser-resolve "^1.11.0"
+    builtin-modules "^1.1.0"
+    resolve "^1.1.6"
+
+rollup-pluginutils@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/rollup-pluginutils/-/rollup-pluginutils-1.5.2.tgz#1e156e778f94b7255bfa1b3d0178be8f5c552408"
+  integrity sha1-HhVud4+UtyVb+hs9AXi+j1xVJAg=
+  dependencies:
+    estree-walker "^0.2.1"
+    minimatch "^3.0.2"
+
+rollup-pluginutils@^2.0.1:
+  version "2.8.2"
+  resolved "https://registry.yarnpkg.com/rollup-pluginutils/-/rollup-pluginutils-2.8.2.tgz#72f2af0748b592364dbd3389e600e5a9444a351e"
+  integrity sha512-EEp9NhnUkwY8aif6bxgovPHMoMoNr2FulJziTndpt5H9RdwC47GSGuII9XxpSdzVGM0GWrNPHV6ie1LTNJPaLQ==
+  dependencies:
+    estree-walker "^0.6.1"
 
 rsvp@^4.8.4:
   version "4.8.5"
@@ -10281,6 +10381,11 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
+vlq@^0.2.1:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/vlq/-/vlq-0.2.3.tgz#8f3e4328cf63b1540c0d67e1b2778386f8975b26"
+  integrity sha512-DRibZL6DsNhIgYQ+wNdWDL2SL3bKPlVrRiBqV5yuMm++op8W4kGFtaQfCs4KEJn0wBZcHVHJ3eoywX8983k1ow==
+
 vm-browserify@^1.0.1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.0.tgz#bd76d6a23323e2ca8ffa12028dc04559c75f9019"
@@ -10313,6 +10418,16 @@ vue-hot-reload-api@^2.3.0:
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz#532955cc1eb208a3d990b3a9f9a70574657e08f2"
   integrity sha512-BXq3jwIagosjgNVae6tkHzzIk6a8MHFtzAdwhnV5VlvPTFxDCvIttgSiHWjdGoTJvXtmRu5HacExfdarRcFhog==
 
+vue-image-lightbox@^6.4.0:
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/vue-image-lightbox/-/vue-image-lightbox-6.4.0.tgz#7acdb79d7917aa66008b0867e9ce761765ec4dac"
+  integrity sha512-N8pBmhTR/Jj361eJfYek2bpSzN2rHbxS6APf4zVcSdRuR0hDLTkFV5EjmdCQlX0KwZjRicgNQVAFle9RifIeIg==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    babel-loader "^8.0.6"
+    hammerjs "^2.0.8"
+    vue-lazyload "^1.3.2"
+
 vue-jest@^4.0.0-0:
   version "4.0.0-beta.2"
   resolved "https://registry.yarnpkg.com/vue-jest/-/vue-jest-4.0.0-beta.2.tgz#f2120ea9d24224aad3a100c2010b0760d47ee6fe"
@@ -10324,6 +10439,11 @@ vue-jest@^4.0.0-0:
     extract-from-css "^0.4.4"
     source-map "^0.5.6"
     ts-jest "^23.10.5"
+
+vue-lazyload@^1.3.2, vue-lazyload@^1.3.3:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/vue-lazyload/-/vue-lazyload-1.3.3.tgz#4df50a271bde9b74c3caf7a228d6e0af50d5682f"
+  integrity sha512-uHnq0FTEeNmqnbBC2aRKlmtd9LofMZ6Q3mWvgfLa+i9vhxU8fDK+nGs9c1iVT85axSua/AUnMttIq3xPaU9G3A==
 
 vue-loader@^15.7.1:
   version "15.7.1"
@@ -10394,6 +10514,16 @@ vue-template-es2015-compiler@^1.9.0:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
+
+vue-touch@^2.0.0-beta.4:
+  version "2.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/vue-touch/-/vue-touch-2.0.0-beta.4.tgz#0259a5fbf89fed12d5e5d789fffb99b874ae0501"
+  integrity sha1-Alml+/if7RLV5deJ//uZuHSuBQE=
+  dependencies:
+    hammerjs "^2.0.8"
+    rollup-plugin-cleanup "^0.1.4"
+    rollup-plugin-commonjs "^7.0.0"
+    rollup-plugin-node-resolve "^2.0.0"
 
 vue@^2.5.0, vue@^2.6.10:
   version "2.6.10"

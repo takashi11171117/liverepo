@@ -135,7 +135,6 @@ export default class SettingProfile extends Vue {
           type: 'is-success'
         })
       }).catch((error) => {
-        console.log(error)
         this.$set(this, 'error', error.response.data.errors)
       })
     }

@@ -41,15 +41,16 @@ Route::group(['namespace' => 'Front'], function () {
     Route::group(['prefix' => 'comedy'], function () {
         Route::group(['prefix' => 'reports'], function () {
             Route::get('/', 'ReportController@index');
-            Route::get('month/{month}', 'ReportController@findListByMonth');
-            Route::get('{date}', 'ReportController@findListByDate');
             Route::get('{id}', 'ReportController@show');
+            Route::get('month/{month}', 'ReportController@findListByMonth');
+            Route::get('date/{date}', 'ReportController@findListByDate');
         });
 
         Route::group(['prefix' => 'report_tags'], function () {
             Route::get('/', 'ReportTagController@index');
             Route::get('tagify', 'ReportTagController@tagify');
             Route::get('{name}', 'ReportTagController@show');
+            Route::get('{name}/reports', 'ReportController@findListByReportTag');
         });
     });
 

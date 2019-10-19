@@ -12,5 +12,6 @@ export default interface Report {
     pref: number
     src: string
     thumb: string
-  }
+  },
+  followers_count: number
 }

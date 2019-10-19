@@ -54,6 +54,10 @@ const config: Configuration = {
     {
       src: '~/plugins/preview-input',
       mode: 'client'
+    },
+    {
+      src: '~/plugins/vue-lightbox-plugin',
+      mode: 'client'
     }
   ],
   /*

@@ -52,8 +52,22 @@ class EloquentReportRepository extends RepositoryAbstract implements ReportRepos
     public function paginateByUser(string $user_name, int $perPage = 10)
     {
         return $this->entity
-            ->with(['report_images', 'users'])
+            ->with(['report_images', 'user'])
             ->where('user_name', $user_name)
+            ->orderBy('published_at', 'desc')
+            ->status((config('const.REPORT_STATUS'))['publish'])
+            ->paginate($perPage);
+    }
+
+    public function paginateByReportTag(string $name, int $perPage = 10)
+    {
+        return $this->entity
+            ->with(['report_images', 'user', 'report_tags' => function ($query) use ($name) {
+                $query->where('name', $name);
+            }])
+            ->whereHas('report_tags', function ($query) use ($name) {
+                $query->where('name', $name);
+            })
             ->orderBy('published_at', 'desc')
             ->status((config('const.REPORT_STATUS'))['publish'])
             ->paginate($perPage);
