@@ -105,7 +105,10 @@ const mapTags = (tags) => {
     SelectInput,
     DateInput,
     TagifyInput
-  }
+  },
+  middleware: [
+    'redirectIfGuest'
+  ]
 })
 export default class SettingPost extends Vue {
   title = ''

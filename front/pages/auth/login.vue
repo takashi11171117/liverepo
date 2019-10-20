@@ -58,7 +58,10 @@ import TextInput from '@/components/form/TextInput.vue'
 @Component({
   components: {
     TextInput
-  }
+  },
+  middleware: [
+    'redirectIfAuthenticated'
+  ]
 })
 export default class Login extends Vue {
   form: { email: string, password: string } = {

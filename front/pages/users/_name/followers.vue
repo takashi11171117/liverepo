@@ -38,7 +38,7 @@ interface nowContext extends Context {
   watchQuery: ['page']
 })
 export default class User extends Vue {
-  @Prop() user: Object
+  @Prop() user!: Object
 
   get followers (): Object {
     return UserStore.getFollowers

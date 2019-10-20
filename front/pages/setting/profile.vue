@@ -101,7 +101,10 @@ import RadioInput from '@/components/form/RadioInput'
     SelectInput,
     DateInput,
     RadioInput
-  }
+  },
+  middleware: [
+    'redirectIfGuest'
+  ]
 })
 export default class SettingProfile extends Vue {
   user_name01 = ''

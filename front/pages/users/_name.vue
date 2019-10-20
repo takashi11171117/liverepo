@@ -54,6 +54,9 @@ interface nowContext extends Context {
     FollowerCard,
     Pagination
   },
+  middleware: [
+    'redirectIfGuest'
+  ],
   watchQuery: ['page']
 })
 export default class User extends Vue {

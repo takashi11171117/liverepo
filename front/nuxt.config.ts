@@ -58,7 +58,11 @@ const config: Configuration = {
     {
       src: '~/plugins/vue-lightbox-plugin',
       mode: 'client'
-    }
+    },
+    {
+      src: '~/plugins/compress',
+      mode: 'client'
+    },
   ],
   /*
    ** Nuxt.js dev-modules

@@ -1,6 +1,6 @@
 import { PaginationMeta } from '@/src/models/Pagination'
 
-interface User {
+export interface User {
   id: number
   name: string
   gender: string
@@ -10,9 +10,7 @@ interface User {
   thumb: string
 }
 
-interface Users {
+export interface Users {
   data: User[],
   meta: PaginationMeta
 }
-
-export { User, Users }

@@ -111,7 +111,10 @@ type Form = {
     TextInput,
     SelectInput,
     DateInput
-  }
+  },
+  middleware: [
+    'redirectIfAuthenticated'
+  ]
 })
 export default class Register extends Vue {
   form: Form = {
