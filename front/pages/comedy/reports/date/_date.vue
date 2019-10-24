@@ -20,7 +20,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import { Context } from '@nuxt/types'
+import { nuxtContext } from '@/src/@types'
 import { ReportStore, CalendarStore } from '@/store'
 import UserReportCard from '@/components/front/UserReportCard.vue'
 import ReportCalendar from '@/components/front/ReportCalendar.vue'
@@ -43,7 +43,7 @@ export default class ReportDate extends Vue {
     ref.showImage(index)
   }
 
-  async asyncData (this: void, ctx: Context) {
+  async asyncData (this: void, ctx: nuxtContext) {
     await ReportStore.loadReportsByDate(ctx.params.date)
   }
 

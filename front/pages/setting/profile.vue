@@ -88,11 +88,11 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import { SnackbarProgrammatic as Snackbar } from 'buefy'
 import { UserStore } from '@/store'
-import TextInput from '@/components/form/TextInput'
-import ImageInput from '@/components/form/ImageInput'
-import SelectInput from '@/components/form/SelectInput'
-import DateInput from '@/components/form/DateInput'
-import RadioInput from '@/components/form/RadioInput'
+import TextInput from '@/components/form/TextInput.vue'
+import ImageInput from '@/components/form/ImageInput.vue'
+import SelectInput from '@/components/form/SelectInput.vue'
+import DateInput from '@/components/form/DateInput.vue'
+import RadioInput from '@/components/form/RadioInput.vue'
 
 @Component({
   components: {

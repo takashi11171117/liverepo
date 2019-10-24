@@ -1,4 +1,5 @@
 import Cookies from 'universal-cookie'
+import { AdminAuthStore } from '@/store'
 let cookies = null
 
 export default ({ $axios, store, redirect, app }) => {
@@ -13,9 +14,9 @@ export default ({ $axios, store, redirect, app }) => {
       request.baseURL = process.env.apiClientUrl
     }
 
-    const token = store.getters.token
+    const token = AdminAuthStore.getToken
 
-    arrUrl = request.url.split('/')
+    arrUrl = request.url.split('/').filter(path => path !== '')
 
     if (token && arrUrl[0] === 'admin') {
       request.headers.common.Authorization = `Bearer ${token}`

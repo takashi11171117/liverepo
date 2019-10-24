@@ -43,16 +43,15 @@ export default class Index extends Vue {
     return ReportStore.getReports
   }
 
-  async fetch () {
+  async fetch (this: void, ctx: Context) {
     const today = new Date()
     const month = ('0' + (today.getMonth() + 1)).slice(-2)
     await CalendarStore.fetchAttributes(`${today.getFullYear()}-${month}`)
-  }
 
-  async asyncData (this: void, ctx: Context): Promise<void> {
     await ReportStore.loadReports({
       page: ctx.app.context.query.page,
-      per_page: ctx.app.context.query.per_page
+      per_page: ctx.app.context.query.per_page,
+      s: ''
     })
   }
 }

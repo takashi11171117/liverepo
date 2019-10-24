@@ -1,5 +1,5 @@
-import ImageCompressor from 'image-compressor.js';
-import Vue from "vue";
+import ImageCompressor from 'image-compressor.js'
+import Vue from 'vue'
 
 declare module 'vue/types/vue' {
   interface Vue {
@@ -9,15 +9,15 @@ declare module 'vue/types/vue' {
 
 Vue.prototype.$imageCompress = (file: File) => {
   if (!file) {
-    return;
+    return
   }
 
   return new Promise((resolve, reject) => {
-    new ImageCompressor(file, {
-      maxWidth : 1000,
+    return new ImageCompressor(file, {
+      maxWidth: 1000,
       quality: 0.75,
       success: resolve,
       error: reject
-    });
-  });
+    })
+  })
 }

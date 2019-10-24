@@ -86,11 +86,11 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import { SnackbarProgrammatic as Snackbar } from 'buefy'
 import { ReportStore } from '@/store'
-import TextInput from '@/components/form/TextInput'
-import SelectInput from '@/components/form/SelectInput'
-import ImageInput from '@/components/form/ImageInput'
-import DateInput from '@/components/form/DateInput'
-import TagifyInput from '@/components/form/TagifyInput'
+import TextInput from '@/components/form/TextInput.vue'
+import SelectInput from '@/components/form/SelectInput.vue'
+import ImageInput from '@/components/form/ImageInput.vue'
+import DateInput from '@/components/form/DateInput.vue'
+import TagifyInput from '@/components/form/TagifyInput.vue'
 
 const mapTags = (tags) => {
   return tags.map((tag) => {

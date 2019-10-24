@@ -19,6 +19,9 @@ class ReportIndexResource extends JsonResource
             'title' => $this->title,
             'rating' => $this->rating,
             'content' => $this->content,
+            'status' => $this->status,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
 
         $report_images = ReportImageIndexResource::collection($this->report_images);

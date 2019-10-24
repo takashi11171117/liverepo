@@ -8,6 +8,7 @@ export default class Report extends VuexModule {
     title: '',
     content: '',
     rating: 0,
+    status: 0,
     report_images: [],
     user: {
       id: 0,
@@ -18,7 +19,8 @@ export default class Report extends VuexModule {
       src: '',
       thumb: ''
     },
-    followers_count: 0
+    followers_count: 0,
+    file: null
   }
   reports = {}
   tags = {}
@@ -53,17 +55,17 @@ export default class Report extends VuexModule {
   @Action({ rawError: true })
   async loadReport (id: number) {
     const report = await this.$axios.$get(`/comedy/reports/${id}`)
-    console.log(report)
 
     this.setReport(report.data)
   }
 
   @Action({ rawError: true })
-  async loadReports (params: {page: number, per_page: number} = { page: 1, per_page: 20 }) {
+  async loadReports (params: {page: number, per_page: number, s: string} = { page: 1, per_page: 20, s: '' }) {
     const reports = await this.$axios.$get('/comedy/reports', {
       params: {
         page: params.page,
-        per_page: params.per_page
+        per_page: params.per_page,
+        s: params.s
       }
     })
 
@@ -114,9 +116,30 @@ export default class Report extends VuexModule {
   }
 
   @Action({ rawError: true })
-  async updateReport (form: Object) {
+  async deleteReport (params: {report: {id: number}}) {
     await this.$axios.$post(
-      'comedy/reports',
+      `/admin/reports/${params.report.id}`,
+      { _method: 'DELETE' }
+    )
+  }
+
+  @Action({ rawError: true })
+  async addReport (form: Object) {
+    await this.$axios.$post(
+      '/admin/reports',
+      form,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    )
+  }
+
+  @Action({ rawError: true })
+  async updateReport (id: number, form: Object) {
+    await this.$axios.$post(
+      `/admin/reports/${id}`,
       form,
       {
         headers: {

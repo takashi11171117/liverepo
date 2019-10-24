@@ -114,8 +114,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import { Context } from '@nuxt/types'
 import { SnackbarProgrammatic as Snackbar } from 'buefy'
+import { nuxtContext } from '@/src/@types'
 import { ReportStore, FollowReportStore, ReportCommentStore } from '@/store'
 import ReportCalendar from '@/components/front/ReportCalendar.vue'
 import UserData from '@/components/front/UserData.vue'
@@ -156,7 +156,7 @@ export default class Report extends Vue {
     return countFollowers
   }
 
-  async asyncData (this: void, ctx: Context): Promise<void> {
+  async fetch (this: void, ctx: nuxtContext): Promise<void> {
     await ReportStore.loadReport(parseInt(ctx.params.id))
     await FollowReportStore.loadFollowReports(parseInt(ctx.params.id))
   }

@@ -41,8 +41,9 @@ const config: Configuration = {
    */
   plugins: [
     '~plugins/util',
-    '~plugins/axios',
     '~plugins/store',
+    '~plugins/axios',
+    '~plugins/nuxt-client-init',
     {
       src: '~/plugins/v-calendar',
       mode: 'client'
@@ -62,8 +63,11 @@ const config: Configuration = {
     {
       src: '~/plugins/compress',
       mode: 'client'
-    },
+    }
   ],
+
+  router: {
+  },
   /*
    ** Nuxt.js dev-modules
    */
@@ -78,7 +82,8 @@ const config: Configuration = {
     'nuxt-buefy',
     '@nuxtjs/axios',
     '@nuxtjs/auth',
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    'cookie-universal-nuxt'
   ],
   /*
    ** Axios module configuration

@@ -2,7 +2,8 @@ export default interface Report {
   id: number
   title: string
   content: string
-  rating: number
+  rating: number,
+  status: number,
   report_images: {path: string}[]
   user: {
     id: number
@@ -13,5 +14,6 @@ export default interface Report {
     src: string
     thumb: string
   },
-  followers_count: number
+  followers_count: number,
+  file: File|null
 }

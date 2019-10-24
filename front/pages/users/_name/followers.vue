@@ -19,16 +19,10 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator'
-import { Context } from '@nuxt/types'
+import { nuxtContext } from '@/src/@types'
 import { UserStore } from '@/store'
 import Pagination from '@/components/Pagination.vue'
 import FollowerCard from '@/components/front/FollowerCard.vue'
-
-interface nowContext extends Context {
-  params: {
-    name: string
-  }
-}
 
 @Component({
   components: {
@@ -44,7 +38,7 @@ export default class User extends Vue {
     return UserStore.getFollowers
   }
 
-  async fetch (this: void, ctx: nowContext): Promise<void> {
+  async fetch (this: void, ctx: nuxtContext): Promise<void> {
     await UserStore.loadFollowers(
       ctx.params.name,
       {

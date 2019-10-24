@@ -34,7 +34,7 @@ class AdminController extends Controller
         $this->admins->create($request->all());
     }
 
-    public function show($id)
+    public function show(int $id)
     {
         return new AdminResource($this->admins->find($id));
     }
@@ -44,7 +44,7 @@ class AdminController extends Controller
         $this->admins->update($id, $request->all());
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy(int $id)
     {
         $this->admins->delete($id);
     }

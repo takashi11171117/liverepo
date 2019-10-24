@@ -53,18 +53,12 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
-import { Context } from '@nuxt/types'
+import { nuxtContext } from '@/src/@types'
 import { ReportTagStore, FollowReportTagStore, ReportStore } from '@/store'
 import Pagination from '@/components/Pagination.vue'
 import UserData from '@/components/front/UserData.vue'
 import ReviewStars from '@/components/front/ReviewStars.vue'
 import Follow from '@/components/front/Follow.vue'
-
-interface nowContext extends Context {
-  params: {
-    name: string
-  }
-}
 
 @Component({
   components: {
@@ -88,7 +82,7 @@ export default class ReportTag extends Vue {
     return ReportStore.getReports
   }
 
-  async asyncData (this: void, ctx: nowContext): Promise<void> {
+  async asyncData (this: void, ctx: nuxtContext): Promise<void> {
     try {
       const reportTagId = await ReportTagStore.loadReportTag(ctx.params.name)
       await FollowReportTagStore.loadFollowReportTags(reportTagId)
