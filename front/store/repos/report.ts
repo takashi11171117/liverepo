@@ -10,6 +10,7 @@ export default class Report extends VuexModule {
     rating: 0,
     status: 0,
     report_images: [],
+    report_tags: [],
     user: {
       id: 0,
       name: '',
@@ -53,9 +54,13 @@ export default class Report extends VuexModule {
   }
 
   @Action({ rawError: true })
-  async loadReport (id: number) {
-    const report = await this.$axios.$get(`/comedy/reports/${id}`)
-
+  async loadReport (params: {id: number, auth: string} = { id: 0, auth: '' }) {
+    let report: {data: any}
+    if (params.auth === 'admin') {
+      report = await this.$axios.$get(`/admin/reports/${params.id}`)
+    } else {
+      report = await this.$axios.$get(`/comedy/reports/${params.id}`)
+    }
     this.setReport(report.data)
   }
 
@@ -137,15 +142,24 @@ export default class Report extends VuexModule {
   }
 
   @Action({ rawError: true })
-  async updateReport (id: number, form: Object) {
-    await this.$axios.$post(
-      `/admin/reports/${id}`,
-      form,
+  async updateReport (params: {id: number, form: Object, auth: string} = { id: 0, form: {}, auth: '' }) {
+    let url: string
+    if (params.auth === 'admin') {
+      url = `/admin/reports/${params.id}`
+    } else {
+      url = `/comedy/reports/${params.id}`
+    }
+
+    const response = await this.$axios.$post(
+      url,
+      params.form,
       {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       }
     )
+
+    return response
   }
 }

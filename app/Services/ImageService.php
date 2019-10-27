@@ -6,12 +6,11 @@ use App\Models\Report;
 
 class ImageService
 {
-    public function createReportImage(Report $report, $image): string
+    public function createReportImage(string $tmpFilename, $image): string
     {
         $disk = \Storage::disk('s3');
 
-        $extension = $image->getClientOriginalExtension();
-        $filename  = "{$report->id}_01.$extension";
+        $filename  = $this->createFileName($tmpFilename, $image);
 
         $image_data = \Image::make($image)
                        ->resize(1024, null, function ($constraint) {
@@ -24,6 +23,12 @@ class ImageService
         $disk->put('report_images/thumb-' . $filename, (string)$image_data->encode());
 
         return $filename;
+    }
+
+    private function createFileName(string $tmpFilename, $image): string
+    {
+        $extension = $image->getClientOriginalExtension();
+        return "$tmpFilename.$extension";
     }
 
     public function createUserImage($image): string

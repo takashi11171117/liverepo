@@ -16,6 +16,7 @@ class FrontReportPostEvent
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $request;
+    public $id;
 
     /**
      * Create a new event instance.

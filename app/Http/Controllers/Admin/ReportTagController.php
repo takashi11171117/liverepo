@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Resources\Admin\ReportTagResource;
 use App\Repositories\Contracts\ReportTagRepository;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class ReportTagController extends Controller

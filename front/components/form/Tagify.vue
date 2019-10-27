@@ -2,7 +2,7 @@
   <no-ssr>
     <vue-tags-input
       v-model="tag"
-      :tags="tags"
+      :tags="innerTags"
       :autocomplete-items="autocompleteTags"
       placeholder="タグを入力"
       @tags-changed="update"
@@ -16,23 +16,27 @@ import { ReportTagStore } from '@/store'
 
 @Component({})
 export default class Tagify extends Vue {
-  @Prop() propTags!: Array<string>
+  @Prop() prop_tags!: { text: string }[]
   @Prop() onUpdate!: Function
 
   tag: string = ''
-  tags: Array<string> = []
+  tags: { text: string }[] = []
   autocompleteTags: Array<string> = []
-  debounce: number | undefined = undefined
+  debounce = 10
 
-  get innerTags (): Array<string> {
+  mounted () {
+    this.tags = this.prop_tags
+  }
+
+  get innerTags (): { text: string }[] {
     return this.tags
   }
 
-  set innerTags (newTags: Array<string>) {
+  set innerTags (newTags: { text: string }[]) {
     this.tags = newTags
   }
 
-  update (newTags: Array<string>) {
+  update (newTags: { text: string }[]) {
     this.autocompleteTags = []
     this.innerTags = newTags
     this.onUpdate(newTags)
@@ -40,17 +44,18 @@ export default class Tagify extends Vue {
 
   @Watch('tag')
   initItems () {
-    if (this.tag.length < 2) { return }
+    if (this.tag.length < 1) { return }
 
     window.clearTimeout(this.debounce)
     this.debounce = window.setTimeout(async () => {
       await ReportTagStore.loadTagify(this.tag).then(({ data }) => {
+        console.log(data)
         this.autocompleteTags = data.map((tag: {name: string}) => {
           return { text: tag.name }
         })
       // eslint-disable-next-line
       }).catch(e => console.warn(e))
-    }, 600)
+    }, 10)
   }
 }
 </script>

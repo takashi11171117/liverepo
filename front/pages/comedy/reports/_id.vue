@@ -157,7 +157,7 @@ export default class Report extends Vue {
   }
 
   async fetch (this: void, ctx: nuxtContext): Promise<void> {
-    await ReportStore.loadReport(parseInt(ctx.params.id))
+    await ReportStore.loadReport({ id: parseInt(ctx.params.id), auth: '' })
     await FollowReportStore.loadFollowReports(parseInt(ctx.params.id))
   }
 

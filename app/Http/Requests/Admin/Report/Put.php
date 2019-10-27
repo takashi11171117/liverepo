@@ -29,7 +29,7 @@ class Put extends FormRequest
             'status' => 'required',
             'rating' => 'required',
             'images.*' => 'image|max:20000',
-            'tags' => 'required'
+            'place_tags' => 'required'
         ];
     }
 
@@ -41,7 +41,7 @@ class Put extends FormRequest
             'status' => 'ステータス',
             'rating' => '評価',
             'images.0' => '画像1',
-            'tags' => 'タグ',
+            'place_tags' => 'タグ',
         ];
     }
 }

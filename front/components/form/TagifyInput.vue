@@ -6,7 +6,7 @@
     :message="error.hasOwnProperty(name) ? error[name][0] : ''"
   >
     <Tagify
-      :prop-tags="reportTags"
+      :prop_tags="report_tags"
       :on-update="onUpdate"
     />
   </b-field>
@@ -22,7 +22,7 @@ import Tagify from '@/components/form/Tagify.vue'
   }
 })
 export default class TagifyInput extends Vue {
-  @Prop() reportTags!: Array<string>
+  @Prop() report_tags!: { text: string }[]
   @Prop() value!: Date
   @Prop() error!: Object
   @Prop() name!: string

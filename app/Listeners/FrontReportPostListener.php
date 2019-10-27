@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\FrontReportPostEvent;
 use App\Models\Report;
+use App\Repositories\Contracts\ReportImageRepository;
 use App\Repositories\Contracts\ReportRepository;
 use App\Services\ImageService;
 use Illuminate\Http\Request;
@@ -24,9 +25,10 @@ class FrontReportPostListener
      * @param ImageService $image_service
      * @throws \Exception
      */
-    public function __construct(ReportRepository $reports, ImageService $image_service)
+    public function __construct(ReportRepository $reports, ReportImageRepository $report_images, ImageService $image_service)
     {
         $this->reports       = $reports;
+        $this->report_images = $report_images;
         $this->image_service = $image_service;
     }
 
@@ -34,15 +36,16 @@ class FrontReportPostListener
      * @param FrontReportPostEvent $event
      * @throws \Throwable
      */
-    public function handle(FrontReportPostEvent $event, int $id = 0)
+    public function handle(FrontReportPostEvent $event)
     {
         $request = $event->request;
+        $id = $event->id;
 
         DB::transaction(function () use ($request, $id) {
             $params = $request->all();
             $images = $request->file('images');
 
-            $report = $this->reports->save(\Auth::user(), $params, $id);
+            $report = $this->reports->save($params, $id);
 
             $this->registerTags($request, $report);
             $this->registerImages($report, $images);
@@ -60,11 +63,14 @@ class FrontReportPostListener
                                   'name'     => $v
                               ];
                           },
-                          explode(',', $request->get($value))
+                          json_decode($request->get($value))
                       );
                   })
                   ->filter(function ($value) {
-                      return $value[0]['name'] !== '';
+                      if (isset($value[0]['name'])) {
+                          return $value[0]['name'] !== '';
+                      }
+                      return true;
                   })
                   ->reduce(function ($x, $y) {
                       return array_merge($x, $y);
@@ -82,8 +88,17 @@ class FrontReportPostListener
     private function registerImages(Report $report, $images)
     {
         if (!empty($images)) {
-            $filename = $this->image_service->createReportImage($report, $images[0]);
-            $this->reports->createImages($report, $filename);
+            foreach ($images as $key => $image) {
+                $tmpFilename = $report->id . '_' .  sprintf('%02d', ($key + 1));
+                $report_image = $this->report_images->findByName($tmpFilename);
+                $filename = $this->image_service->createReportImage($tmpFilename, $image);
+
+                if ($report_image !== null) {
+                    $this->report_images->update($report_image->id, ['path' => $filename]);
+                } else {
+                    $this->reports->createImages($report, $filename);
+                }
+            }
         }
     }
 }

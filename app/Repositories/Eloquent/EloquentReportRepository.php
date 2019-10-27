@@ -4,7 +4,6 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Report;
 use App\Models\ReportTag;
-use App\Models\User;
 use App\Repositories\Contracts\ReportRepository;
 use App\Repositories\RepositoryAbstract;
 use App\Scoping\Scopes\ByCreatedAtScope;
@@ -119,12 +118,17 @@ class EloquentReportRepository extends RepositoryAbstract implements ReportRepos
                         ->get();
     }
 
-    public function save(User $user, array $properties, int $id)
+    public function save(array $properties, int $id)
     {
-        $model = $this->entity->firstOrNew(['id' => $id])
-                              ->user()
-                              ->associate($user)
-                              ->fill($properties);
+        $model = $this->entity->firstOrNew(['id' => $id]);
+
+        $user = \Auth::user();
+        if (get_class($user) === "App\Model\Admin") {
+            $model = $model->user()
+                           ->associate($user);
+        }
+
+        $model->fill($properties);
 
         $id === 0 ? $model->save() : $model->update();
 

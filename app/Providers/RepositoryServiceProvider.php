@@ -10,6 +10,7 @@ use App\Repositories\Contracts\{
     ReportCommentRepository,
     ReportRepository,
     ReportTagRepository,
+    ReportImageRepository,
     UserRepository
 };
 
@@ -21,6 +22,7 @@ use App\Repositories\Eloquent\{
     EloquentReportCommentRepository,
     EloquentReportRepository,
     EloquentReportTagRepository,
+    EloquentReportImageRepository,
     EloquentUserRepository
 };
 
@@ -39,6 +41,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(AdminRepository::class, EloquentAdminRepository::class);
         $this->app->bind(UserRepository::class, EloquentUserRepository::class);
         $this->app->bind(ReportTagRepository::class, EloquentReportTagRepository::class);
+        $this->app->bind(ReportImageRepository::class, EloquentReportImageRepository::class);
         $this->app->bind(ReportCommentRepository::class, EloquentReportCommentRepository::class);
         $this->app->bind(FollowUserRepository::class, EloquentFollowUserRepository::class);
         $this->app->bind(FollowReportTagRepository::class, EloquentFollowReportTagRepository::class);

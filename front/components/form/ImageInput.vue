@@ -7,8 +7,9 @@
     <div class="file-button">
       <b-upload
         v-preview-input="preview"
-        :v-model="innerValue"
+        :value="innerValue"
         accept="image/*"
+        @input="updateValue"
       >
         <a class="button is-primary">
           <b-icon icon="upload" />
@@ -16,7 +17,7 @@
         </a>
       </b-upload>
       <span v-if="value" class="filename">
-        {{ value.name }}
+        {{ $console(value.name) }}
       </span>
       <div v-if="value" class="preview">
         <img :src="preview">
@@ -26,7 +27,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { Component, Vue, Prop, Emit } from 'nuxt-property-decorator'
 
 @Component({})
 export default class ImageInput extends Vue {
@@ -35,30 +36,30 @@ export default class ImageInput extends Vue {
   @Prop() name!: string
   @Prop() label!: string
 
+  innerValue = this.value
   preview: string | null = null
 
-  get innerValue (): File {
-    return this.value
-  }
+  @Emit()
+  // eslint-disable-next-line
+  input (file: File) {}
 
-  set innerValue (newValue: File) {
-    if (this.value !== newValue) {
-      this.$emit('input', newValue)
-    }
+  updateValue (file: File) {
+    this.innerValue = file
+    this.input(file)
   }
 }
 </script>
 
 <style lang="sass" scoped>
-    .file-button
-        display: flex
-        margin-bottom: 10px
-        flex-direction: column
-        img
-            width: 80px
-            object-fit: cover
-        .filename,
-        .preview
-            margin-top: 10px
-            font-size: 12px
+.file-button
+    display: flex
+    margin-bottom: 10px
+    flex-direction: column
+img
+    width: 80px
+    object-fit: cover
+.filename,
+.preview
+    margin-top: 10px
+    font-size: 12px
 </style>

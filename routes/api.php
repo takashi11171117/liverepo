@@ -93,4 +93,7 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['ass
 
     // tag
     Route::get('report_tags/tagify', 'ReportTagController@tagify');
+
+    // image
+    Route::get('report_images/{name}', 'ReportImageController@findByName');
 });

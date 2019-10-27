@@ -24,13 +24,13 @@ export default class Default extends Vue {
 </script>
 
 <style lang="sass">
-    .wrapper
-      height: auto
-      color: #000
-      padding: 20px
-      margin: 0 auto
-      width: 100%
-      max-width: 100%
-      margin-bottom: auto
-      position: relative
+.wrapper
+  height: auto
+  color: #000
+  padding: 20px
+  margin: 0 auto
+  width: 100%
+  max-width: 100%
+  margin-bottom: auto
+  position: relative
 </style>

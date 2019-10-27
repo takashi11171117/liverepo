@@ -6,7 +6,9 @@ type ReportEditForm = {
   status: string
   rating: string
   report_images: Array<File>,
-  report_tags: Array<string>,
+  place_tags: Array<string>,
+  player_tags: Array<string>,
+  other_tags: Array<string>,
   file: File|null,
   error: Object
 }
@@ -19,7 +21,9 @@ export default class Report_edit extends VuexModule {
     status: '',
     rating: '',
     report_images: [],
-    report_tags: [],
+    place_tags: [],
+    player_tags: [],
+    other_tags: [],
     file: null,
     error: {}
   }
@@ -41,6 +45,13 @@ export default class Report_edit extends VuexModule {
 
   @Mutation
   updateInput (payload: { [key: string]: any }) {
+    ['place', 'player', 'other'].forEach((taxonomy) => {
+      if (payload[`${taxonomy}_tags`]) {
+        payload[`${taxonomy}_tags`] = payload[`${taxonomy}_tags`].map((tag: { text: string }) => {
+          return tag.text
+        })
+      }
+    })
     this.form = Object.assign(this.form, payload)
   }
 }
