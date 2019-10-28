@@ -236,7 +236,7 @@ export default class Admin extends Vue {
           return { err }
         })
 
-      if (response.err) {
+      if (response && response.err) {
         return
       }
 

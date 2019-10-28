@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin\Admin;
 
+use App\Http\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
 class Put extends FormRequest
@@ -14,11 +15,18 @@ class Put extends FormRequest
     public function rules()
     {
         $id = ((call_user_func($this->getRouteResolver()))->parameters())['id'];
-        return [
+
+        $password = $this->request->get('password');
+        $validations = [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:admins,email,' . $id . ',id',
-            'password' => 'confirmed|regex:/\A(?=.*?[a-zA-Z])(?=.*?\d)[a-zA-Z\d]{8,}+\z/'
         ];
+
+        if ($password !== null) {
+            $validations['password'] = 'confirmed|regex:/\A(?=.*?[a-zA-Z])(?=.*?\d)[a-zA-Z\d]{8,}+\z/';
+        }
+
+        return $validations;
     }
 
     public function attributes()

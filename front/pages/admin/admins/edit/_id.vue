@@ -4,37 +4,41 @@
       メンバー編集
     </h1>
     <TextInput
-      v-model="name"
+      :value="form.name"
       label="名前"
       name="name"
       placeholder="名前"
-      :error="error"
+      :error="form.error"
+      @input="onInput('name', $event)"
     />
 
     <TextInput
-      v-model="email"
+      :value="form.email"
       label="メールアドレス"
       name="email"
       type="email"
       placeholder="メールアドレス"
-      :error="error"
+      :error="form.error"
+      @input="onInput('email', $event)"
     />
 
     <TextInput
-      v-model="password"
+      :value="form.password"
       label="パスワード"
       name="password"
       type="password"
       placeholder="パスワード"
-      :error="error"
+      :error="form.error"
+      @input="onInput('password', $event)"
     />
 
     <TextInput
       id="password-confirm"
-      v-model="passwordConfirm"
+      :value="form.passwordConfirm"
       label="パスワード確認"
       type="password"
-      :error="error"
+      :error="form.error"
+      @input="onInput('passwordConfirm', $event)"
     />
 
     <div class="buttons">
@@ -49,7 +53,7 @@
 import { Component, Vue } from 'nuxt-property-decorator'
 import { SnackbarProgrammatic as Snackbar } from 'buefy'
 import { nuxtContext } from '@/src/@types'
-import { AdminStore } from '@/store'
+import { AdminStore, AdminEditStore } from '@/store'
 import TextInput from '@/components/form/TextInput.vue'
 
 @Component({
@@ -60,36 +64,54 @@ import TextInput from '@/components/form/TextInput.vue'
   middleware: ['redirectIfAdminGuest']
 })
 export default class Admin extends Vue {
-  name = ''
-  email = ''
-  password = ''
-  passwordConfirm = ''
-  error = {}
-
-  get admin () {
-    return AdminStore.getAdmin
+  get form () {
+    return AdminEditStore.getForm
   }
 
   async fetch (this: void, ctx: nuxtContext): Promise<void> {
     await AdminStore.loadAdmin(ctx.params.id)
+    const admin = AdminStore.getAdmin
+    const args = {
+      name: admin.name,
+      email: admin.email
+    }
+
+    AdminEditStore.updateForm(args)
+  }
+
+  onInput (name: string, event: any) {
+    AdminEditStore.updateInput({ [name]: event })
   }
 
   async updateAdmin () {
     if (confirm('更新してもよろしいですか？')) {
-      await AdminStore.updateAdmin({
-        id: this.admin.id,
-        name: this.name,
-        email: this.email,
-        password: this.password,
-        password_confirmation: this.passwordConfirm
-      }).catch((err: any) => {
-        this.$set(this, 'error', err.response.data.errors)
-        return false
+      const params: any = {}
+      params.id = (this as any).$route.params.id
+      params.name = this.form.name
+      params.email = this.form.email
+
+      if (this.form.password !== '') {
+        params.password = this.form.password
+        params.password_confirmation = this.form.passwordConfirm
+      }
+
+      const response = await AdminStore.updateAdmin(params).catch((err: any) => {
+        AdminEditStore.updateFormError(err.response.data.errors)
+        return { err }
       })
 
-      this.name = this.admin.name
-      this.email = this.admin.email
+      if (response && response.err) {
+        return
+      }
 
+      await AdminStore.loadAdmin((this as any).$route.params.id)
+      const admin = AdminStore.getAdmin
+      AdminEditStore.updateForm({
+        name: admin.name,
+        email: admin.email,
+        password: '',
+        passwordConfirm: ''
+      })
       Snackbar.open({
         duration: 5000,
         message: '管理者情報を更新しました。',

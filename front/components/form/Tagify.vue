@@ -49,7 +49,6 @@ export default class Tagify extends Vue {
     window.clearTimeout(this.debounce)
     this.debounce = window.setTimeout(async () => {
       await ReportTagStore.loadTagify(this.tag).then(({ data }) => {
-        console.log(data)
         this.autocompleteTags = data.map((tag: {name: string}) => {
           return { text: tag.name }
         })
