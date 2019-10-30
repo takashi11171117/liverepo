@@ -129,10 +129,17 @@ export default class Report extends VuexModule {
   }
 
   @Action({ rawError: true })
-  async addReport (form: Object) {
+  async addReport (params: {form: Object, auth: string} = { form: {}, auth: '' }) {
+    let url: string
+    if (params.auth === 'admin') {
+      url = `/admin/reports`
+    } else {
+      url = `/comedy/reports`
+    }
+
     await this.$axios.$post(
-      '/admin/reports',
-      form,
+      url,
+      params.form,
       {
         headers: {
           'Content-Type': 'multipart/form-data'

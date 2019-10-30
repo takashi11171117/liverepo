@@ -3,7 +3,7 @@ import Vue from 'vue'
 
 declare module 'vue/types/vue' {
   interface Vue {
-    $imageCompress(file: File): Promise<void>
+    $imageCompress(file: File): Promise<Blob>
   }
 }
 

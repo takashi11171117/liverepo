@@ -230,13 +230,12 @@ export default class Admin extends Vue {
       if (this.form.file !== undefined && this.form.file !== null) {
         formData.append('images[]', this.form.file)
       }
-      const response = await ReportStore.updateReport({ id: (this as any).$route.params.id, form: formData, auth: 'admin' })
+      await ReportStore.updateReport({ id: (this as any).$route.params.id, form: formData, auth: 'admin' })
         .catch((err: any) => {
           ReportEditStore.updateFormError(err.response.data.errors)
-          return { err }
         })
 
-      if (response && response.err) {
+      if (Object.keys(this.form.error).length !== 0) {
         return
       }
 

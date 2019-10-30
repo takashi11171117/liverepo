@@ -93,23 +93,30 @@ export default class ReportNew extends Vue {
       if (confirm('追加してもよろしいですか？')) {
         await ReportStore.addReport(
           {
-            title: this.title,
-            content: this.content,
-            status: this.status,
-            rating: this.rating,
-            file: this.file,
-            tags: report_tags
+            form: {
+              title: this.title,
+              content: this.content,
+              status: this.status,
+              rating: this.rating,
+              file: this.file,
+              tags: report_tags
+            },
+            auth: 'admin'
           }
-        ).then(() => {
-          Snackbar.open({
-            duration: 5000,
-            message: 'レポートを追加しました。',
-            type: 'is-success'
-          });
-          (this as any).$router.push('/admin/reports')
-        }).catch((error) => {
+        ).catch((error) => {
           this.$set(this, 'error', error.response.data.errors)
         })
+
+        if (Object.keys(this.error).length !== 0) {
+          return
+        }
+
+        Snackbar.open({
+          duration: 5000,
+          message: 'レポートを追加しました。',
+          type: 'is-success'
+        });
+        (this as any).$router.push('/admin/reports')
       }
     }
 }

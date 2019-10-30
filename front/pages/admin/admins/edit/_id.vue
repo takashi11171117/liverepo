@@ -95,12 +95,11 @@ export default class Admin extends Vue {
         params.password_confirmation = this.form.passwordConfirm
       }
 
-      const response = await AdminStore.updateAdmin(params).catch((err: any) => {
+      await AdminStore.updateAdmin(params).catch((err: any) => {
         AdminEditStore.updateFormError(err.response.data.errors)
-        return { err }
       })
 
-      if (response && response.err) {
+      if (Object.keys(this.form.error).length !== 0) {
         return
       }
 

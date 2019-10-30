@@ -72,17 +72,20 @@ export default class AdminNew extends Vue {
           password: this.password,
           password_confirmation: this.passwordConfirm
         }
-      ).then(() => {
-        Snackbar.open({
-          duration: 5000,
-          message: '会員情報を追加しました。',
-          type: 'is-success'
-        });
-        (this as any).$router.push('/admin')
-      }).catch((error) => {
-        console.log(error)
-        this.$set(this, 'error', error.response.data.errors)
+      ).catch((err: any) => {
+        this.$set(this, 'error', err.response.data.errors)
       })
+
+      if (Object.keys(this.error).length !== 0) {
+        return
+      }
+
+      Snackbar.open({
+        duration: 5000,
+        message: '会員情報を追加しました。',
+        type: 'is-success'
+      });
+      (this as any).$router.push('/admin')
     }
   }
 }
