@@ -17,7 +17,7 @@ class Report extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'content', 'status', 'rating',
+        'title', 'content', 'status', 'rating', 'opened_at'
     ];
 
     protected $dates = [

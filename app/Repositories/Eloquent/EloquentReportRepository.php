@@ -123,7 +123,7 @@ class EloquentReportRepository extends RepositoryAbstract implements ReportRepos
         $model = $this->entity->firstOrNew(['id' => $id]);
 
         $user = \Auth::user();
-        if (get_class($user) === "App\Model\Admin") {
+        if (get_class($user) === "App\Models\User") {
             $model = $model->user()
                            ->associate($user);
         }

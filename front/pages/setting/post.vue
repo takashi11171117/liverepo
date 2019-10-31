@@ -97,6 +97,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { SnackbarProgrammatic as Snackbar } from 'buefy'
+import moment from 'moment'
 import { ReportStore, FrontReportPostStore } from '@/store'
 import TextInput from '@/components/form/TextInput.vue'
 import SelectInput from '@/components/form/SelectInput.vue'
@@ -180,6 +181,7 @@ export default class SettingPost extends Vue {
           status: this.form.status,
           rating: this.form.rating,
           file: this.form.file,
+          opened_at: moment(this.form.opened_at).format('YYYY-MM-DD HH:mm:ss'),
           place_tags: JSON.stringify(this.form.place_tags),
           player_tags: JSON.stringify(this.form.player_tags),
           other_tags: JSON.stringify(this.form.other_tags)
@@ -192,6 +194,19 @@ export default class SettingPost extends Vue {
         return
       }
 
+      FrontReportPostStore.updateForm({
+        title: '',
+        content: '',
+        status: '',
+        rating: '',
+        report_images: [],
+        place_tags: [],
+        player_tags: [],
+        other_tags: [],
+        file: null,
+        opened_at: null,
+        error: {}
+      })
       Snackbar.open({
         duration: 5000,
         message: 'レポートを追加しました。',
@@ -214,6 +229,7 @@ export default class SettingPost extends Vue {
     formData.append('content', params.content)
     formData.append('status', params.status)
     formData.append('rating', params.rating)
+    formData.append('opened_at', params.opened_at)
     formData.append('place_tags', params.place_tags)
     formData.append('player_tags', params.player_tags)
     formData.append('other_tags', params.other_tags)

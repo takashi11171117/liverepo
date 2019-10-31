@@ -90,12 +90,12 @@ class FrontReportPostListener
         if (!empty($images)) {
             foreach ($images as $key => $image) {
                 $tmpFilename = $report->id . '_' .  sprintf('%02d', ($key + 1));
-                $report_image = $this->report_images->findByName($tmpFilename);
                 $filename = $this->image_service->createReportImage($tmpFilename, $image);
 
-                if ($report_image !== null) {
+                try {
+                    $report_image = $this->report_images->findByName($tmpFilename);
                     $this->report_images->update($report_image->id, ['path' => $filename]);
-                } else {
+                } catch(\Exception $e) {
                     $this->reports->createImages($report, $filename);
                 }
             }
