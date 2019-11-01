@@ -10,7 +10,7 @@ type ReportPostForm = {
   player_tags: Array<string>,
   other_tags: Array<string>,
   file: File|null,
-  opened_at: Date|null,
+  opened_at: Date,
   error: Object
 }
 
@@ -26,7 +26,7 @@ export default class FrontReportPost extends VuexModule {
     player_tags: [],
     other_tags: [],
     file: null,
-    opened_at: null,
+    opened_at: new Date(),
     error: {}
   }
 

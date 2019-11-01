@@ -1,5 +1,5 @@
 import { VuexModule, Module, Mutation, Action } from 'vuex-module-decorators'
-import { Users } from '@/src/models/User'
+import { User as UserModel, Users } from '@/src/models/User'
 
 const initUsers: Users = {
   data: [],
@@ -17,14 +17,27 @@ const initUsers: Users = {
 @Module({ stateFactory: true, namespaced: true, name: 'repos/user' })
 export default class User extends VuexModule {
   users = initUsers
-  user: Object = {}
+  user: UserModel = {
+    id: 0,
+    name: '',
+    gender: '',
+    birth: '',
+    pref: '',
+    src: '',
+    thumb: '',
+    user_name01: '',
+    user_name02: '',
+    description: '',
+    url: '',
+    show_mail_flg: ''
+  }
   followers = initUsers
 
   get getUsers (): Users {
     return this.users
   }
 
-  get getUser (): Object {
+  get getUser (): UserModel {
     return this.user
   }
 
@@ -38,7 +51,7 @@ export default class User extends VuexModule {
   }
 
   @Mutation
-  setUser (user: Object) {
+  setUser (user: UserModel) {
     this.user = user
   }
 

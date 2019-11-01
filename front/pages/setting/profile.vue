@@ -14,64 +14,77 @@
       <section class="main-content border-radius">
         <h1>プロフィール編集</h1>
         <TextInput
-          v-model="user_name01"
+          :value="form.user_name01"
           name="user_name01"
           placeholder="姓"
-          :error="error"
+          :error="form.error"
+          @input="onInput('user_name01', $event)"
         />
 
         <TextInput
-          v-model="user_name02"
+          :value="form.user_name02"
           name="user_name02"
           placeholder="名"
-          :error="error"
+          :error="form.error"
+          @input="onInput('user_name02', $event)"
         />
 
         <TextInput
-          v-model="description"
+          :value="form.description"
           label="紹介文"
           name="description"
           type="textarea"
           placeholder="紹介文"
-          :error="error"
+          :error="form.error"
+          @input="onInput('description', $event)"
         />
 
         <RadioInput
-          v-model="show_mail_flg"
+          :value="form.show_mail_flg"
           name="show_mail_flg"
           label="メールの表示"
-          :error="error"
+          :error="form.error"
           :options="{0: '表示しない', 1: '表示する'}"
+          @input="onInput('show_mail_flg', $event)"
         />
 
         <TextInput
-          v-model="url"
+          :value="form.url"
           label="URL"
           name="url"
           placeholder="URL"
-          :error="error"
+          :error="form.error"
+          @input="onInput('url', $event)"
         />
 
         <SelectInput
-          v-model="gender"
+          :value="form.gender"
           name="gender"
           label="性別"
-          :error="error"
+          :error="form.error"
           :options="$data.genderOption"
+          @input="onInput('gender', $event)"
         />
 
         <DateInput
-          v-model="birth"
+          :value="form.birth"
           label="生年月日"
           name="birth"
-          :error="error"
+          :error="form.error"
+          @input="onInput('birth', $event)"
         />
 
+        <p class="icon-title">アイコン選択</p>
+        <div v-if="$isset(user.thumb)" class="img">
+          <img :src="user.thumb" alt="">
+        </div>
+
         <ImageInput
-          v-model="file"
+          :value="form.file"
           label="アイコン"
           name="image"
-          :error="error"
+          :error="form.error"
+          @input="onInput('file', $event)"
         />
 
         <div class="buttons">
@@ -84,10 +97,12 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { SnackbarProgrammatic as Snackbar } from 'buefy'
-import { UserStore } from '@/store'
+import moment from 'moment'
+import { nuxtContext } from '@/src/@types'
+import { UserStore, FrontProfileStore } from '@/store'
 import TextInput from '@/components/form/TextInput.vue'
 import ImageInput from '@/components/form/ImageInput.vue'
 import SelectInput from '@/components/form/SelectInput.vue'
@@ -107,62 +122,92 @@ import RadioInput from '@/components/form/RadioInput.vue'
   ]
 })
 export default class SettingProfile extends Vue {
-  user_name01 = ''
-  user_name02 = ''
-  description = ''
-  gender = ''
-  url = ''
-  show_mail_flg = ''
-  birth = new Date()
-  file = null
-  error = {}
-  image = null
+  get form () {
+    return FrontProfileStore.getForm
+  }
+
+  get user () {
+    return UserStore.getUser
+  }
+
+  async fetch (this: void, ctx: nuxtContext): Promise<void> {
+    await UserStore.loadUser(ctx.app.$auth.user.name)
+    const user = UserStore.getUser
+    const args = {
+      user_name01: user.user_name01,
+      user_name02: user.user_name02,
+      description: user.description,
+      gender: user.gender,
+      birth: new Date(user.birth),
+      url: user.url,
+      show_mail_flg: user.show_mail_flg
+    }
+
+    FrontProfileStore.updateForm(args)
+  }
+
+  onInput (name: string, event: any) {
+    FrontProfileStore.updateInput({ [name]: event })
+  }
 
   async onSubmit () {
     if (confirm('追加してもよろしいですか？')) {
       await this.addProfile(
         {
-          user_name01: this.user_name01,
-          user_name02: this.user_name02,
-          description: this.description,
-          gender: this.gender,
-          birth: this.birth,
-          url: this.url,
-          show_mail_flg: this.show_mail_flg,
-          file: this.file
+          user_name01: this.form.user_name01,
+          user_name02: this.form.user_name02,
+          description: this.form.description,
+          gender: this.form.gender,
+          birth: moment(this.form.birth).format('YYYY-MM-DD HH:mm:ss'),
+          url: this.form.url,
+          show_mail_flg: this.form.show_mail_flg,
+          file: this.form.file
         }
-      ).then(() => {
-        Snackbar.open({
-          duration: 5000,
-          message: 'プロフィールを編集しました。',
-          type: 'is-success'
-        })
-      }).catch((error) => {
-        this.$set(this, 'error', error.response.data.errors)
+      ).catch((err: any) => {
+        FrontProfileStore.updateFormError(err.response.data.errors)
+      })
+
+      if (Object.keys(this.form.error).length !== 0) {
+        return
+      }
+
+      await UserStore.loadUser((this as any).$auth.user.name)
+      const user = UserStore.getUser
+      FrontProfileStore.updateForm({
+        user_name01: user.user_name01,
+        user_name02: user.user_name02,
+        description: user.description,
+        gender: user.gender,
+        url: user.url,
+        show_mail_flg: user.show_mail_flg,
+        birth: new Date(user.birth),
+        file: null,
+        error: {}
+      })
+      Snackbar.open({
+        duration: 5000,
+        message: 'プロフィールを編集しました。',
+        type: 'is-success'
       })
     }
   }
 
-  async addProfile ({ user_name01, user_name02, description, url, gender, birth, show_mail_flg, file }) {
+  async addProfile (params: { user_name01: string, user_name02: string, description: string, url: string, gender: string, birth: string, show_mail_flg: string, file: File|null }) {
     const formData = new FormData()
-    if (this.$isset(birth)) {
-      const date = Date.format(birth, 'Y/m/d H:i:s')
-      formData.append('birth', date)
-    }
-
-    if (this.$isset(file)) {
-      const blob = await this.$imageCompress(file)
-      const compressedFile = new File([blob], blob.name)
+    if (params.file !== null) {
+      const blob = await this.$imageCompress(params.file)
+      const compressedFile = new File([blob], params.file.name)
       formData.append('image', compressedFile)
     }
 
-    formData.append('user_name01', user_name01)
-    formData.append('user_name02', user_name02)
-    formData.append('description', description)
-    formData.append('gender', gender)
-    formData.append('show_mail_flg', show_mail_flg)
-    formData.append('url', url)
-    formData.append('user_id', this.$auth.user.id)
+    formData.append('user_name01', params.user_name01)
+    formData.append('user_name02', params.user_name02)
+    formData.append('description', params.description)
+    formData.append('birth', params.birth)
+    formData.append('gender', params.gender)
+    formData.append('show_mail_flg', params.show_mail_flg)
+    formData.append('url', params.url)
+    formData.append('user_id', (this as any).$auth.user.id)
 
     await UserStore.updateUserProfile(formData)
   }
@@ -210,7 +255,7 @@ h1
         img
             width: 80px
             height: 80px
-            object-fit: cover;
+            object-fit: cover
 
     .file-button
         display: flex

@@ -216,7 +216,7 @@ export default class SettingPost extends Vue {
     }
   }
 
-  async addReport (params) {
+  async addReport (params: any) {
     const formData = new FormData()
     if ((this as any).$isset(params.file)) {
       const blob = await this.$imageCompress(params.file)
@@ -233,7 +233,7 @@ export default class SettingPost extends Vue {
     formData.append('place_tags', params.place_tags)
     formData.append('player_tags', params.player_tags)
     formData.append('other_tags', params.other_tags)
-    await ReportStore.addReport({ form: formData })
+    await ReportStore.addReport({ form: formData, auth: '' })
   }
 }
 </script>

@@ -17,6 +17,7 @@ import ReportIndex from '@/store/form/report_index'
 import ReportEdit from '@/store/form/report_edit'
 import AdminEdit from '@/store/form/admin_edit'
 import FrontReportPost from '@/store/form/front_report_post'
+import FrontProfile from '@/store/form/front_profile'
 
 /* eslint import/no-mutable-exports: 0 */
 let ReportStore: Report
@@ -36,6 +37,7 @@ let ReportIndexStore: ReportIndex
 let ReportEditStore: ReportEdit
 let AdminEditStore: AdminEdit
 let FrontReportPostStore: FrontReportPost
+let FrontProfileStore: FrontProfile
 
 function initialiseStores (store: Store<any>): void {
   ReportStore = getModule(Report, store)
@@ -55,6 +57,7 @@ function initialiseStores (store: Store<any>): void {
   ReportEditStore = getModule(ReportEdit, store)
   AdminEditStore = getModule(AdminEdit, store)
   FrontReportPostStore = getModule(FrontReportPost, store)
+  FrontProfileStore = getModule(FrontProfile, store)
 }
 
 export {
@@ -75,5 +78,6 @@ export {
   FollowReportStore,
   FollowReportTagStore,
   ReportCommentStore,
-  FrontReportPostStore
+  FrontReportPostStore,
+  FrontProfileStore
 }

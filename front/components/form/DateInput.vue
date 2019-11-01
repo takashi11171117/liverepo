@@ -5,33 +5,35 @@
     :message="error.hasOwnProperty(name) ? error[name][0] : ''"
   >
     <b-datepicker
-      v-model="innerValue"
+      :value="innerValue"
       placeholder="クリックして選択"
       icon="calendar-today"
       :month-names="$data.monthNamesOption"
       :day-names="$data.dayNamesOption"
+      @input="updateValue"
     />
   </b-field>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator'
+import { Component, Vue, Prop, Emit } from 'nuxt-property-decorator'
 
 @Component({})
 export default class DateInput extends Vue {
   @Prop() error!: Object
-  @Prop() value!: Date
+  @Prop({ default: new Date() }) value!: Date
   @Prop() name!: string
   @Prop() label!: string
 
-  get innerValue (): Date {
-    return this.value
-  }
+  innerValue: Date[] = [this.value]
 
-  set innerValue (newValue: Date) {
-    if (this.value !== newValue) {
-      this.$emit('input', newValue)
-    }
+  @Emit()
+  // eslint-disable-next-line
+  input (date: Date) {}
+
+  updateValue (date: Date) {
+    this.innerValue = [date]
+    this.input(date)
   }
 }
 </script>

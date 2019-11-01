@@ -21,6 +21,11 @@ class UserPageResource extends JsonResource
             'gender' => $this->gender,
             'birth'  => $this->birth,
             'pref'  => $this->pref,
+            'user_name01'   => $this->user_name01,
+            'user_name02'   => $this->user_name02,
+            'description'   => $this->description,
+            'url'           => $this->url,
+            'show_mail_flg' => $this->show_mail_flg,
         ];
 
         if ($this->image_path !== null) {
