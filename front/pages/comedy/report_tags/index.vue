@@ -6,7 +6,7 @@
         <div v-if="reportTags.length" class="columns">
           <div v-for="(tagColumn, index) in reportTags" :key="index" class="report-tags column is-desktop is-3">
             <div v-for="(tagName, index2) in tagColumn" :key="index2">
-              <Tag :tag-name="tagName" />
+              <Tag :tag-name="tagName.name" />
             </div>
           </div>
         </div>

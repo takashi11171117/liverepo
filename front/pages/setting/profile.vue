@@ -74,7 +74,9 @@
           @input="onInput('birth', $event)"
         />
 
-        <p class="icon-title">アイコン選択</p>
+        <p class="icon-title">
+          アイコン選択
+        </p>
         <div v-if="$isset(user.thumb)" class="img">
           <img :src="user.thumb" alt="">
         </div>

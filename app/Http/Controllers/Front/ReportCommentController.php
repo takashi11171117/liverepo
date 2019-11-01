@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Front;
 
 use App\Repositories\Contracts\ReportCommentRepository;
-use Illuminate\Http\Request;
+use App\Http\Requests\Front\ReportComment\Post;
 use App\Http\Controllers\Controller;
 
 class ReportCommentController extends Controller
@@ -15,7 +15,7 @@ class ReportCommentController extends Controller
         $this->report_comments = $report_comments;
     }
 
-    public function store(Request $request): void
+    public function store(Post $request): void
     {
         $params = $request->only('body', 'report_id');
         $params['user_id'] = \Auth::id();

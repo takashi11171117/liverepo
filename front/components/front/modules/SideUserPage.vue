@@ -45,15 +45,15 @@
           {{ user.url }}
         </a>
       </p>
-      <hr class="dropdown-divider">ß
+      <hr class="dropdown-divider">
     </template>
     <div class="follow-tag">
       フォロー中のタグ <b-tag rounded>
         {{ user.follow_report_tags.length }}
       </b-tag>
       <div class="report-tags">
-        <div v-for="tagName in user.follow_report_tags" :key="tagName">
-          <Tag :tag-name="tagName" />
+        <div v-for="(tagName, index) in user.follow_report_tags" :key="index">
+          <Tag :tag-name="tagName.name" />
         </div>
       </div>
     </div>

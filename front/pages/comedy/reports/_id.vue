@@ -15,7 +15,7 @@
 
             <div class="category">
               <div v-for="(tagName, index) in report.report_tags" :key="index">
-                <Tag :tag-name="tagName" />
+                <Tag :tag-name="tagName.name" />
               </div>
             </div>
 
@@ -83,7 +83,7 @@
               {{ comment.created_at }}
             </p>
           </div>
-          <p>{{ comment.body }}}</p>
+          <p>{{ comment.body }}</p>
           <hr class="dropdown-divider">
         </div>
         <div class="comment-post">
@@ -176,15 +176,19 @@ export default class Report extends Vue {
     }
     if (confirm('コメントしますか？')) {
       await ReportCommentStore.updateReportComment(
-        this.body, this.report.id
-      ).then(() => {
-        Snackbar.open({
-          duration: 5000,
-          message: 'コメントを追加しました。',
-          type: 'is-success'
-        })
-      }).catch((error: any) => {
+        { body: this.body, report_id: this.report.id }
+      ).catch((error: any) => {
         this.$set(this, 'error', error.response.data.errors)
+      })
+
+      if (Object.keys(this.error).length !== 0) {
+        return
+      }
+
+      Snackbar.open({
+        duration: 5000,
+        message: 'コメントを追加しました。',
+        type: 'is-success'
       })
     }
   }
@@ -245,8 +249,11 @@ h1
     padding: 20px
 
 #image-list
-    display: flex
-    img
+    ul
+      display: flex
+      li
+        padding-right: 10px
+      img
         width: 120px
         height: auto
 
