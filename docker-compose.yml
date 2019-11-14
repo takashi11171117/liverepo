@@ -2,7 +2,7 @@ version: "3"
 
 services:
   test:
-    image: 8e65a3bf0ba1
+    image: 2fcf6aec7596
     privileged: true
     command: /sbin/init
     environment:
@@ -12,6 +12,7 @@ services:
       - "LC_ALL=ja_JP.UTF-8"
       - "API_SERVER_URL=http://localhost/api"
       - "API_CLIENT_URL=http://localhost:50080/api"
+      - 'PHP_IDE_CONFIG="serverName=localhost"'
     ports:
       - "50080:80"
     volumes:

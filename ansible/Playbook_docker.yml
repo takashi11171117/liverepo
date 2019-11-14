@@ -58,6 +58,13 @@
   roles: 
     - geerlingguy.nginx
     - geerlingguy.php
+    - role: geerlingguy.php-xdebug
+      php_xdebug_remote_enable: On
+      php_xdebug_remote_autostart: On
+      php_xdebug_remote_host: host.docker.internal
+      php_xdebug_remote_port: 9001
+      php_xdebug_idekey: PHPSTORM
+      php_xdebug_remote_connect_back: 0
     - geerlingguy.php-mysql
     - role: geerlingguy.git
       git_package:
