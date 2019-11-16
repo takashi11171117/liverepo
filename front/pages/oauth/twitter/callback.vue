@@ -1,9 +1,8 @@
 <template>
   <div>
-    <p v-if="$isset(failedMessage)">
+    <p v-if="!$isset(failedMessage)">
       Twitterでログインしています。
     </p>
-
     <template v-else>
       <p>Twitterでのログインに失敗しました。</p>
       <p>{{ failedMessage }}</p>
@@ -20,11 +19,16 @@ export default class OauthTwitterRedirect extends Vue {
    failedMessage = ''
 
    async mounted () {
-     const callbackData = await OauthStore.loadCallbackData(this.$route.query)
+     await OauthStore.loadCallbackData(this.$route.query)
        .catch((err) => {
          this.failedMessage = err.message
-         return false
        })
+
+     if (this.failedMessage) {
+       return
+     }
+
+     const callbackData = OauthStore.getCallbackData
 
      this.$auth.setToken('local', `Bearer ${callbackData.token}`)
      this.$auth.setUser(callbackData.user)
