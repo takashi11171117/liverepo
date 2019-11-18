@@ -3,23 +3,23 @@
 namespace App\Http\Controllers\Oauth;
 
 use App\Http\Controllers\Controller;
-use App\Services\SocialiteService;
+use App\Services\TwitterService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class TwitterController extends Controller {
     /**
-     * @var SocialiteService
+     * @var TwitterService
      */
-    protected $socialiteService;
+    protected $twitterService;
     /**
-     * @param  SocialiteService  $socialiteHandler
+     * @param  TwitterService  $socialiteHandler
      * @return void
      */
-    public function __construct(SocialiteService $socialiteService)
+    public function __construct(TwitterService $twitterService)
     {
         $this->middleware('session');
-        $this->socialiteService = $socialiteService;
+        $this->twitterService = $twitterService;
     }
     /**
      * @return JsonResponse
@@ -27,7 +27,7 @@ class TwitterController extends Controller {
     public function redirect(): JsonResponse
     {
         return response()->json([
-            'redirect_url' => $this->socialiteService->getRedirectToTwitterUrl(),
+            'redirect_url' => $this->twitterService->getRedirectToTwitterUrl(),
         ]);
     }
     /**
@@ -35,6 +35,6 @@ class TwitterController extends Controller {
      */
     public function callback(): JsonResponse
     {
-        return $this->socialiteService->handleTwitterCallback();
+        return $this->twitterService->handleTwitterCallback();
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Resources\Front\ReportResource;
 use App\Http\Resources\Front\ReportIndexResource;
 use App\Http\Resources\Front\ReportTagWithReportResource;
 use App\Repositories\Contracts\ReportRepository;
+use App\Services\TwitterService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -73,8 +74,10 @@ class ReportController extends Controller
     /**
      * @throws \Throwable
      */
-    public function post(Post $request): void
+    public function post(Post $request, TwitterService $twitterService): void
     {
         event(new FrontReportPostEvent($request));
+
+        $twitterService->tweet();
     }
 }

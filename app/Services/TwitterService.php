@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\SocialAccount;
 use App\Models\User;
+use Abraham\TwitterOAuth\TwitterOAuth;
+use App\Repositories\Contracts\SocialAccountRepository;
 use Illuminate\Http\JsonResponse;
 use InvalidArgumentException;
 use App\Exceptions\EmailAlreadyExistsException;
@@ -11,7 +13,7 @@ use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\One\User as SocialiteOneUser;
 use JWTAuth;
 
-class SocialiteService{
+class TwitterService{
     /**
      * @return string
      */
@@ -90,5 +92,23 @@ class SocialiteService{
     protected function errorJsonResponse(string $message): JsonResponse
     {
         return response()->json(compact('message'), 400);
+    }
+
+    public function tweet()
+    {
+        $user = \Auth::user();
+        $socialAccountRepository = app(SocialAccountRepository::class);
+        $socialAccount = $socialAccountRepository->findWhereFirst('user_id', $user->id);
+
+        $twitter_user = new TwitterOAuth(
+            config('services.twitter.client_id'),
+            config('services.twitter.client_secret'),
+            $socialAccount->access_token,
+            $socialAccount->access_token_secret
+        );
+
+        $twitter_user->post("statuses/update", [
+            "status" => 'laravelからtwitter_apiでツイート'
+        ]);
     }
 }

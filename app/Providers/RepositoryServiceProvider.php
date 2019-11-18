@@ -11,6 +11,7 @@ use App\Repositories\Contracts\{
     ReportRepository,
     ReportTagRepository,
     ReportImageRepository,
+    SocialAccountRepository,
     UserRepository
 };
 
@@ -23,6 +24,7 @@ use App\Repositories\Eloquent\{
     EloquentReportRepository,
     EloquentReportTagRepository,
     EloquentReportImageRepository,
+    EloquentSocialAccountRepository,
     EloquentUserRepository
 };
 
@@ -46,6 +48,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(FollowUserRepository::class, EloquentFollowUserRepository::class);
         $this->app->bind(FollowReportTagRepository::class, EloquentFollowReportTagRepository::class);
         $this->app->bind(FollowReportRepository::class, EloquentFollowReportRepository::class);
+        $this->app->bind(SocialAccountRepository::class, EloquentSocialAccountRepository::class);
     }
 
     /**

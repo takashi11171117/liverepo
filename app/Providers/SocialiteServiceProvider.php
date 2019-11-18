@@ -2,9 +2,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use App\Services\SocialiteService;
+use App\Services\TwitterService;
 
-class SocialiteServiceProvider extends ServiceProvider
+class TwitterServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
@@ -28,8 +28,8 @@ class SocialiteServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(SocialiteService::class, function ($app) {
-            return new SocialiteService;
+        $this->app->singleton(TwitterService::class, function ($app) {
+            return new TwitterService;
         });
     }
     /**
@@ -39,6 +39,6 @@ class SocialiteServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return [SocialiteService::class];
+        return [TwitterService::class];
     }
 }
