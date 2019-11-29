@@ -2,7 +2,7 @@ version: "3"
 
 services:
   test:
-    image: 2fcf6aec7596
+    image: 20434bbabd9d
     privileged: true
     command: /sbin/init
     environment:
@@ -15,5 +15,7 @@ services:
       - 'PHP_IDE_CONFIG="serverName=localhost"'
     ports:
       - "50080:80"
+      - "587:587"
+      - "25:25"
     volumes:
       - ./:/var/www/liverepo-demo/current

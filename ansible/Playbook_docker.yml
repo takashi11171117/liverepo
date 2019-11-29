@@ -55,7 +55,7 @@
   user: root
   vars_files:
     - ./vars/main_docker.yml
-  roles: 
+  roles:
     - geerlingguy.nginx
     - geerlingguy.php
     - role: geerlingguy.php-xdebug
@@ -71,6 +71,30 @@
         - get
     - geerlingguy.composer
     - geerlingguy.nodejs
+
+- name: setting sendmail
+  hosts: all
+  user: root
+  gather_facts: no
+  tasks:
+  - name: apt install language-pack-ja sendmail-bin sendmail msmtp msmtp-mta
+    apt: name={{ item }} update_cache=yes cache_valid_time=3600 force=yes
+    with_items:
+      - language-pack-ja
+      - sendmail-bin
+      - sendmail
+  - name: apt install msmtp msmtp-mta
+    apt: name={{ item }} update_cache=yes cache_valid_time=3600 force=yes
+    with_items:
+      - msmtp
+      - msmtp-mta
+  - name: copy a directory
+    copy:
+      src: ./templates/msmtprc
+      dest: /etc
+      mode: 0600
+  - name: restart sendmail
+    service: name=sendmail state=restarted　　　
 
 - name: after Provisioning
   hosts: all
